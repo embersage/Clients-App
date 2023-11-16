@@ -1,6 +1,16 @@
 import express from 'express';
 import { config } from 'dotenv';
 import sequelize from './db.js';
+import {
+  UserAccount,
+  Role,
+  UserConfig,
+  RefreshToken,
+  UserGroupUserAccount,
+  UserGroup,
+  GroupMember,
+  Company,
+} from './models/models.js';
 
 config();
 
