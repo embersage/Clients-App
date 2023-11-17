@@ -1,15 +1,26 @@
 import express from 'express';
 import { config } from 'dotenv';
+import cors from 'cors';
+import router from './routes/index.js';
+import errorHandler from './middleware/ErrorHandlingMiddleware.js';
 import sequelize from './db.js';
 import {
   UserAccount,
-  Role,
   UserConfig,
+  Role,
   RefreshToken,
-  UserGroupUserAccount,
+  Company,
   UserGroup,
   GroupMember,
-  Company,
+  GroupAccount,
+  PaymentInfo,
+  PaymentStatus,
+  Currency,
+  Tariff,
+  TariffDescription,
+  FirstPay,
+  TariffPromocode,
+  Promocode,
 } from './models/models.js';
 
 config();
@@ -17,6 +28,14 @@ config();
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+app.use('/api', router);
+app.use(errorHandler);
+
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Everything is working!' });
+});
 
 const start = async () => {
   try {
