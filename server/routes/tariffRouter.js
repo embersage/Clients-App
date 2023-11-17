@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import TariffController from '../controllers/tariffController.js';
 
+const tariffController = new TariffController();
 const router = new Router();
 
-router.post('/', TariffController.create);
-router.get('/', TariffController.getAll);
-router.get('/:id', TariffController.getOne);
+router.get('/', tariffController.getAll);
+router.get('/:id', tariffController.getOne);
+router.post('/create', tariffController.create);
 
 export default router;
