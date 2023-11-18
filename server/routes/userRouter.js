@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import UserController from '../controllers/userController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+import checkRoleMiddleware from '../middleware/checkRoleMiddleware.js';
 
 const userController = new UserController();
 const router = new Router();
 
-router.get('/auth', userController.check);
-router.get('/', userController.getAll);
+router.get('/auth', authMiddleware, userController.check);
+router.get('/', checkRoleMiddleware([2, 3]), userController.getAll);
 router.get('/:id', userController.getOne);
 router.post('/login', userController.login);
-router.post('/create', userController.create);
 
 export default router;
