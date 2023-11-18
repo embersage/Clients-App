@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react';
 import { RxCross2 } from 'react-icons/rx';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import styles from './AuthorizationBlock.module.scss';
 
 const AuthorizationBlock = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
   const inputRef = useRef();
   const passwordRef = useRef();
 
@@ -12,13 +14,12 @@ const AuthorizationBlock = () => {
     <div className={styles.authorizationBlock}>
       <h1>Вход в систему</h1>
       <form>
-        <div>
-          <label for="email">Email</label>
+        <label>
+          <span>Email</span>
           <input
             ref={inputRef}
             placeholder="Введите email"
             type="text"
-            name="email"
             value={email}
             onChange={(event) => {
               setEmail(event.target.value);
@@ -26,40 +27,59 @@ const AuthorizationBlock = () => {
           />
           {email && (
             <RxCross2
-              className={styles.emailIcon}
-              size={20}
+              className={styles.cross}
+              size={30}
               onClick={() => {
                 inputRef.current.focus();
                 setEmail('');
               }}
             />
           )}
-        </div>
-        <div>
-          <label for="password">Пароль</label>
+        </label>
+        <label>
+          <span>Пароль</span>
           <input
             ref={passwordRef}
             placeholder="Введите пароль"
-            type="password"
-            name="password"
+            type={isVisible ? 'text' : 'password'}
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
             }}
           />
+          {isVisible
+            ? password && (
+                <FaRegEye
+                  className={styles.eye}
+                  size={30}
+                  onClick={() => {
+                    setIsVisible(!isVisible);
+                  }}
+                />
+              )
+            : password && (
+                <FaRegEyeSlash
+                  className={styles.eye}
+                  size={30}
+                  onClick={() => {
+                    setIsVisible(!isVisible);
+                  }}
+                />
+              )}
           {password && (
             <RxCross2
-              className={styles.passwordIcon}
-              size={20}
+              className={styles.cross}
+              size={30}
               onClick={() => {
-                passwordRef.current.focus();
+                inputRef.current.focus();
                 setPassword('');
               }}
             />
           )}
-        </div>
-
-        <button type="submit">Войти</button>
+        </label>
+        <button type="submit" onClick={(event) => event.preventDefault()}>
+          Войти
+        </button>
       </form>
     </div>
   );

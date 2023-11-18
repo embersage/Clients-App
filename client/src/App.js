@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { check } from './http/userApi';
 import { setIsAuth, setUser } from './redux/slices/userSlice';
-import AuthorizationBlock from './components/AuthorizationBlock';
+import Authorization from './pages/Authorization';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ function App() {
   //}, []);
   return (
     <div className="App">
-      <AuthorizationBlock />
+      <Routes>
+        <Route path="/authorization" element={<Authorization />} />
+      </Routes>
     </div>
   );
 }
