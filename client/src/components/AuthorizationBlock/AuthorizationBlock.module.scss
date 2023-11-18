@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(-45deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+%icon {
+  padding: 5px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #d6d6d6;
+  }
+  animation: spin 0.5s ease-in-out 1;
+}
+
+.authorizationBlock {
+  text-align: center;
+  max-width: 800px;
+  height: 600px;
+  padding: 60px;
+  border-radius: 20px;
+  border: 1px solid #b4b4b4;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+
+  form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 71px;
+    align-items: center;
+
+    input {
+      padding: 17px 350px 18px 40px;
+      width: 600px;
+      height: 65px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(176, 186, 195, 0.4);
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      width: 340px;
+      height: 60px;
+      border: none;
+      border-radius: 10px;
+      background-color: #f9ed32;
+      font-size: 26px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .emailIcon {
+      @extend %icon;
+      top: 3%;
+      left: 93%;
+    }
+    .passwordIcon {
+      @extend %icon;
+      top: 34%;
+      left: 93%;
+    }
+  }
+}
