@@ -6,10 +6,11 @@ import { store } from './redux/store';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-);
+//root.render(
+//  <Provider store={store}>
+//    <BrowserRouter>
+//      <App />
+//    </BrowserRouter>
+//  </Provider>
+//);
+root.render(<App />);

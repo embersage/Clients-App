@@ -1,4 +1,4 @@
-import AuthorizationBlock from '../../components/AuthorizationBlock';
+import AuthorizationBlock from '../../components/LoginBlock';
 import styles from './Authorization.module.scss';
 
 const Authorization = () => {
