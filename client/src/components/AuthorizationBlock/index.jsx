@@ -1,14 +1,29 @@
 import { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { login } from '../../http/userApi';
+import { setIsAuth, setUser } from '../../redux/slices/userSlice';
 import styles from './AuthorizationBlock.module.scss';
 
 const AuthorizationBlock = () => {
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const inputRef = useRef();
   const passwordRef = useRef();
+
+  const signIn = async (email, password) => {
+    try {
+      const data = await login(email, password);
+      dispatch(setUser(user));
+      dispatch(setIsAuth(true));
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
 
   return (
     <div className={styles.authorizationBlock}>
@@ -77,7 +92,13 @@ const AuthorizationBlock = () => {
             />
           )}
         </label>
-        <button type="submit" onClick={(event) => event.preventDefault()}>
+        <button
+          type="submit"
+          onClick={(event) => {
+            event.preventDefault();
+            signIn(email, password);
+          }}
+        >
           Войти
         </button>
       </form>
@@ -86,3 +107,5 @@ const AuthorizationBlock = () => {
 };
 
 export default AuthorizationBlock;
+
+//qwerty@mail.ru 2281337

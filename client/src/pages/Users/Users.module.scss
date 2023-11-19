@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+}
+
+.usersTable {
+  width: 600px;
+  max-height: 800px;
+  padding: 20px;
+  background-color: #fff5;
+  box-shadow: 0px 5px 25px #0002;
+  border-radius: 25px;
+  overflow: auto;
+
+  th,
+  td {
+    padding: 10px;
+  }
+}

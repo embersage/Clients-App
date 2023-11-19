@@ -4,7 +4,7 @@ import styles from './Authorization.module.scss';
 const Authorization = () => {
   return (
     <div className={styles.authorization}>
-      <AuthorizationBlock className={styles.form}/>
+      <AuthorizationBlock className={styles.form} />
     </div>
   );
 };

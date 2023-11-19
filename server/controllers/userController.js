@@ -48,10 +48,6 @@ class UserController {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
     const comparePassword = bcrypt.compareSync(password, user.password);
-    //2281337
-    //$2b$05$hUsVaoRJOob66yUBwQNWQeBYvPu3uUO6fG9AWaHnLIstMHGRgK9Hq
-    //$2b$05$6ig4eBhFMIUC1HeXeDUHyOWy2JFCEPWXEN7BDebCrXYeYjDDpvHAG
-    //$2b$05$le2eVM2eouCVFu.kWJV.A.MLgDLxlgjLa4kYJjXzyij.SNnVb3PMC
     if (!comparePassword) {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
