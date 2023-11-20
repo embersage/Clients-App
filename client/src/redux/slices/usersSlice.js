@@ -8,7 +8,7 @@ const initialState = {
 
 export const getUsers = createAsyncThunk('users/getUsers', async () => {
   const data = await fetchUsers();
-  return data.rows;
+  return data;
 });
 
 export const usersSlice = createSlice({

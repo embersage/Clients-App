@@ -15,8 +15,8 @@ const UserRow = (props) => {
     temporary,
     date_last_login,
     email_status,
-    id_role,
-    id_company,
+    role,
+    company,
   } = props;
 
   return (
@@ -34,8 +34,8 @@ const UserRow = (props) => {
       <td>{temporary ? 'Да' : 'Нет'}</td>
       <td>{date_last_login}</td>
       <td>{email_status}</td>
-      <td>{id_role}</td>
-      <td>{id_company}</td>
+      <td>{role}</td>
+      <td>{company}</td>
     </tr>
   );
 };
