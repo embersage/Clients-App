@@ -1,7 +1,4 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Nunito', sans-serif;
-}
+@import '../../scss/reset.scss', '../../scss/variables.scss';
 
 @keyframes spin {
   0% {

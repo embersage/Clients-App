@@ -1,18 +1,14 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Nunito', sans-serif;
-}
+@import '../../scss/reset.scss', '../../scss/variables.scss';
 
 .usersTable {
-  width: 600px;
-  max-height: 800px;
-  padding: 20px;
-  background-color: #fff5;
+  margin: 245px 0 0 250px;
+  width: $users-width;
+  height: 800px;
+  position: fixed;
   box-shadow: 0px 5px 25px #0002;
   border-radius: 25px;
-  overflow: auto;
+  padding: 20px;
 
-  th,
   td {
     padding: 10px;
   }

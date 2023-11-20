@@ -1,6 +1,10 @@
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import styles from './UserRow.module.scss';
+import { useState } from 'react';
 
 const UserRow = (props) => {
+  const [visible, setVisible] = useState(false);
+
   const {
     id,
     name,
@@ -19,23 +23,34 @@ const UserRow = (props) => {
     company,
   } = props;
 
+  const dateReg = new Date(date_reg);
+  const dateLastLogin = new Date(date_last_login);
+
   return (
     <tr className={styles.userRow}>
-      <td>{id}</td>
-      <td>{name}</td>
-      <td>{email}</td>
-      <td>{password}</td>
-      <td>{activate ? 'Да' : 'Нет'}</td>
-      <td>{activate_code}</td>
-      <td>{date_reg}</td>
-      <td>{phone}</td>
-      <td>{vk}</td>
-      <td>{yandex}</td>
-      <td>{temporary ? 'Да' : 'Нет'}</td>
-      <td>{date_last_login}</td>
-      <td>{email_status}</td>
-      <td>{role}</td>
-      <td>{company}</td>
+      <td data-title="id">{id}</td>
+      <td data-title="Имя">{name}</td>
+      <td data-title="Email">{email}</td>
+      <td data-title="Пароль" className={styles.password}>
+        <FaRegEyeSlash
+          size={30}
+          className={styles.passwordIcon}
+          onClick={(event) => {
+            setVisible(!false);
+          }}
+        />
+      </td>
+      <td data-title="Активирован">{activate ? 'Да' : 'Нет'}</td>
+      <td data-title="Код активации">{activate_code}</td>
+      <td data-title="Дата регистрации">{`${dateReg.getUTCDay()}.${dateReg.getUTCMonth()}.${dateReg.getUTCFullYear()}`}</td>
+      <td data-title="Номер телефона">{phone}</td>
+      <td data-title="VK">{vk}</td>
+      <td data-title="Yandex">{yandex}</td>
+      <td data-title="Временный">{temporary ? 'Да' : 'Нет'}</td>
+      <td data-title="Последняя активность">{`${dateLastLogin.getUTCDay()}.${dateLastLogin.getUTCMonth()}.${dateLastLogin.getUTCFullYear()}`}</td>
+      <td data-title="Email статус">{email_status}</td>
+      <td data-title="Роль">{role}</td>
+      <td data-title="Компания">{company}</td>
     </tr>
   );
 };

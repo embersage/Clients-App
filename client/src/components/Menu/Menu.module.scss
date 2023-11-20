@@ -1,13 +1,10 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Nunito', sans-serif;
-}
+@import '../../scss/reset.scss', '../../scss/variables.scss';
 
 .menu {
+  padding: 15px;
   width: 225px;
   position: fixed;
   height: 100%;
-  padding: 15px;
   color: #ababab;
   font-size: 16px;
   font-weight: 400;
@@ -28,14 +25,13 @@
 
     .page {
       padding: 10px;
-      width: 145px;
-      height: 50px;
+      width: 150px;
+      height: 52px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       justify-items: center;
       align-items: center;
       column-gap: 10px;
-      text-align: justify;
       transition: border 0.3s ease-in-out, color 0.3s ease-in-out,
         fill 10s ease-in-out;
       border: 1px solid transparent;
@@ -49,12 +45,18 @@
       }
 
       &:hover {
-        border-color: #e1e8ff;
-        color: rgba(0, 60, 255, 0.5);
-        svg {
-          fill: rgba(225, 232, 255, 0.5);
+        &:not(._active) {
+          border-color: #e1e8ff;
+          color: rgba(0, 60, 255, 0.5);
+          svg {
+            fill: rgba(225, 232, 255, 0.5);
+          }
         }
       }
+    }
+
+    span {
+      width: 85px;
     }
 
     ._active {
