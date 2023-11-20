@@ -21,37 +21,39 @@ const Users = () => {
   return (
     <>
       <Menu />
-      <Header />
-      {status === 'succeeded' ? (
-        <table className={styles.usersTable}>
-          <thead>
-            <tr className={styles.userHeader}>
-              <th>id</th>
-              <th>Имя</th>
-              <th>Email</th>
-              <th>Пароль</th>
-              <th>Активирован</th>
-              <th>Код активации</th>
-              <th>Дата регистрации</th>
-              <th>Номер телефона</th>
-              <th>VK</th>
-              <th>Yandex</th>
-              <th>Временный</th>
-              <th>Последняя активность</th>
-              <th>Email статус</th>
-              <th>Роль</th>
-              <th>Компания</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((item) => (
-              <UserRow key={item.id} {...item} />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Загрузка</p>
-      )}
+      <div className={styles.wrapper}>
+        <Header />
+        {status === 'succeeded' ? (
+          <table className={styles.usersTable}>
+            <thead>
+              <tr className={styles.userHeader}>
+                <th>id</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Пароль</th>
+                <th>Активирован</th>
+                <th>Код активации</th>
+                <th>Дата регистрации</th>
+                <th>Номер телефона</th>
+                <th>VK</th>
+                <th>Yandex</th>
+                <th>Временный</th>
+                <th>Последняя активность</th>
+                <th>Email статус</th>
+                <th>Роль</th>
+                <th>Компания</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((item) => (
+                <UserRow key={item.id} {...item} />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>Загрузка</p>
+        )}
+      </div>
     </>
   );
 };

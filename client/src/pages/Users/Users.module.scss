@@ -1,15 +1,36 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss';
 
-.usersTable {
-  margin: 245px 0 0 250px;
-  width: $users-width;
-  height: 800px;
-  position: fixed;
-  box-shadow: 0px 5px 25px #0002;
-  border-radius: 25px;
-  padding: 20px;
+//.usersTable {
+//  margin: 205px 0 0 250px;
+//  width: $users-width;
+//  height: 800px;
+//  position: fixed;
+//  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
+//  border-radius: 25px;
+//  padding: 20px;
+//
+//  td {
+//    padding: 10px;
+//  }
+//}
 
-  td {
-    padding: 10px;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  row-gap: 30px;
+
+
+  .usersTable {
+    box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 25px;
+    padding: 20px;
+    width: calc(100% - 50px);
+    td {
+      padding: 10px;
+    }
   }
 }
