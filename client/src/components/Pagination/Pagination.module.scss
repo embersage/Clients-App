@@ -1,0 +1,41 @@
+@import '../../scss/reset.scss', '../../scss/variables.scss';
+
+:global() {
+  .pages {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ababab;
+    column-gap: 20px;
+
+    li {
+      a {
+        width: 40px;
+        height: 40px;
+        padding: 5px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      &:hover {
+        a {
+          border-color: #e1e8ff;
+          color: rgba(0, 60, 255, 0.5);
+        }
+      }
+    }
+  }
+
+  :global {
+    .selected {
+      a {
+        color: rgba(0, 60, 255, 1);
+        background-color: rgba(225, 232, 255, 1);
+      }
+    }
+  }
+}

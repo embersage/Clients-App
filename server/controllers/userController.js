@@ -46,7 +46,7 @@ class UserController {
 
     if (name) {
       users = await UserAccount.findAndCountAll({
-        where: { name: { [Op.iLike]: `${name}%` } },
+        where: { name: { [Op.iLike]: `%${name}%` } },
         include: [
           {
             model: Role,
@@ -65,29 +65,6 @@ class UserController {
         raw: true,
       });
     }
-
-    users = users.rows.map((item) => {
-      const role = item['role.name'];
-      const company = item['company.name'];
-
-      return {
-        id: item.id,
-        name: item.name,
-        email: item.email,
-        password: item.password,
-        activate: item.activate,
-        activate_code: item.activate_code,
-        date_reg: item.date_reg,
-        phone: item.phone,
-        vk: item.vk,
-        yandex: item.yandex,
-        temporary: item.temporary,
-        date_last_login: item.date_last_login,
-        email_status: item.email_status,
-        role,
-        company,
-      };
-    });
 
     return res.json(users);
   }
@@ -113,26 +90,7 @@ class UserController {
       raw: true,
     });
 
-    const role = user['role.name'];
-    const company = user['company.name'];
-
-    return res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      activate: user.activate,
-      activate_code: user.activate_code,
-      date_reg: user.date_reg,
-      phone: user.phone,
-      vk: user.vk,
-      yandex: user.yandex,
-      temporary: user.temporary,
-      date_last_login: user.date_last_login,
-      email_status: user.email_status,
-      role,
-      company,
-    });
+    return res.json(user);
   }
 
   async update(req, res) {

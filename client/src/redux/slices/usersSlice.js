@@ -6,9 +6,13 @@ const initialState = {
   status: 'loading',
 };
 
-export const getUsers = createAsyncThunk('users/getUsers', async () => {
-  const data = await fetchUsers();
-  return data;
+export const getUsers = createAsyncThunk('users/getUsers', async (name) => {
+  if (!name) {
+    const data = await fetchUsers();
+    return data.rows;
+  }
+  const data = await fetchUsers(name);
+  return data.rows;
 });
 
 export const usersSlice = createSlice({

@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 const UserRow = (props) => {
   const [visible, setVisible] = useState(false);
-
   const {
     id,
     name,
@@ -19,9 +18,9 @@ const UserRow = (props) => {
     temporary,
     date_last_login,
     email_status,
-    role,
-    company,
   } = props;
+  const role = props['role.name'];
+  const company = props['company.name'];
 
   const dateReg = new Date(date_reg);
   const dateLastLogin = new Date(date_last_login);
@@ -35,7 +34,7 @@ const UserRow = (props) => {
         <FaRegEyeSlash
           size={30}
           className={styles.passwordIcon}
-          onClick={(event) => {
+          onClick={() => {
             setVisible(!false);
           }}
         />
