@@ -1,10 +1,8 @@
 import { $authHost } from './index';
 
-export const fetchUsers = async (name) => {
-  if (!name) {
-    const { data } = await $authHost.get('api/user');
-    return data;
-  }
-  const { data } = await $authHost.get(`api/user?name=${name}`);
+export const fetchUsers = async (name, limit = 10, page = 1) => {
+  const { data } = await $authHost.get('api/user', {
+    params: { name, limit, page },
+  });
   return data;
 };

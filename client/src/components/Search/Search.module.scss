@@ -33,7 +33,7 @@ label {
     opacity: 0.5;
     font-size: 20px;
     font-weight: 400;
-    transition: width 0.5s ease-in-out;
+    transition: width 0.6s ease-in-out;
 
     position: relative;
 
@@ -48,7 +48,6 @@ label {
     position: absolute;
     top: 19px;
     left: 15px;
-    animation: spin 0.5s ease-in-out 1;
   }
 
   .cross {

@@ -1,18 +1,28 @@
 import ReactPaginate from 'react-paginate';
-import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
+import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import styles from './Pagination.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPage } from '../../redux/slices/usersSlice';
 
 const Pagination = () => {
+  const page = useSelector((state) => state.users.page);
+  const dispatch = useDispatch();
+  const totalCount = useSelector((state) => state.users.totalCount);
+  const limit = useSelector((state) => state.users.limit);
+  const pageCount = Math.ceil(totalCount / limit);
+
   return (
     <ReactPaginate
-    className={styles.pages}
+      className={styles.pages}
       breakLabel="..."
       nextLabel={<AiOutlineDoubleRight />}
-      onPageChange={console.log(1)}
       pageRangeDisplayed={3}
-      pageCount={10}
+      pageCount={pageCount}
       previousLabel={<AiOutlineDoubleLeft />}
-      renderOnZeroPageCount={null}
+      onPageChange={(event) => {
+        dispatch(setPage(event.selected + 1));
+      }}
+      forcePage={page - 1}
     />
   );
 };

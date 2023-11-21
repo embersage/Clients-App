@@ -9,16 +9,18 @@ import Pagination from '../../components/Pagination';
 
 const Users = () => {
   const users = useSelector((state) => state.users.items);
+  const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUsers = async () => {
-      await dispatch(getUsers(search));
+      await dispatch(getUsers({ name: search, limit: 10, page }));
     };
+
     fetchUsers();
-  }, [search]);
+  }, [search, page]);
 
   return (
     <>
