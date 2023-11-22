@@ -39,19 +39,16 @@ export const usersSlice = createSlice({
       state.status = 'loading';
       state.items = [];
       state.totalCount = 0;
-      state.page = 1;
     },
     [getUsers.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       state.items = action.payload.rows;
       state.totalCount = action.payload.count;
-      state.page = 1;
     },
     [getUsers.rejected]: (state) => {
       state.status = 'error';
       state.items = [];
       state.totalCount = 0;
-      state.page = 1;
     },
   },
 });

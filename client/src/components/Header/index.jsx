@@ -18,33 +18,31 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.content}>
-        {isOpened ? (
-          <FiChevronLeft
-            size={50}
-            className={styles.menuButton}
-            onClick={() => {
-              dispatch(setIsOpened(!isOpened));
-            }}
-          />
-        ) : (
-          <FiChevronRight
-            size={50}
-            className={styles.menuButton}
-            onClick={() => {
-              dispatch(setIsOpened(!isOpened));
-            }}
-          />
-        )}
-        <Search />
-        <p className={styles.time}>
-          <span>{`${time.getHours()}:${time.getMinutes()}`}</span>
-          <br />
-          <span>{`${time.getDate()}.${
-            time.getMonth() + 1
-          }.${time.getFullYear()}`}</span>
-        </p>
-      </div>
+      {isOpened ? (
+        <FiChevronLeft
+          size={50}
+          className={styles.menuButton}
+          onClick={() => {
+            dispatch(setIsOpened(!isOpened));
+          }}
+        />
+      ) : (
+        <FiChevronRight
+          size={50}
+          className={styles.menuButton}
+          onClick={() => {
+            dispatch(setIsOpened(!isOpened));
+          }}
+        />
+      )}
+      <Search />
+      <p className={styles.time}>
+        <span>{`${time.getHours()}:${time.getMinutes()}`}</span>
+        <br />
+        <span>{`${time.getDate()}.${
+          time.getMonth() + 1
+        }.${time.getFullYear()}`}</span>
+      </p>
     </header>
   );
 };
