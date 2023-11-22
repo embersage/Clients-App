@@ -5,7 +5,7 @@ import UserRow from '../../components/UserRow';
 import styles from './Users.module.scss';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
-import Pagination from '../../components/Pagination';
+import Table from '../../components/Table';
 
 const Users = () => {
   const users = useSelector((state) => state.users.items);
@@ -29,33 +29,29 @@ const Users = () => {
         <Header />
         {status === 'succeeded' ? (
           <>
-            <table className={styles.usersTable}>
-              <thead>
-                <tr className={styles.userHeader}>
-                  <th>id</th>
-                  <th>Имя</th>
-                  <th>Email</th>
-                  <th>Пароль</th>
-                  <th>Активирован</th>
-                  <th>Код активации</th>
-                  <th>Дата регистрации</th>
-                  <th>Номер телефона</th>
-                  <th>VK</th>
-                  <th>Yandex</th>
-                  <th>Временный</th>
-                  <th>Последняя активность</th>
-                  <th>Email статус</th>
-                  <th>Роль</th>
-                  <th>Компания</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((item) => (
-                  <UserRow key={item.id} {...item} />
-                ))}
-              </tbody>
-            </table>
-            <Pagination />
+            <Table
+              headers={[
+                'id',
+                'Имя',
+                'Email',
+                'Пароль',
+                'Активирован',
+                'Код активации',
+                'Дата регистрации',
+                'Номер телефона',
+                'VK',
+                'Yandex',
+                'Временный',
+                'Последняя активность',
+                'Email статус',
+                'Роль',
+                'Компания',
+              ]}
+            >
+              {users.map((item) => (
+                <UserRow key={item.id} {...item} />
+              ))}
+            </Table>
           </>
         ) : (
           <p>Загрузка</p>

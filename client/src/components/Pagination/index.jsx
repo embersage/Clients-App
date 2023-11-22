@@ -23,7 +23,6 @@ const Pagination = () => {
         dispatch(setPage(event.selected + 1));
       }}
       forcePage={page - 1}
-      renderOnZeroPageCount={null}
     />
   );
 };

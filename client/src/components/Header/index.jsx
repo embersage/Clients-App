@@ -4,6 +4,7 @@ import { setIsOpened } from '../../redux/slices/menuSlice';
 import Search from '../../components/Search';
 import styles from './Header.module.scss';
 import { useEffect, useState } from 'react';
+import Pagination from '../Pagination';
 
 const Header = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -36,13 +37,8 @@ const Header = () => {
         />
       )}
       <Search />
-      <p className={styles.time}>
-        <span>{`${time.getHours()}:${time.getMinutes()}`}</span>
-        <br />
-        <span>{`${time.getDate()}.${
-          time.getMonth() + 1
-        }.${time.getFullYear()}`}</span>
-      </p>
+      <Pagination/>
+      
     </header>
   );
 };
