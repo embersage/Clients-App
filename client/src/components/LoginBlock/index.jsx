@@ -18,20 +18,6 @@ const AuthorizationBlock = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  //const signIn = async (email, password) => {
-  //  try {
-  //    const data = await login(email, password);
-  //    if (data.id_role !== 1) {
-  //      dispatch(setUser(data));
-  //      dispatch(setIsAuth(true));
-  //      navigate(USERS_ROUTE);
-  //    }
-  //  } catch (error) {
-  //    setValid(false);
-  //    console.log(error.message);
-  //  }
-  //};
-
   const login = async (email, password) => {
     await dispatch(signIn({ email, password }));
     if (user.status === 'succeeded') {

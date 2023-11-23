@@ -10,7 +10,7 @@ const authMiddleware = (req, res, next) => {
       return res.status(401).json({ message: 'Пользователь не авторизован.' });
     }
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-    req.token = decodedToken;
+    req.user = decodedToken;
     next();
   } catch (error) {
     res.status(401).json({ message: 'Пользователь не авторизован.' });

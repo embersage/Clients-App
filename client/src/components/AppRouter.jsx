@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { authRoutes, publicRoutes } from '../routes';
 
 const AppRouter = () => {
+  
+
   return (
     <Routes>
       {publicRoutes.map(({ path, element }) => (

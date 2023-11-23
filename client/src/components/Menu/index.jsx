@@ -69,6 +69,7 @@ const Menu = () => {
             onClick={() => {
               dispatch(setUser({}));
               dispatch(setIsAuth(false));
+              localStorage.clear();
             }}
           >
             <li
