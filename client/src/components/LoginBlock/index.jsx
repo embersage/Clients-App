@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
-import { login } from '../../http/userApi';
-import { setIsAuth, setUser, signIn } from '../../redux/slices/userSlice';
-import { HOME_ROUTE, USERS_ROUTE } from '../../utils/consts';
+import { signIn } from '../../redux/slices/userSlice';
+import { HOME_ROUTE } from '../../utils/consts';
 import styles from './LoginBlock.module.scss';
 
 const AuthorizationBlock = () => {
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -33,10 +33,11 @@ const AuthorizationBlock = () => {
   //};
 
   const login = async (email, password) => {
-    const data = await dispatch(signIn({ email, password }));
-    console.log(data.payload);
-    if (data.payload) {
+    await dispatch(signIn({ email, password }));
+    if (user.status === 'succeeded') {
       navigate(HOME_ROUTE);
+    } else {
+      setValid(false);
     }
   };
 

@@ -33,15 +33,9 @@ export const userSlice = createSlice({
       state.status = 'loading';
     },
     [signIn.fulfilled]: (state, action) => {
-      if (action.payload.id_role !== 1) {
-        state.isAuth = true;
-        state.user = action.payload;
-        state.status = 'succeeded';
-      } else {
-        state.isAuth = false;
-        state.user = {};
-        state.status = 'rejected';
-      }
+      state.isAuth = true;
+      state.user = action.payload;
+      state.status = 'succeeded';
     },
     [signIn.rejected]: (state) => {
       state.isAuth = false;

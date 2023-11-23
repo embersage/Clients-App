@@ -52,9 +52,6 @@ class UserController {
             email: { [Op.iLike]: `%${name}%` },
           },
         },
-        //where: {
-        //  name: { [Op.iLike]: `%${name}%` },
-        //},
         include: [
           {
             model: Role,
@@ -153,8 +150,11 @@ class UserController {
     if (!comparePassword) {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
-    const token = generateJwt(user.id, user.email, user.id_role);
-    return res.json({ token });
+    if (user.id_role !== 1) {
+      const token = generateJwt(user.id, user.email, user.id_role);
+      return res.json({ token });
+    }
+    return res.json(null);
   }
 }
 
