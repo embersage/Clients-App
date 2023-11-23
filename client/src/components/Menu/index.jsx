@@ -4,11 +4,13 @@ import { CiLogout } from 'react-icons/ci';
 import { GoPeople } from 'react-icons/go';
 import { LiaRubleSignSolid } from 'react-icons/lia';
 import styles from './Menu.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsAuth, setUser } from '../../redux/slices/userSlice';
 
 const Menu = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
   const location = useLocation();
+  const dispatch = useDispatch();
 
   if (isOpened) {
     return (
@@ -62,7 +64,13 @@ const Menu = () => {
               <span>Операции</span>
             </li>
           </Link>
-          <Link to="/login">
+          <Link
+            to="/login"
+            onClick={() => {
+              dispatch(setUser({}));
+              dispatch(setIsAuth(false));
+            }}
+          >
             <li
               className={
                 location.pathname === '/login'

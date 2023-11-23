@@ -46,7 +46,15 @@ class UserController {
 
     if (name) {
       users = await UserAccount.findAndCountAll({
-        where: { name: { [Op.iLike]: `%${name}%` } },
+        where: {
+          [Op.or]: {
+            name: { [Op.iLike]: `%${name}%` },
+            email: { [Op.iLike]: `%${name}%` },
+          },
+        },
+        //where: {
+        //  name: { [Op.iLike]: `%${name}%` },
+        //},
         include: [
           {
             model: Role,

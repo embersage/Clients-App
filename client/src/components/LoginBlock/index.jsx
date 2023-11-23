@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { login } from '../../http/userApi';
-import { setIsAuth, setUser } from '../../redux/slices/userSlice';
-import { USERS_ROUTE } from '../../utils/consts';
+import { setIsAuth, setUser, signIn } from '../../redux/slices/userSlice';
+import { HOME_ROUTE, USERS_ROUTE } from '../../utils/consts';
 import styles from './LoginBlock.module.scss';
 
 const AuthorizationBlock = () => {
@@ -18,16 +18,25 @@ const AuthorizationBlock = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const signIn = async (email, password) => {
-    try {
-      const data = await login(email, password);
-      if (data.id_role !== 1) {
-        dispatch(setUser(data));
-        dispatch(setIsAuth(true));
-        navigate(USERS_ROUTE);
-      }
-    } catch (error) {
-      setValid(false);
+  //const signIn = async (email, password) => {
+  //  try {
+  //    const data = await login(email, password);
+  //    if (data.id_role !== 1) {
+  //      dispatch(setUser(data));
+  //      dispatch(setIsAuth(true));
+  //      navigate(USERS_ROUTE);
+  //    }
+  //  } catch (error) {
+  //    setValid(false);
+  //    console.log(error.message);
+  //  }
+  //};
+
+  const login = async (email, password) => {
+    const data = await dispatch(signIn({ email, password }));
+    console.log(data.payload);
+    if (data.payload) {
+      navigate(HOME_ROUTE);
     }
   };
 
@@ -132,7 +141,7 @@ const AuthorizationBlock = () => {
           type="submit"
           onClick={(event) => {
             event.preventDefault();
-            signIn(email, password);
+            login(email, password);
           }}
         >
           Войти
