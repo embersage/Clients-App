@@ -67,7 +67,7 @@ const InformationBlock = (props) => {
               }.${new Date(user.date_reg).getFullYear()}`
             : 'Нет данных'}
         </span>
-        <span>{user.spanhone ? user.spanhone : 'Нет данных'}</span>
+        <span>{user.phone ? user.phone : 'Нет данных'}</span>
         <span>{user.vk ? user.vk : 'Нет данных'}</span>
         <span>
           {user.yandex ? (
@@ -90,7 +90,7 @@ const InformationBlock = (props) => {
         <span>{user.email_status ? user.email_status : 'Нет данных'}</span>
         <span>{user['role.name'] ? user['role.name'] : 'Нет данных'}</span>
         <span>
-          {user['comspanany.name'] ? user['comspanany.name'] : 'Нет данных'}
+          {user['company.name'] ? user['company.name'] : 'Нет данных'}
         </span>
         <span>
           {user['access_level.name'] ? user['access_level.name'] : 'Нет данных'}
