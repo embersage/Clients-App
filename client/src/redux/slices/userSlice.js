@@ -26,22 +26,22 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
   },
-  extraReducers: {
-    [signIn.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(signIn.pending, (state) => {
       state.isAuth = false;
       state.user = {};
       state.status = 'loading';
-    },
-    [signIn.fulfilled]: (state, action) => {
+    });
+    builder.addCase(signIn.fulfilled, (state, action) => {
       state.isAuth = true;
       state.user = action.payload;
       state.status = 'succeeded';
-    },
-    [signIn.rejected]: (state) => {
+    });
+    builder.addCase(signIn.rejected, (state) => {
       state.isAuth = false;
       state.user = {};
       state.status = 'rejected';
-    },
+    });
   },
 });
 

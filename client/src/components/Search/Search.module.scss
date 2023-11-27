@@ -25,7 +25,7 @@ label {
 
   .search {
     padding: 17px 90px 18px 55px;
-    width: 300px;
+    width: 450px;
     height: 52px;
     border-radius: 15px;
     border: none;
@@ -33,13 +33,11 @@ label {
     opacity: 0.5;
     font-size: 20px;
     font-weight: 400;
-    transition: width 0.6s ease-in-out;
 
     position: relative;
 
     &:focus {
       outline: none;
-      width: 600px;
     }
   }
 

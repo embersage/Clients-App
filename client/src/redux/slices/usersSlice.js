@@ -34,22 +34,23 @@ export const usersSlice = createSlice({
       state.limit = action.payload;
     },
   },
-  extraReducers: {
-    [getUsers.pending]: (state) => {
-      state.status = 'loading';
-      state.items = [];
-      state.totalCount = 0;
-    },
-    [getUsers.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      state.items = action.payload.rows;
-      state.totalCount = action.payload.count;
-    },
-    [getUsers.rejected]: (state) => {
-      state.status = 'error';
-      state.items = [];
-      state.totalCount = 0;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state) => {
+        state.status = 'loading';
+        state.items = [];
+        state.totalCount = 0;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload.rows;
+        state.totalCount = action.payload.count;
+      })
+      .addCase(getUsers.rejected, (state) => {
+        state.status = 'error';
+        state.items = [];
+        state.totalCount = 0;
+      });
   },
 });
 

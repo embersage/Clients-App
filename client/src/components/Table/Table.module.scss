@@ -2,12 +2,27 @@
   box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
   border-radius: 25px;
   padding: 20px;
-
+  height: 100%;
   width: 100%;
   background-color: #fff;
+  border-spacing: 0;
+  border-collapse: separate;
+
   td {
     padding: 5px;
   }
+
   .tableHeader {
+    height: 40px;
+  }
+
+  &:last-child td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  &:last-child td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 }

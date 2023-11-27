@@ -1,20 +1,15 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss';
 
 .userRow {
+  transition: background-color 0.2s ease-in-out;
+
   td {
     word-wrap: break-word;
     text-align: center;
   }
 
-  .passwordIcon {
+  &:hover {
+    background: rgba(225, 232, 255, 1);
     cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-      background-color: rgba(222, 239, 255, 0.575);
-    }
   }
 }

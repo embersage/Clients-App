@@ -1,0 +1,39 @@
+@import '../../scss/reset.scss', '../../scss/variables.scss';
+
+.wrapper {
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+  background-color: #fff;
+  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    margin: 0;
+  }
+
+  .informationBlock {
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    .headings {
+      display: grid;
+      grid-template-rows: repeat(1, 1fr);
+      row-gap: 20px;
+      font-weight: 700;
+    }
+
+    .values {
+      display: grid;
+      grid-template-rows: repeat(1, 1fr);
+      row-gap: 20px;
+    }
+
+    .presentationsBlock {
+    }
+  }
+}

@@ -8,7 +8,7 @@ import { HOME_ROUTE } from '../../utils/consts';
 import styles from './LoginBlock.module.scss';
 
 const AuthorizationBlock = () => {
-  const user = useSelector((state) => state.user);
+  //const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -19,8 +19,8 @@ const AuthorizationBlock = () => {
   const passwordRef = useRef();
 
   const login = async (email, password) => {
-    await dispatch(signIn({ email, password }));
-    if (user.status === 'succeeded') {
+    const response = await dispatch(signIn({ email, password }));
+    if (response.payload) {
       navigate(HOME_ROUTE);
     } else {
       setValid(false);
@@ -139,5 +139,3 @@ const AuthorizationBlock = () => {
 };
 
 export default AuthorizationBlock;
-
-//qwerty@mail.ru 2281337

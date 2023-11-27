@@ -4,7 +4,7 @@ const Table = (props) => {
   const headers = props.headers;
 
   return (
-    <table className={styles.table}>
+    <table className={styles.table} cellSpacing={0} cellPadding={0}>
       <thead>
         <tr className={styles.tableHeader}>
           {headers.map((item, index) => (

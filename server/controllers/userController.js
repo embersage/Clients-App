@@ -1,18 +1,22 @@
 import { Op } from 'sequelize';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Company, Role, UserAccount } from '../models/models.js';
+import { AccessLevel, Role, Company, UserAccount } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
 
-const generateJwt = (id, email, id_role) => {
-  return jwt.sign({ id, email, id_role }, process.env.SECRET_KEY, {
+const generateJwt = (id, email, id_access_level) => {
+  return jwt.sign({ id, email, id_access_level }, process.env.SECRET_KEY, {
     expiresIn: '24h',
   });
 };
 
 class UserController {
   async check(req, res, next) {
-    const token = generateJwt(req.user.id, req.user.email, req.user.id_role);
+    const token = generateJwt(
+      req.user.id,
+      req.user.email,
+      req.user.id_access_level
+    );
     return res.json({ token });
   }
 
@@ -27,16 +31,16 @@ class UserController {
       users = await UserAccount.findAndCountAll({
         include: [
           {
-            model: Role,
+            model: Company,
             attributes: ['name'],
           },
           {
-            model: Company,
+            model: AccessLevel,
             attributes: ['name'],
           },
         ],
         attributes: {
-          exclude: ['id_role', 'id_company'],
+          exclude: ['id_company', 'id_access_level'],
         },
         limit,
         offset,
@@ -54,23 +58,22 @@ class UserController {
         },
         include: [
           {
-            model: Role,
+            model: Company,
             attributes: ['name'],
           },
           {
-            model: Company,
+            model: AccessLevel,
             attributes: ['name'],
           },
         ],
         attributes: {
-          exclude: ['id_role', 'id_company'],
+          exclude: ['id_company', 'id_access_level'],
         },
         limit,
         offset,
         raw: true,
       });
     }
-
     return res.json(users);
   }
 
@@ -88,9 +91,13 @@ class UserController {
           model: Company,
           attributes: ['name'],
         },
+        {
+          model: AccessLevel,
+          attributes: ['name'],
+        },
       ],
       attributes: {
-        exclude: ['id_role', 'id_company'],
+        exclude: ['id_company', 'id_role', 'id_access_level'],
       },
       raw: true,
     });
@@ -113,10 +120,9 @@ class UserController {
       temporary,
       date_last_login,
       email_status,
-      role,
       company,
+      access_level,
     } = req.body;
-
     const user = await UserAccount.update(
       {
         name,
@@ -131,8 +137,8 @@ class UserController {
         temporary,
         date_last_login,
         email_status,
-        role,
         company,
+        access_level,
       },
       { where: { id } }
     );
@@ -150,8 +156,8 @@ class UserController {
     if (!comparePassword) {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
-    if (user.id_role !== 1) {
-      const token = generateJwt(user.id, user.email, user.id_role);
+    if (user.id_access_level !== 1) {
+      const token = generateJwt(user.id, user.email, user.id_access_level);
       return res.json({ token });
     }
     return res.json(null);

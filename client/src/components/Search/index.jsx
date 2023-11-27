@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
 import { IoSearchOutline } from 'react-icons/io5';
@@ -7,6 +8,7 @@ import styles from './Search.module.scss';
 import debounce from 'lodash.debounce';
 
 const Search = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const [string, setString] = useState('');
@@ -34,7 +36,9 @@ const Search = () => {
       <IoSearchOutline className={styles.searchIcon} size={30} />
       <input
         ref={inputRef}
-        placeholder="Найти клиента..."
+        placeholder={
+          location.pathname.includes('/users') ? 'Найти клиента...' : ''
+        }
         type="text"
         value={string}
         className={styles.search}

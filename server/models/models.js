@@ -32,6 +32,11 @@ export const Role = sequelize.define('role', {
   name: { type: DataTypes.STRING },
 });
 
+export const AccessLevel = sequelize.define('access_level', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING },
+});
+
 export const RefreshToken = sequelize.define('refresh_token', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   token: { type: DataTypes.STRING },
@@ -66,7 +71,7 @@ export const PaymentInfo = sequelize.define('payment_info', {
   date_start: { type: DataTypes.DATE },
   date_end: { type: DataTypes.DATE },
   amount: { type: DataTypes.INTEGER },
-  payment_number: { type: DataTypes.STRING },
+  payment_number: { type: DataTypes.INTEGER },
 });
 
 export const PaymentStatus = sequelize.define('ckassa_payment_status', {
@@ -86,7 +91,7 @@ export const Tariff = sequelize.define('tariff', {
   name: { type: DataTypes.STRING },
   description: { type: DataTypes.STRING },
   amount: { type: DataTypes.INTEGER },
-  duration: { type: DataTypes.INTEGER },
+  duration: { type: DataTypes.STRING },
 });
 
 export const TariffDescription = sequelize.define('tariff_description', {
@@ -121,12 +126,23 @@ export const Promocode = sequelize.define('promocode', {
   date_end: { type: DataTypes.DATE },
 });
 
-UserAccount.hasOne(UserConfig, { foreignKey: 'id_user_account' });
+export const Notification = sequelize.define('notification', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING },
+  description: { type: DataTypes.STRING },
+  priority: { type: DataTypes.STRING },
+  date_start: { type: DataTypes.DATE },
+  date_end: { type: DataTypes.DATE },
+});
 
+UserAccount.hasOne(UserConfig, { foreignKey: 'id_user_account' });
 UserConfig.belongsTo(UserAccount, { foreignKey: 'id_user_account' });
 
 Role.hasMany(UserAccount, { foreignKey: 'id_role' });
 UserAccount.belongsTo(Role, { foreignKey: 'id_role' });
+
+AccessLevel.hasMany(UserAccount, { foreignKey: 'id_access_level' });
+UserAccount.belongsTo(AccessLevel, { foreignKey: 'id_access_level' });
 
 UserAccount.hasMany(RefreshToken, { foreignKey: 'id_user_account' });
 RefreshToken.belongsTo(UserAccount, { foreignKey: 'id_user_account' });
