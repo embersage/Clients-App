@@ -8,7 +8,6 @@ const UserRow = (props) => {
     name,
     email,
     activate,
-    activate_code,
     date_reg,
     phone,
     vk,
@@ -33,7 +32,6 @@ const UserRow = (props) => {
       <td data-title="Имя">{name}</td>
       <td data-title="Email">{email}</td>
       <td data-title="Активирован">{activate ? 'Да' : 'Нет'}</td>
-      <td data-title="Код активации">{activate_code}</td>
       <td data-title="Дата регистрации">{`${dateReg.getUTCDay()}.${dateReg.getUTCMonth()}.${dateReg.getUTCFullYear()}`}</td>
       <td data-title="Номер телефона">{phone}</td>
       <td data-title="VK">{vk ? 'Да' : 'Нет'}</td>

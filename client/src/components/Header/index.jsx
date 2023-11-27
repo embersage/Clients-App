@@ -32,6 +32,12 @@ const Header = () => {
       )}
       {location.pathname.includes('/users') && <Search />}
       {location.pathname.includes('/users') && <Pagination />}
+      {location.pathname.includes('/user/') && (
+        <div className={styles.buttons}>
+          <button className={styles.changeButton}>Изменить</button>
+          <button className={styles.deleteButton}>Удалить</button>
+        </div>
+      )}
     </header>
   );
 };

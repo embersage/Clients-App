@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BsArrowClockwise } from 'react-icons/bs';
 import { getUsers } from '../../redux/slices/usersSlice';
 import UserRow from '../../components/UserRow';
 import styles from './Users.module.scss';
@@ -35,7 +36,6 @@ const Users = () => {
                 'Имя',
                 'Email',
                 'Активирован',
-                'Код активации',
                 'Дата регистрации',
                 'Номер телефона',
                 'VK',
@@ -52,7 +52,9 @@ const Users = () => {
             </Table>
           </>
         ) : (
-          <p>Загрузка</p>
+          <div className={styles.loadingBanner}>
+            <BsArrowClockwise className={styles.loadingIcon} size={75} />
+          </div>
         )}
       </div>
     </>

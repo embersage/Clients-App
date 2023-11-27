@@ -6,32 +6,44 @@ import { check } from '../http/userApi';
 import { setUser, setIsAuth } from '../redux/slices/userSlice';
 
 const AppRouter = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
-  const dispatch = useDispatch();
+  //const isAuth = useSelector((state) => state.user.isAuth);
+  //const dispatch = useDispatch();
+  //
+  //useEffect(() => {
+  //  const verify = async () => {
+  //    try {
+  //      await check();
+  //      dispatch(setIsAuth(true));
+  //      dispatch(setUser(true));
+  //    } catch (error) {
+  //      console.log(error.message);
+  //    }
+  //  };
+  //
+  //  verify();
+  //}, []);
 
-  useEffect(() => {
-    const verify = async () => {
-      try {
-        await check();
-        dispatch(setIsAuth(true));
-        dispatch(setUser(true));
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    verify();
-  }, []);
+  //return (
+  //  <Routes>
+  //    {publicRoutes.map(({ path, element }) => (
+  //      <Route key={path} path={path} element={element} />
+  //    ))}
+  //    {isAuth &&
+  //      authRoutes.map(({ path, element }) => (
+  //        <Route key={path} path={path} element={element} />
+  //      ))}
+  //    <Route path="*" element={<Navigate to="/login" />} />
+  //  </Routes>
+  //);
 
   return (
     <Routes>
       {publicRoutes.map(({ path, element }) => (
         <Route key={path} path={path} element={element} />
       ))}
-      {isAuth &&
-        authRoutes.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
+      {authRoutes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

@@ -1,39 +1,30 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss';
 
-.wrapper {
-  padding: 20px;
-  height: 100%;
-  width: 100%;
-  border-radius: 25px;
-  background-color: #fff;
-  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.informationBlock {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
 
-  p {
-    margin: 0;
+  .headings {
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+    row-gap: 15px;
+    font-weight: 700;
   }
 
-  .informationBlock {
-    width: 50%;
+  .values {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    row-gap: 15px;
 
-    .headings {
-      display: grid;
-      grid-template-rows: repeat(1, 1fr);
-      row-gap: 20px;
-      font-weight: 700;
-    }
+    .icon {
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
 
-    .values {
-      display: grid;
-      grid-template-rows: repeat(1, 1fr);
-      row-gap: 20px;
-    }
-
-    .presentationsBlock {
+      &:hover {
+        background-color: rgba(222, 239, 255, 0.575);
+      }
     }
   }
 }
