@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { setIsOpened } from '../../redux/slices/menuSlice';
+import { setIsVisible } from '../../redux/slices/modalSlice';
 import Search from '../../components/Search';
 import Pagination from '../Pagination';
 import styles from './Header.module.scss';
@@ -32,9 +33,16 @@ const Header = () => {
       )}
       {location.pathname.includes('/users') && <Search />}
       {location.pathname.includes('/users') && <Pagination />}
-      {location.pathname.includes('/user/') && (
+      {location.pathname.includes('/user') && (
         <div className={styles.buttons}>
-          <button className={styles.changeButton}>Изменить</button>
+          <button
+            className={styles.changeButton}
+            onClick={() => {
+              dispatch(setIsVisible(true));
+            }}
+          >
+            Изменить
+          </button>
           <button className={styles.deleteButton}>Удалить</button>
         </div>
       )}

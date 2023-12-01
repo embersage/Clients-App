@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import InformationBlock from '../../components/InformationBlock';
 import PresentationBlock from '../../components/PresentationBlock';
 import { fetchUser } from '../../http/usersApi';
+import ModalWindow from '../../components/ModalWindow';
 import styles from './User.module.scss';
 
 const User = () => {
@@ -47,6 +48,7 @@ const User = () => {
           </div>
         </div>
       </div>
+      <ModalWindow {...user} />
     </>
   );
 };
