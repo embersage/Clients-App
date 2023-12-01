@@ -4,26 +4,6 @@ import cors from 'cors';
 import router from './routes/index.js';
 import errorHandler from './middleware/ErrorHandlingMiddleware.js';
 import sequelize from './db.js';
-import {
-  UserAccount,
-  UserConfig,
-  Role,
-  AccessLevel,
-  RefreshToken,
-  Company,
-  UserGroup,
-  GroupMember,
-  GroupAccount,
-  PaymentInfo,
-  PaymentStatus,
-  Currency,
-  Tariff,
-  TariffDescription,
-  FirstPay,
-  TariffPromocode,
-  Promocode,
-  Notification
-} from './models/models.js';
 
 config();
 
@@ -34,10 +14,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', router);
 app.use(errorHandler);
-
-app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Everything is working!' });
-});
 
 const start = async () => {
   try {

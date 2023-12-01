@@ -1,7 +1,14 @@
 import { Op } from 'sequelize';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { AccessLevel, Role, Company, UserAccount } from '../models/models.js';
+import {
+  AccessLevel,
+  Role,
+  Company,
+  UserAccount,
+  Presentation,
+  PresentationAccount,
+} from '../models/models.js';
 import ApiError from '../error/ApiError.js';
 
 const generateJwt = (id, email, id_access_level) => {
@@ -21,6 +28,7 @@ class UserController {
   }
 
   async getAll(req, res) {
+    const accountSchema = 'account';
     let { name, limit, page } = req.query;
     limit = limit || 10;
     page = page || 1;
@@ -45,6 +53,7 @@ class UserController {
         limit,
         offset,
         raw: true,
+        accountSchema,
       });
     }
 
@@ -72,12 +81,15 @@ class UserController {
         limit,
         offset,
         raw: true,
+        accountSchema,
       });
     }
     return res.json(users);
   }
 
   async getOne(req, res) {
+    const accountSchema = 'account';
+    const presentationSchema = 'presentation';
     const { id } = req.params;
 
     const user = await UserAccount.findOne({
@@ -100,12 +112,40 @@ class UserController {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
       raw: true,
+      accountSchema,
     });
 
-    return res.json(user);
+    const presentations_id = await PresentationAccount.findAll({
+      where: {
+        id_user_account: id,
+      },
+      attributes: ['id_presentation'],
+      presentationSchema,
+    });
+
+    const numbers = JSON.parse(JSON.stringify(presentations_id)).map((item) => {
+      return Object.values(item)[0];
+    });
+
+    const presentations_name = await Presentation.findAll({
+      where: {
+        id: numbers.map((item) => item),
+      },
+      attributes: ['name'],
+      presentationSchema,
+    });
+
+    const presentations = JSON.parse(JSON.stringify(presentations_name)).map(
+      (item) => {
+        return Object.values(item)[0];
+      }
+    );
+
+    return res.json({ ...user, presentations });
   }
 
   async update(req, res) {
+    const accountSchema = 'account';
     const { id } = req.params;
     const {
       name,
@@ -140,15 +180,16 @@ class UserController {
         company,
         access_level,
       },
-      { where: { id } }
+      { where: { id }, accountSchema }
     );
 
     return res.json(user);
   }
 
   async login(req, res, next) {
+    const accountSchema = 'account';
     const { email, password } = req.body;
-    const user = await UserAccount.findOne({ where: { email } });
+    const user = await UserAccount.findOne({ where: { email }, accountSchema });
     if (!user) {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
