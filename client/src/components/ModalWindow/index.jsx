@@ -44,8 +44,10 @@ const ModalWindow = (props) => {
           }}
         />
         <div className={styles.modalWindow} ref={modalRef}>
-          <form>
+          <form className={styles.content}>
+            <h2>Редактирование данных</h2>
             <label>
+              <span>Имя: </span>
               <input
                 value={data.name}
                 onChange={(event) => {
@@ -54,6 +56,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Email: </span>
               <input
                 value={data.email}
                 onChange={(event) => {
@@ -62,6 +65,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Пароль: </span>
               <input
                 value={data.password}
                 onChange={(event) => {
@@ -70,6 +74,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Номер телефона: </span>
               <input
                 value={data.number}
                 onChange={(event) => {
@@ -78,6 +83,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Роль: </span>
               <input
                 value={data.role}
                 onChange={(event) => {
@@ -86,6 +92,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Компания: </span>
               <input
                 value={data.company}
                 onChange={(event) => {
@@ -94,6 +101,7 @@ const ModalWindow = (props) => {
               />
             </label>
             <label>
+              <span>Уровень доступа: </span>
               <input
                 value={data.accessLevel}
                 onChange={(event) => {
@@ -107,7 +115,7 @@ const ModalWindow = (props) => {
                 event.preventDefault();
               }}
             >
-              Войти
+              Изменить
             </button>
           </form>
         </div>

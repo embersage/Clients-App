@@ -332,6 +332,17 @@ Tariff.belongsToMany(UserAccount, {
   schema: 'account',
 });
 
+UserAccount.hasMany(PaymentInfo, {
+  foreignKey: 'id_user_account',
+  schema: 'account',
+});
+PaymentInfo.belongsTo(UserAccount, {
+  foreignKey: 'id_user_account',
+  schema: 'account',
+});
+Tariff.hasMany(PaymentInfo, { foreignKey: 'id_tariff', schema: 'account' });
+PaymentInfo.belongsTo(Tariff, { foreignKey: 'id_tariff', schema: 'account' });
+
 PaymentStatus.hasMany(PaymentInfo, {
   foreignKey: 'id_ckassa_payment_status',
   schema: 'account',
@@ -375,6 +386,26 @@ Tariff.belongsTo(Currency, { foreignKey: 'id_currency', schema: 'account' });
 
 Company.hasMany(PaymentInfo, { foreignKey: 'id_company', schema: 'account' });
 PaymentInfo.belongsTo(Currency, {
+  foreignKey: 'id_company',
+  schema: 'account',
+});
+
+Company.belongsToMany(Tariff, {
+  through: PaymentInfo,
+  foreignKey: 'id_company',
+  schema: 'account',
+});
+Tariff.belongsToMany(Company, {
+  through: PaymentInfo,
+  foreignKey: 'id_tariff',
+  schema: 'account',
+});
+
+Company.hasMany(PaymentInfo, {
+  foreignKey: 'id_company',
+  schema: 'account',
+});
+PaymentInfo.belongsTo(Company, {
   foreignKey: 'id_company',
   schema: 'account',
 });
