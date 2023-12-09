@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { BiStats } from 'react-icons/bi';
 import { CiLogout } from 'react-icons/ci';
 import { GoPeople } from 'react-icons/go';
+import { SlEnvolopeLetter } from 'react-icons/sl';
 import { LiaRubleSignSolid } from 'react-icons/lia';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
@@ -32,6 +33,16 @@ const Menu = () => {
               >
                 <GoPeople size={30} color="rgba(171,171,171, 0.75)" />
                 <span>Клиенты</span>
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/mail">
+              <Button
+                isActive={location.pathname === '/mail' ? `true` : 'false'}
+              >
+                <SlEnvolopeLetter size={30} color="rgba(171,171,171, 0.75)" />
+                <span>Рассылка</span>
               </Button>
             </Link>
           </li>

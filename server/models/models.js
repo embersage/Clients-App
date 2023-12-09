@@ -363,6 +363,23 @@ Promocode.belongsToMany(Tariff, {
   schema: 'account',
 });
 
+Tariff.hasMany(TariffPromocode, {
+  foreignKey: 'id_tariff',
+  schema: 'account',
+});
+TariffPromocode.belongsTo(Tariff, {
+  foreignKey: 'id_tariff',
+  schema: 'account',
+});
+Promocode.hasMany(TariffPromocode, {
+  foreignKey: 'id_promocode',
+  schema: 'account',
+});
+TariffPromocode.belongsTo(Promocode, {
+  foreignKey: 'id_promocode',
+  schema: 'account',
+});
+
 Tariff.hasMany(FirstPay, { foreignKey: 'id_tariff', schema: 'account' });
 FirstPay.belongsTo(Tariff, { foreignKey: 'id_tariff', schema: 'account' });
 
@@ -448,6 +465,24 @@ UserAccount.belongsToMany(Presentation, {
   foreignKey: 'id_user_account',
   schema: 'presentation',
 });
+
+Presentation.hasMany(PresentationAccount, {
+  foreignKey: 'id_presentation',
+  schema: 'presentation',
+});
+PresentationAccount.belongsTo(Presentation, {
+  foreignKey: 'id_presentation',
+  schema: 'presentation',
+});
+UserAccount.hasMany(PresentationAccount, {
+  foreignKey: 'id_user_account',
+  schema: 'presentation',
+});
+PresentationAccount.belongsTo(UserAccount, {
+  foreignKey: 'id_user_account',
+  schema: 'presentation',
+});
+
 Presentation.belongsToMany(Role, {
   through: PresentationAccount,
   foreignKey: 'id_presentation',
@@ -455,6 +490,15 @@ Presentation.belongsToMany(Role, {
 });
 Role.belongsToMany(Presentation, {
   through: PresentationAccount,
+  foreignKey: 'id_user_role',
+  schema: 'presentation',
+});
+
+Role.hasMany(PresentationAccount, {
+  foreignKey: 'id_user_role',
+  schema: 'presentation',
+});
+PresentationAccount.belongsTo(Role, {
   foreignKey: 'id_user_role',
   schema: 'presentation',
 });

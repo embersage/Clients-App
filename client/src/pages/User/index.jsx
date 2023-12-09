@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import InformationBlock from '../../components/InformationBlock';
+import TariffBlock from '../../components/TariffBlock';
 import PresentationBlock from '../../components/PresentationBlock';
 import { fetchUser } from '../../http/usersApi';
 import ModalWindow from '../../components/ModalWindow';
@@ -35,16 +36,10 @@ const User = () => {
       <div className={styles.wrapper}>
         <Header />
         <div className={styles.content}>
-          <h1 className={styles.title}>Информация о пользователе</h1>
-          <div className={styles.blocks}>
-            <div className={styles.info}>
-              <h2 className={styles.subtitle}>Данные</h2>
-              <InformationBlock {...user} />
-            </div>
-            <div className={styles.presentations}>
-              <h2 className={styles.subtitle}>Презентации</h2>
-              <PresentationBlock presentations={user.presentations} />
-            </div>
+          <InformationBlock {...user} />
+          <div className={styles.additionalInfo}>
+            <TariffBlock />
+            <PresentationBlock presentations={user.presentations} />
           </div>
         </div>
       </div>

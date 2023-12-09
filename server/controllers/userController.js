@@ -8,6 +8,7 @@ import {
   UserAccount,
   Presentation,
   PresentationAccount,
+  Tariff,
 } from '../models/models.js';
 import ApiError from '../error/ApiError.js';
 
@@ -89,7 +90,6 @@ class UserController {
 
   async getOne(req, res) {
     const accountSchema = 'account';
-    const presentationSchema = 'presentation';
     const { id } = req.params;
 
     const user = await UserAccount.findOne({
@@ -107,41 +107,23 @@ class UserController {
           model: AccessLevel,
           attributes: ['name'],
         },
+        {
+          model: Tariff,
+          attributes: ['name'],
+        },
+        {
+          model: Presentation,
+          attributes: ['id', 'name', 'description'],
+        },
       ],
       attributes: {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
-      raw: true,
+      //raw: true,
       accountSchema,
     });
 
-    const presentations_id = await PresentationAccount.findAll({
-      where: {
-        id_user_account: id,
-      },
-      attributes: ['id_presentation'],
-      presentationSchema,
-    });
-
-    const numbers = JSON.parse(JSON.stringify(presentations_id)).map((item) => {
-      return Object.values(item)[0];
-    });
-
-    const presentations_name = await Presentation.findAll({
-      where: {
-        id: numbers.map((item) => item),
-      },
-      attributes: ['name'],
-      presentationSchema,
-    });
-
-    const presentations = JSON.parse(JSON.stringify(presentations_name)).map(
-      (item) => {
-        return Object.values(item)[0];
-      }
-    );
-
-    return res.json({ ...user, presentations });
+    return res.json(user);
   }
 
   async update(req, res) {

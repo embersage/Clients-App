@@ -7,9 +7,11 @@ import {
   HOME_ROUTE,
   USERS_ROUTE,
   USER_ROUTE,
+  MAIL_ROUTE,
   PAYMENTS_ROUTE,
   LOGIN_ROUTE,
 } from './utils/consts';
+import Mail from './pages/Mail';
 
 export const authRoutes = [
   {
@@ -23,6 +25,10 @@ export const authRoutes = [
   {
     path: USER_ROUTE,
     element: <User />,
+  },
+  {
+    path: MAIL_ROUTE,
+    element: <Mail />,
   },
   {
     path: PAYMENTS_ROUTE,
