@@ -2,21 +2,33 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getPayments } from '../../redux/slices/paymentsSlice';
-import UserRow from '../../components/UserRow';
 import styles from './Payments.module.scss';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
+import TableRow from '../../components/TableRow';
 
 const Payments = () => {
   const payments = useSelector((state) => state.payments.items);
   const page = useSelector((state) => state.payments.page);
   const status = useSelector((state) => state.payments.status);
   const dispatch = useDispatch();
+  const values = [
+    'id',
+    'date_start',
+    'date_end',
+    'amount',
+    'tariff.name',
+    'user_account.id',
+    'user_account.name',
+    'company.name',
+    'currency.name',
+    'ckassa_payment_status.name',
+  ];
 
   useEffect(() => {
     const fetchPayments = async () => {
-      await dispatch(getPayments({limit: 10, page }));
+      await dispatch(getPayments({ limit: 10, page }));
     };
     fetchPayments();
   }, [page]);
@@ -43,7 +55,9 @@ const Payments = () => {
               ]}
             >
               {payments.map((item) => (
-                <UserRow key={item.id} {...item} />
+                <TableRow key={item.id} values={values}>
+                  {item}
+                </TableRow>
               ))}
             </Table>
           </>
@@ -58,6 +72,3 @@ const Payments = () => {
 };
 
 export default Payments;
-
-
-

@@ -11,8 +11,8 @@ const initialState = {
 
 export const getPayments = createAsyncThunk(
   'payments/getPayments',
-  async ({ name, limit, page }) => {
-    const data = await fetchPayments(name, limit, page);
+  async ({ limit, page }) => {
+    const data = await fetchPayments(limit, page);
     return data;
   }
 );
@@ -24,7 +24,7 @@ export const paymentsSlice = createSlice({
     setPayments: (state, action) => {
       state.items = action.payload;
     },
-    setPage: (state, action) => {
+    setPaymentsPage: (state, action) => {
       state.page = action.payload;
     },
     setTotalCount: (state, action) => {
@@ -54,7 +54,7 @@ export const paymentsSlice = createSlice({
   },
 });
 
-export const { setPayments, setPage, setTotalCount, setLimit } =
+export const { setPayments, setPaymentsPage, setTotalCount, setLimit } =
   paymentsSlice.actions;
 
 export default paymentsSlice.reducer;

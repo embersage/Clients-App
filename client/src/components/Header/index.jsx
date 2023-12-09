@@ -35,7 +35,8 @@ const Header = () => {
         />
       )}
       {location.pathname.includes('/users') && <Search />}
-      {location.pathname.includes('/users') && <Pagination />}
+      {(location.pathname.includes('/users') ||
+        location.pathname.includes('/payments')) && <Pagination />}
       {location.pathname.includes('/user/') && (
         <div className={styles.buttons}>
           <Button

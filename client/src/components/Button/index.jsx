@@ -2,7 +2,14 @@ import styles from './Button.module.scss';
 
 const Button = (props) => {
   return (
-    <button className={styles.button} onClick={props.onClick}>
+    <button
+      className={
+        props.isActive === 'true'
+          ? `${styles.button} ${styles._active}`
+          : styles.button
+      }
+      onClick={props.onClick}
+    >
       {props.children}
     </button>
   );

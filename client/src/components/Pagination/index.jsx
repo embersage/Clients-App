@@ -2,13 +2,19 @@ import ReactPaginate from 'react-paginate';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import styles from './Pagination.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage } from '../../redux/slices/usersSlice';
+import { setUsersPage } from '../../redux/slices/usersSlice';
+import { setPaymentsPage } from '../../redux/slices/paymentsSlice';
+import { useLocation } from 'react-router-dom';
 
 const Pagination = () => {
   const dispatch = useDispatch();
-  const totalCount = useSelector((state) => state.users.totalCount);
-  const limit = useSelector((state) => state.users.limit);
-  const pageCount = Math.ceil(totalCount / limit);
+  const location = useLocation();
+  const usersTotalCount = useSelector((state) => state.users.totalCount);
+  const paymentsTotalCount = useSelector((state) => state.payments.totalCount);
+  const usersLimit = useSelector((state) => state.users.limit);
+  const paymentsLimit = useSelector((state) => state.payments.limit);
+  const usersPageCount = Math.ceil(usersTotalCount / usersLimit);
+  const paymentsPageCount = Math.ceil(paymentsTotalCount / paymentsLimit);
 
   return (
     <ReactPaginate
@@ -16,10 +22,16 @@ const Pagination = () => {
       breakLabel="..."
       nextLabel={<AiOutlineDoubleRight />}
       pageRangeDisplayed={3}
-      pageCount={pageCount}
+      pageCount={
+        location.pathname.includes('/users')
+          ? usersPageCount
+          : paymentsPageCount
+      }
       previousLabel={<AiOutlineDoubleLeft />}
       onPageChange={(event) => {
-        dispatch(setPage(event.selected + 1));
+        location.pathname.includes('/users')
+          ? dispatch(setUsersPage(event.selected + 1))
+          : dispatch(setPaymentsPage(event.selected + 1));
       }}
     />
   );

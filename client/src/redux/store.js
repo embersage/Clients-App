@@ -3,7 +3,7 @@ import menuReducer from './slices/menuSlice';
 import filterReducer from './slices/filterSlice';
 import userReducer from './slices/userSlice';
 import usersReducer from './slices/usersSlice';
-import paymentsReducer from './slices/usersSlice';
+import paymentsReducer from './slices/paymentsSlice';
 import modalReducer from './slices/modalSlice';
 
 export const store = configureStore({

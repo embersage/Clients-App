@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getUsers } from '../../redux/slices/usersSlice';
-import UserRow from '../../components/UserRow';
+import { useNavigate } from 'react-router-dom';
 import styles from './Users.module.scss';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
+import TableRow from '../../components/TableRow';
 
 const Users = () => {
   const users = useSelector((state) => state.users.items);
@@ -14,6 +15,21 @@ const Users = () => {
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const values = [
+    'id',
+    'name',
+    'email',
+    'activate',
+    'date_reg',
+    'phone',
+    'vk',
+    'yandex',
+    'temporary',
+    'date_last_login',
+    'company.name',
+    'access_level.name',
+  ];
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -47,7 +63,15 @@ const Users = () => {
               ]}
             >
               {users.map((item) => (
-                <UserRow key={item.id} {...item} />
+                <TableRow
+                  key={item.id}
+                  onClick={() => {
+                    navigate(`/user/${item.id}`);
+                  }}
+                  values={values}
+                >
+                  {item}
+                </TableRow>
               ))}
             </Table>
           </>

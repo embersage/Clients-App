@@ -3,9 +3,10 @@ import { BiStats } from 'react-icons/bi';
 import { CiLogout } from 'react-icons/ci';
 import { GoPeople } from 'react-icons/go';
 import { LiaRubleSignSolid } from 'react-icons/lia';
-import styles from './Menu.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
+import Button from '../Button';
+import styles from './Menu.module.scss';
 
 const Menu = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -16,77 +17,51 @@ const Menu = () => {
     return (
       <nav className={styles.menu}>
         <ul className={styles.pages}>
-          <Link to="/">
-            <li
-              className={
-                location.pathname === '/'
-                  ? `${styles._active} ${styles.page}`
-                  : styles.page
-              }
+          <li>
+            <Link to="/">
+              <Button isActive={location.pathname === '/' ? `true` : 'false'}>
+                <BiStats size={30} color="rgba(171,171,171, 0.75)" />
+                <span>Главная</span>
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/users">
+              <Button
+                isActive={location.pathname === '/users' ? `true` : 'false'}
+              >
+                <GoPeople size={30} color="rgba(171,171,171, 0.75)" />
+                <span>Клиенты</span>
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/payments">
+              <Button
+                isActive={location.pathname === '/payments' ? `true` : 'false'}
+              >
+                <LiaRubleSignSolid size={30} color="rgba(171,171,171, 0.75)" />
+                <span>Операции</span>
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/login"
+              onClick={() => {
+                dispatch(setUser({}));
+                dispatch(setIsAuth(false));
+                localStorage.clear();
+              }}
             >
-              <BiStats
-                size={30}
-                className={styles.icon}
-                color="rgba(171,171,171, 0.75)"
-              />
-              <span>Главная</span>
-            </li>
-          </Link>
-          <Link to="/users">
-            <li
-              className={
-                location.pathname === '/users'
-                  ? `${styles._active} ${styles.page}`
-                  : styles.page
-              }
-            >
-              <GoPeople
-                size={30}
-                className={styles.icon}
-                color="rgba(171,171,171, 0.75)"
-              />
-              <span>Клиенты</span>
-            </li>
-          </Link>
-          <Link to="/payments">
-            <li
-              className={
-                location.pathname === '/payments'
-                  ? `${styles._active} ${styles.page}`
-                  : styles.page
-              }
-            >
-              <LiaRubleSignSolid
-                size={30}
-                className={styles.icon}
-                color="rgba(171,171,171, 0.75)"
-              />
-              <span>Операции</span>
-            </li>
-          </Link>
-          <Link
-            to="/login"
-            onClick={() => {
-              dispatch(setUser({}));
-              dispatch(setIsAuth(false));
-              localStorage.clear();
-            }}
-          >
-            <li
-              className={
-                location.pathname === '/login'
-                  ? `${styles._active} ${styles.page}`
-                  : styles.page
-              }
-            >
-              <CiLogout
-                size={30}
-                className={styles.icon}
-                color="rgba(171,171,171, 0.75)"
-              />
-              <span>Выход</span>
-            </li>
-          </Link>
+              <Button
+                isActive={location.pathname === '/login' ? `true` : 'false'}
+              >
+                <CiLogout size={30} color="rgba(171,171,171, 0.75)" />
+                <span>Выход</span>
+              </Button>
+            </Link>
+          </li>
         </ul>
       </nav>
     );

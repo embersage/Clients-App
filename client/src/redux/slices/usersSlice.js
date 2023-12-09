@@ -24,7 +24,7 @@ export const usersSlice = createSlice({
     setUsers: (state, action) => {
       state.items = action.payload;
     },
-    setPage: (state, action) => {
+    setUsersPage: (state, action) => {
       state.page = action.payload;
     },
     setTotalCount: (state, action) => {
@@ -54,7 +54,7 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { setUsers, setPage, setTotalCount, setLimit } =
+export const { setUsers, setUsersPage, setTotalCount, setLimit } =
   usersSlice.actions;
 
 export default usersSlice.reducer;

@@ -17,22 +17,34 @@
   background-color: #fff;
   color: #ababab;
 
-  .icon {
+  svg {
     padding: 4px;
     margin: 0 auto 0 0;
     transition: fill 0.3s ease-in-out;
   }
 
   &:hover {
-    border-color: #e1e8ff;
-    color: rgba(0, 60, 255, 0.5);
-
-    svg {
-      fill: rgba(225, 232, 255, 0.5);
+    &:not(._active) {
+      border-color: #e1e8ff;
+      color: rgba(0, 60, 255, 0.5);
+      svg {
+        fill: rgba(225, 232, 255, 0.5);
+      }
     }
   }
 
   span {
     width: 85px;
+  }
+}
+
+._active {
+  border: 1px solid #e1e8ff;
+  color: rgba(0, 60, 255, 1);
+
+  svg {
+    fill: rgba(0, 60, 255, 1);
+    border-radius: 5px;
+    background-color: rgba(225, 232, 255, 1);
   }
 }
