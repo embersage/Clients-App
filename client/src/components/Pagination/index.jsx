@@ -5,16 +5,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUsersPage } from '../../redux/slices/usersSlice';
 import { setPaymentsPage } from '../../redux/slices/paymentsSlice';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Pagination = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const usersTotalCount = useSelector((state) => state.users.totalCount);
   const paymentsTotalCount = useSelector((state) => state.payments.totalCount);
+  const usersPage = useSelector((state) => state.users.usersPage);
+  const paymentsPage = useSelector((state) => state.payments.paymentsPage);
   const usersLimit = useSelector((state) => state.users.limit);
   const paymentsLimit = useSelector((state) => state.payments.limit);
   const usersPageCount = Math.ceil(usersTotalCount / usersLimit);
   const paymentsPageCount = Math.ceil(paymentsTotalCount / paymentsLimit);
+
+  useEffect(() => {
+    return () => {
+      if (usersPage !== 1) {
+        dispatch(setUsersPage(1));
+      }
+      if (paymentsPage !== 1) {
+        dispatch(setPaymentsPage(1));
+      }
+    };
+  }, []);
 
   return (
     <ReactPaginate
