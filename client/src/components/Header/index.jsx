@@ -36,7 +36,11 @@ const Header = () => {
         />
       )}
       {location.pathname.includes('/users') && (
-        <Button className={styles.button} onClick={() => {}}>
+        <Button
+          onClick={() => {
+            dispatch(setIsVisible(true));
+          }}
+        >
           <CiImport
             size={30}
             className={styles.icon}
@@ -62,11 +66,7 @@ const Header = () => {
             />
             <span>Изменить</span>
           </Button>
-          <Button
-            onClick={() => {
-              console.log(1);
-            }}
-          >
+          <Button onClick={() => {}}>
             <AiOutlineDelete
               size={30}
               className={styles.icon}

@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getUsers } from '../../redux/slices/usersSlice';
 import { useNavigate } from 'react-router-dom';
-import styles from './Users.module.scss';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
+import ModalWindow from '../../components/ModalWindow';
+import styles from './Users.module.scss';
 
 const Users = () => {
   const users = useSelector((state) => state.users.items);
@@ -81,6 +82,7 @@ const Users = () => {
           </div>
         )}
       </div>
+      <ModalWindow />
     </>
   );
 };
