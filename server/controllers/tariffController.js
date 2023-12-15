@@ -1,5 +1,7 @@
-import { Tariff } from '../models/models.js';
+import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
+
+const { Tariff } = accountSchema;
 
 class TariffController {
   async create(req, res) {

@@ -1,16 +1,11 @@
 import { Op } from 'sequelize';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {
-  AccessLevel,
-  Role,
-  Company,
-  UserAccount,
-  Presentation,
-  PresentationAccount,
-  Tariff,
-} from '../models/models.js';
+import { accountSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
+
+const { AccessLevel, Role, Company, UserAccount, Tariff } = accountSchema;
+const { Presentation } = presentationSchema;
 
 const generateJwt = (id, email, id_access_level) => {
   return jwt.sign({ id, email, id_access_level }, process.env.SECRET_KEY, {
@@ -119,7 +114,6 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
-      //raw: true,
       accountSchema,
     });
 

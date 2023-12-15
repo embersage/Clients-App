@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { RxCross2 } from 'react-icons/rx';
@@ -12,6 +12,12 @@ const Search = () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const [string, setString] = useState('');
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSearch(''));
+    };
+  }, []);
 
   const updateSearch = useCallback(
     debounce((name) => {

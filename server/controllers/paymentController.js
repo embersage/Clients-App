@@ -1,11 +1,8 @@
-import {
-  PaymentInfo,
-  PaymentStatus,
-  UserAccount,
-  Tariff,
-  Company,
-  Currency,
-} from '../models/models.js';
+import { accountSchema } from '../models/index.js';
+import ApiError from '../error/ApiError.js';
+
+const { PaymentInfo, PaymentStatus, UserAccount, Tariff, Company, Currency } =
+  accountSchema;
 
 class PaymentController {
   async getAll(req, res) {
