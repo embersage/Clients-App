@@ -3,12 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { CiEdit } from 'react-icons/ci';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { CiImport } from 'react-icons/ci';
 import { setIsOpened } from '../../redux/slices/menuSlice';
 import { setIsVisible } from '../../redux/slices/modalSlice';
 import Search from '../../components/Search';
 import Pagination from '../Pagination';
-import styles from './Header.module.scss';
 import Button from '../Button';
+import styles from './Header.module.scss';
 
 const Header = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -33,6 +34,16 @@ const Header = () => {
             dispatch(setIsOpened(!isOpened));
           }}
         />
+      )}
+      {location.pathname.includes('/users') && (
+        <Button className={styles.button} onClick={() => {}}>
+          <CiImport
+            size={30}
+            className={styles.icon}
+            color="rgba(171,171,171, 0.75)"
+          />
+          <span>Импорт</span>
+        </Button>
       )}
       {location.pathname.includes('/users') && <Search />}
       {(location.pathname.includes('/users') ||
@@ -70,17 +81,3 @@ const Header = () => {
 };
 
 export default Header;
-
-//<button
-//            className={styles.changeButton}
-//            onClick={() => {
-//              dispatch(setIsVisible(true));
-//            }}
-//          >
-//            <CiEdit size={30} />
-//            Изменить
-//          </button>
-//          <button className={styles.deleteButton}>
-//            <AiOutlineDelete size={30} />
-//            Удалить
-//          </button>

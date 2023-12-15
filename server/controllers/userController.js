@@ -24,7 +24,7 @@ class UserController {
   }
 
   async getAll(req, res) {
-    const accountSchema = 'account';
+    const schema = 'account';
     let { name, limit, page } = req.query;
     limit = limit || 10;
     page = page || 1;
@@ -49,7 +49,7 @@ class UserController {
         limit,
         offset,
         raw: true,
-        accountSchema,
+        schema,
       });
     }
 
@@ -77,14 +77,14 @@ class UserController {
         limit,
         offset,
         raw: true,
-        accountSchema,
+        schema,
       });
     }
     return res.json(users);
   }
 
   async getOne(req, res) {
-    const accountSchema = 'account';
+    const schema = 'account';
     const { id } = req.params;
 
     const user = await UserAccount.findOne({
@@ -114,14 +114,14 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
-      accountSchema,
+      schema,
     });
 
     return res.json(user);
   }
 
   async update(req, res) {
-    const accountSchema = 'account';
+    const schema = 'account';
     const { id } = req.params;
     const {
       name,
@@ -156,16 +156,23 @@ class UserController {
         company,
         access_level,
       },
-      { where: { id }, accountSchema }
+      { where: { id }, schema }
     );
 
     return res.json(user);
   }
 
+  async delete(req, res) {
+    const schema = 'account';
+    const { id } = req.params;
+
+    return res.json(id);
+  }
+
   async login(req, res, next) {
-    const accountSchema = 'account';
+    const schema = 'account';
     const { email, password } = req.body;
-    const user = await UserAccount.findOne({ where: { email }, accountSchema });
+    const user = await UserAccount.findOne({ where: { email }, schema });
     if (!user) {
       return next(ApiError.internal('Неверный логин или пароль.'));
     }
