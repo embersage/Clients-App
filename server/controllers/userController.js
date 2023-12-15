@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import exceljs from 'exceljs';
 import { accountSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 
@@ -168,6 +169,41 @@ class UserController {
 
     return res.json(id);
   }
+
+  async import(req, res, next) {
+    try {
+      const { buffer } = req.file;
+      if (!buffer) {
+        return next(ApiError.internal('Файл не найден.'));
+      }
+      
+      const workbook = new exceljs.Workbook();
+      await workbook.xlsx.load(buffer);
+
+      const worksheet = workbook.worksheets[0];
+      const users = [];
+      
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber !== 1) {
+          const nameCell = row.getCell(1);
+          const name = nameCell.value;
+      
+          if (name !== undefined) {
+            users.push({ name });
+          } else {
+            console.log(`Ошибка: Значение name не определено в строке ${rowNumber}.`);
+          }
+        }
+      });
+      
+      console.log(users);
+      await UserAccount.bulkCreate(users, { schema: 'account' });
+      return res.json({ message: 'Клиенты успешно импортированы.' });
+    } catch (error) {
+      return next(ApiError.internal('Ошибка при импорте клиентов.'));
+    }
+}
+
 
   async login(req, res, next) {
     const schema = 'account';
