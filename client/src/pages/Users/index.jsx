@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
-import { getUsers } from '../../redux/slices/usersSlice';
+import { getUsers, importUsers } from '../../redux/slices/usersSlice';
 import { useNavigate } from 'react-router-dom';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -9,8 +9,10 @@ import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
 import styles from './Users.module.scss';
+import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Users = () => {
+  const inputRef = useRef();
   const users = useSelector((state) => state.users.items);
   const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
@@ -82,7 +84,23 @@ const Users = () => {
           </div>
         )}
       </div>
-      <ModalWindow />
+      <ModalWindow>
+        <form className={modalStyles.content}>
+          <label>
+            <span>Файл</span>
+            <input ref={inputRef} type="file" />
+          </label>
+          <button
+            type="submit"
+            onClick={(event) => {
+              event.preventDefault();
+              dispatch(importUsers({ file: inputRef.current.files[0] }));
+            }}
+          >
+            Импорт
+          </button>
+        </form>
+      </ModalWindow>
     </>
   );
 };

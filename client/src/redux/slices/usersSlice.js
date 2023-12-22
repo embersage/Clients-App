@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchUsers } from '../../http/usersApi';
+import { fetchUsers, uploadUsers } from '../../http/usersApi';
 
 const initialState = {
   items: [],
@@ -13,6 +13,14 @@ export const getUsers = createAsyncThunk(
   'users/getUsers',
   async ({ name, limit, page }) => {
     const data = await fetchUsers(name, limit, page);
+    return data;
+  }
+);
+
+export const importUsers = createAsyncThunk(
+  'users/importUsers',
+  async ({ file }) => {
+    const data = await uploadUsers(file);
     return data;
   }
 );
@@ -50,6 +58,16 @@ export const usersSlice = createSlice({
         state.status = 'error';
         state.items = [];
         state.totalCount = 0;
+      })
+      .addCase(importUsers.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(importUsers.fulfilled, (state) => {
+        state.status = 'succeeded';
+        getUsers();
+      })
+      .addCase(importUsers.rejected, (state) => {
+        state.status = 'error';
       });
   },
 });
