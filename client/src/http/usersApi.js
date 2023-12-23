@@ -13,8 +13,8 @@ export const fetchUser = async (id) => {
 };
 
 export const uploadUsers = async (file) => {
-  const { data } = await $authHost.post('api/user/import', {
-    file,
-  });
+  const formData = new FormData();
+  formData.append('file', file);
+  const { data } = await $authHost.post('api/user/import', formData);
   return data.message;
 };

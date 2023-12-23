@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getUsers, importUsers } from '../../redux/slices/usersSlice';
-import { useNavigate } from 'react-router-dom';
+import { setIsVisible } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -41,6 +42,16 @@ const Users = () => {
 
     fetchUsers();
   }, [search, page]);
+
+  const upload = async (file) => {
+    const response = await dispatch(importUsers(file));
+    if (response.payload) {
+      dispatch(getUsers({ name: search, limit: 10, page }));
+      dispatch(setIsVisible(false));
+    } else {
+      console.log('error');
+    }
+  };
 
   return (
     <>
@@ -94,7 +105,7 @@ const Users = () => {
             type="submit"
             onClick={(event) => {
               event.preventDefault();
-              dispatch(importUsers({ file: inputRef.current.files[0] }));
+              upload({ file: inputRef.current.files[0] });
             }}
           >
             Импорт

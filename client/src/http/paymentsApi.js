@@ -6,8 +6,3 @@ export const fetchPayments = async (limit = 10, page = 1) => {
   });
   return data;
 };
-
-//export const fetchUser = async (id) => {
-//  const { data } = await $authHost.get(`api/user/${id}`);
-//  return data;
-//};

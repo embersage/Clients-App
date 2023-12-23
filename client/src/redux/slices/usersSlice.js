@@ -61,13 +61,17 @@ export const usersSlice = createSlice({
       })
       .addCase(importUsers.pending, (state) => {
         state.status = 'loading';
+        //getUsers();
+        //console.log('loading');
       })
       .addCase(importUsers.fulfilled, (state) => {
         state.status = 'succeeded';
-        getUsers();
+        //getUsers();
       })
       .addCase(importUsers.rejected, (state) => {
         state.status = 'error';
+        //getUsers();
+        //console.log('error');
       });
   },
 });
