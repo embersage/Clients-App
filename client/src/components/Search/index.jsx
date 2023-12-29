@@ -12,6 +12,12 @@ const Search = () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const [string, setString] = useState('');
+  let searchValue;
+  if (location.pathname.includes('/users')) {
+    searchValue = 'Найти клиента...';
+  } else if (location.pathname.includes('/payments')) {
+    searchValue = 'Найти операцию...';
+  }
 
   useEffect(() => {
     return () => {
@@ -42,9 +48,7 @@ const Search = () => {
       <IoSearchOutline className={styles.searchIcon} size={30} />
       <input
         ref={inputRef}
-        placeholder={
-          location.pathname.includes('/users') ? 'Найти клиента...' : ''
-        }
+        placeholder={searchValue}
         type="text"
         value={string}
         className={styles.search}

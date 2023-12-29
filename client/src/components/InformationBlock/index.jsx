@@ -1,5 +1,6 @@
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import styles from './InformationBlock.module.scss';
+import formatDate from '../../utils/formatDate';
 
 const InformationBlock = (props) => {
   const {
@@ -59,16 +60,7 @@ const InformationBlock = (props) => {
         </li>
         <li>
           <span className={styles.heading}>Дата регистрации</span>
-          <span className={styles.value}>
-            {date_reg
-              ? `${new Date(date_reg).getHours()}:${new Date(
-                  date_reg
-                ).getMinutes()}
-          ${new Date(date_reg).getDate()}.${
-                  new Date(date_reg).getMonth() + 1
-                }.${new Date(date_reg).getFullYear()}`
-              : 'Нет данных'}
-          </span>
+          <span className={styles.value}>{formatDate(date_reg)}</span>
         </li>
         <li>
           <span className={styles.heading}>Телефон</span>
@@ -94,16 +86,7 @@ const InformationBlock = (props) => {
         </li>
         <li>
           <span className={styles.heading}>Последняя активность</span>
-          <span className={styles.value}>
-            {date_last_login
-              ? `${new Date(date_last_login).getHours()}:${new Date(
-                  date_last_login
-                ).getMinutes()}
-          ${new Date(date_last_login).getDate()}.${
-                  new Date(date_last_login).getMonth() + 1
-                }.${new Date(date_last_login).getFullYear()}`
-              : 'Нет данных'}
-          </span>
+          <span className={styles.value}>{formatDate(date_last_login)}</span>
         </li>
         <li>
           <span className={styles.heading}>Email статус</span>

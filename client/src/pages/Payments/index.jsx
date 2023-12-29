@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getPayments } from '../../redux/slices/paymentsSlice';
@@ -12,6 +12,7 @@ const Payments = () => {
   const payments = useSelector((state) => state.payments.items);
   const page = useSelector((state) => state.payments.page);
   const status = useSelector((state) => state.payments.status);
+  const search = useSelector((state) => state.filter.search);
   const dispatch = useDispatch();
   const values = [
     'id',
@@ -28,10 +29,10 @@ const Payments = () => {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      await dispatch(getPayments({ limit: 10, page }));
+      await dispatch(getPayments({ name: search, limit: 10, page }));
     };
     fetchPayments();
-  }, [page]);
+  }, [search, page]);
 
   return (
     <>

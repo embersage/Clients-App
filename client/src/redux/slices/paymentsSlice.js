@@ -11,8 +11,8 @@ const initialState = {
 
 export const getPayments = createAsyncThunk(
   'payments/getPayments',
-  async ({ limit, page }) => {
-    const data = await fetchPayments(limit, page);
+  async ({ name, limit, page }) => {
+    const data = await fetchPayments(name, limit, page);
     return data;
   }
 );

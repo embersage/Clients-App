@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchUsers, uploadUsers } from '../../http/usersApi';
+import { fetchUsers, fetchUser, uploadUsers } from '../../http/usersApi';
 
 const initialState = {
   items: [],
@@ -7,6 +7,7 @@ const initialState = {
   page: 1,
   totalCount: 0,
   limit: 10,
+  user: {},
 };
 
 export const getUsers = createAsyncThunk(
@@ -16,6 +17,11 @@ export const getUsers = createAsyncThunk(
     return data;
   }
 );
+
+export const getUser = createAsyncThunk('users/getUser', async ({ id }) => {
+  const data = await fetchUser(id);
+  return data;
+});
 
 export const importUsers = createAsyncThunk(
   'users/importUsers',
@@ -31,6 +37,9 @@ export const usersSlice = createSlice({
   reducers: {
     setUsers: (state, action) => {
       state.items = action.payload;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
     setUsersPage: (state, action) => {
       state.page = action.payload;
@@ -48,35 +57,54 @@ export const usersSlice = createSlice({
         state.status = 'loading';
         state.items = [];
         state.totalCount = 0;
+        state.user = {};
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload.rows;
         state.totalCount = action.payload.count;
+        state.user = {};
       })
       .addCase(getUsers.rejected, (state) => {
         state.status = 'error';
         state.items = [];
         state.totalCount = 0;
+        state.user = {};
+      })
+      .addCase(getUser.pending, (state) => {
+        state.status = 'loading';
+        state.items = [];
+        state.totalCount = 0;
+        state.user = {};
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = [];
+        state.totalCount = 0;
+        state.user = action.payload;
+      })
+      .addCase(getUser.rejected, (state) => {
+        state.status = 'error';
+        state.items = [];
+        state.totalCount = 0;
+        state.user = {};
       })
       .addCase(importUsers.pending, (state) => {
         state.status = 'loading';
-        //getUsers();
-        //console.log('loading');
+        state.user = {};
       })
       .addCase(importUsers.fulfilled, (state) => {
         state.status = 'succeeded';
-        //getUsers();
+        state.user = {};
       })
       .addCase(importUsers.rejected, (state) => {
         state.status = 'error';
-        //getUsers();
-        //console.log('error');
+        state.user = {};
       });
   },
 });
 
-export const { setUsers, setUsersPage, setTotalCount, setLimit } =
+export const { setUsers, setUser, setUsersPage, setTotalCount, setLimit } =
   usersSlice.actions;
 
 export default usersSlice.reducer;

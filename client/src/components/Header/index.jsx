@@ -49,7 +49,8 @@ const Header = () => {
           <span>Импорт</span>
         </Button>
       )}
-      {location.pathname.includes('/users') && <Search />}
+      {(location.pathname.includes('/users') ||
+        location.pathname.includes('/payments')) && <Search />}
       {(location.pathname.includes('/users') ||
         location.pathname.includes('/payments')) && <Pagination />}
       {location.pathname.includes('/user/') && (

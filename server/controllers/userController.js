@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import exceljs from 'exceljs';
 import { accountSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
+import formatDate from '../utils/formatDate.js';
 
 const { AccessLevel, Role, Company, UserAccount, Tariff } = accountSchema;
 const { Presentation } = presentationSchema;
@@ -78,10 +79,18 @@ class UserController {
         },
         limit,
         offset,
+        order: [['id', 'ASC']],
         raw: true,
         schema,
       });
     }
+
+    users.rows = users.rows.map((user) => {
+      user.date_reg = formatDate(user.date_reg);
+      user.date_last_login = formatDate(user.date_last_login);
+      return user;
+    });
+
     return res.json(users);
   }
 
@@ -118,6 +127,9 @@ class UserController {
       },
       schema,
     });
+
+    user.date_reg = formatDate(user.date_reg);
+    user.date_last_login = formatDate(user.date_last_login);
 
     return res.json(user);
   }

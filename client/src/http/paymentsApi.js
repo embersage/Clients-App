@@ -1,8 +1,8 @@
 import { $authHost } from './index';
 
-export const fetchPayments = async (limit = 10, page = 1) => {
+export const fetchPayments = async (name, limit = 10, page = 1) => {
   const { data } = await $authHost.get('api/payment', {
-    params: { limit, page },
+    params: { name, limit, page },
   });
   return data;
 };
