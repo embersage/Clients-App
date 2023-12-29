@@ -5,14 +5,13 @@ const PresentationsBlock = (props) => {
   return (
     <div className={styles.presentationBlock}>
       <h2>Презентации</h2>
-      {presentations.length ? (
+      {presentations && presentations.length ? (
         <ul className={styles.presentations}>
           {presentations.map((item, index) => (
             <li key={index}>
               <div className={styles.presentationCart}>
                 <span>{item.id}</span>
                 <span>{item.name}</span>
-                <span>{item.description}</span>
               </div>
             </li>
           ))}

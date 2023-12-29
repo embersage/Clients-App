@@ -5,16 +5,19 @@ import Header from '../../components/Header';
 import InformationBlock from '../../components/InformationBlock';
 import TariffBlock from '../../components/TariffBlock';
 import PresentationBlock from '../../components/PresentationBlock';
-import { fetchUser } from '../../http/usersApi';
 import ModalWindow from '../../components/ModalWindow';
 import styles from './User.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../redux/slices/usersSlice';
+import { setUser } from '../../redux/slices/userSlice';
+import { BsArrowClockwise } from 'react-icons/bs';
 
 const User = () => {
+  const user = useSelector((state) => state.users.user);
   const { id } = useParams();
-  const [user, setUser] = useState();
+  const status = useSelector((state) => state.users.status);
+  //const [user, setUser] = useState();
   const dispatch = useDispatch();
   const accessLevels = ['user', 'moderator', 'administrator'];
   const [data, setData] = useState({
@@ -26,19 +29,6 @@ const User = () => {
     company: '',
     accessLevel: '',
   });
-
-  //useEffect(() => {
-  //  const getUser = async () => {
-  //    try {
-  //      const res = await fetchUser(id);
-  //      setUser(res);
-  //    } catch (error) {
-  //      console.log(error.message);
-  //    }
-  //  };
-  //
-  //  getUser();
-  //}, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -58,11 +48,29 @@ const User = () => {
       <div className={styles.wrapper}>
         <Header />
         <div className={styles.content}>
-          <InformationBlock {...user} />
-          <div className={styles.additionalInfo}>
-            <TariffBlock />
-            <PresentationBlock presentations={user.presentations} />
-          </div>
+          {status === 'succeeded' ? (
+            <>
+              <InformationBlock {...user} />
+              <div className={styles.additionalInfo}>
+                <TariffBlock />
+                <PresentationBlock presentations={user.presentations} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.informationBlockLoading}>
+                <BsArrowClockwise className={styles.loadingIcon} size={75} />
+              </div>
+              <div className={styles.additionalInfo}>
+                <div className={styles.tariffBlockLoading}>
+                  <BsArrowClockwise className={styles.loadingIcon} size={75} />
+                </div>
+                <div className={styles.presentationBlockLoading}>
+                  <BsArrowClockwise className={styles.loadingIcon} size={75} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <ModalWindow>
