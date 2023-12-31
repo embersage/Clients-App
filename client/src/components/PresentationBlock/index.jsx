@@ -24,10 +24,3 @@ const PresentationsBlock = (props) => {
 };
 
 export default PresentationsBlock;
-
-{
-  /* <div className={styles.presentationBlock}>
-      <h2>Презентации</h2>
-      
-    </div> */
-}

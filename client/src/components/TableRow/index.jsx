@@ -9,7 +9,7 @@ const TableRow = (props) => {
       return;
     }
 
-    props.onClick();
+    props?.onClick?.();
   };
 
   return (
