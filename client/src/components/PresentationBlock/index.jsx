@@ -1,26 +1,33 @@
+import Table from '../Table';
+import TableRow from '../TableRow';
 import styles from './PresentationBlock.module.scss';
+
+const values = ['id', 'name', 'description'];
 
 const PresentationsBlock = (props) => {
   const { presentations } = props;
   return (
-    <div className={styles.presentationBlock}>
-      <h2>Презентации</h2>
+    <>
       {presentations && presentations.length ? (
-        <ul className={styles.presentations}>
-          {presentations.map((item, index) => (
-            <li key={index}>
-              <div className={styles.presentationCart}>
-                <span>{item.id}</span>
-                <span>{item.name}</span>
-              </div>
-            </li>
+        <Table headers={['id', 'Название', 'Описание']} caption={'Презентации'}>
+          {presentations.map((item) => (
+            <TableRow key={item.id} values={values}>
+              {item}
+            </TableRow>
           ))}
-        </ul>
+        </Table>
       ) : (
         <span>Нет презентаций ☹️</span>
       )}
-    </div>
+    </>
   );
 };
 
 export default PresentationsBlock;
+
+{
+  /* <div className={styles.presentationBlock}>
+      <h2>Презентации</h2>
+      
+    </div> */
+}

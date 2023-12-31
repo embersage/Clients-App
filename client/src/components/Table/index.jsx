@@ -5,6 +5,7 @@ const Table = (props) => {
 
   return (
     <table className={styles.table} cellSpacing={0} cellPadding={0}>
+      {props.caption && <caption>{props.caption}</caption>}
       <thead>
         <tr className={styles.tableHeader}>
           {headers.map((item, index) => (
