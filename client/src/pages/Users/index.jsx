@@ -60,6 +60,7 @@ const Users = () => {
           <>
             <Table
               headers={[
+                '',
                 'id',
                 'Имя',
                 'Email',
@@ -80,6 +81,7 @@ const Users = () => {
                     navigate(`/user/${item.id}`);
                   }}
                   values={values}
+                  showCheckbox={true}
                 >
                   {item}
                 </TableRow>
