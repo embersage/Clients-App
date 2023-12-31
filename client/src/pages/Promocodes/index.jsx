@@ -1,8 +1,8 @@
 import Header from '../../components/Header';
 import Menu from '../../components/Menu';
-import styles from './Mail.module.scss';
+import styles from './Promocodes.module.scss';
 
-const Mail = () => {
+const Promocodes = () => {
   return (
     <>
       <Menu />
@@ -11,4 +11,4 @@ const Mail = () => {
   );
 };
 
-export default Mail;
+export default Promocodes;

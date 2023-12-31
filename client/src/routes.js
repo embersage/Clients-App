@@ -2,16 +2,18 @@ import Home from './pages/Home';
 import Users from './pages/Users';
 import User from './pages/User';
 import Payments from './pages/Payments';
+import Promocodes from './pages/Promocodes';
+import Notifications from './pages/Notifications';
 import Login from './pages/Login';
 import {
   HOME_ROUTE,
   USERS_ROUTE,
   USER_ROUTE,
-  MAIL_ROUTE,
   PAYMENTS_ROUTE,
+  PROMOCODES_ROUTE,
+  NOTIFICATIONS_ROUTE,
   LOGIN_ROUTE,
 } from './utils/consts';
-import Mail from './pages/Mail';
 
 export const authRoutes = [
   {
@@ -27,12 +29,16 @@ export const authRoutes = [
     element: <User />,
   },
   {
-    path: MAIL_ROUTE,
-    element: <Mail />,
-  },
-  {
     path: PAYMENTS_ROUTE,
     element: <Payments />,
+  },
+  {
+    path: PROMOCODES_ROUTE,
+    element: <Promocodes />,
+  },
+  {
+    path: NOTIFICATIONS_ROUTE,
+    element: <Notifications />,
   },
 ];
 

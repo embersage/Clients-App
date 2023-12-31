@@ -71,6 +71,7 @@ const Users = () => {
                 'Компания',
                 'Уровень доступа',
               ]}
+              caption={'Клиенты'}
             >
               {users.map((item) => (
                 <TableRow
