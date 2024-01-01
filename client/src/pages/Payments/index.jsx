@@ -54,7 +54,7 @@ const Payments = () => {
                 'Валюта',
                 'Статус оплаты',
               ]}
-              caption={'Операции'}
+              name={'Операции'}
             >
               {payments.map((item) => (
                 <TableRow key={item.id} values={values}>

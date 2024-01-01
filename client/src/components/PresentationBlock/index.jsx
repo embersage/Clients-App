@@ -9,7 +9,7 @@ const PresentationsBlock = (props) => {
   return (
     <>
       {presentations && presentations.length ? (
-        <Table headers={['id', 'Название', 'Описание']} caption={'Презентации'}>
+        <Table headers={['id', 'Название', 'Описание']} name={'Презентации'}>
           {presentations.map((item) => (
             <TableRow key={item.id} values={values}>
               {item}

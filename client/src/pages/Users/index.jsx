@@ -9,6 +9,7 @@ import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
+import { setIsOpened } from '../../redux/slices/filterSlice';
 import styles from './Users.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
@@ -32,6 +33,7 @@ const Users = () => {
     'company.name',
     'access_level.name',
   ];
+  const isOpened = useSelector((state) => state.filter.isOpened);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -72,7 +74,7 @@ const Users = () => {
                 'Компания',
                 'Уровень доступа',
               ]}
-              caption={'Клиенты'}
+              name={'Клиенты'}
             >
               {users.map((item) => (
                 <TableRow
@@ -109,6 +111,13 @@ const Users = () => {
           >
             Импорт
           </button>
+        </form>
+      </ModalWindow>
+      <ModalWindow>
+        <form className={modalStyles.content}>
+          <label>
+            <span>Фильтры</span>
+          </label>
         </form>
       </ModalWindow>
     </>

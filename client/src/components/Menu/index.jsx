@@ -67,7 +67,7 @@ const Menu = () => {
                 >
                   <Button
                     isActive={
-                      location.pathname === `${item.link}` ? `true` : 'false'
+                      location.pathname === `${item.link}` ? 'true' : 'false'
                     }
                   >
                     {item.icon}

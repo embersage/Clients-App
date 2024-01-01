@@ -5,8 +5,12 @@ const Table = (props) => {
 
   return (
     <table className={styles.table} cellSpacing={0} cellPadding={0}>
-      {props.caption && <caption>{props.caption}</caption>}
       <thead>
+        {props.name && (
+          <tr className={styles.tableName}>
+            <th colSpan={headers.length}>{props.name}</th>
+          </tr>
+        )}
         <tr className={styles.tableHeader}>
           {headers.map((item, index) => (
             <th key={index}>{item}</th>

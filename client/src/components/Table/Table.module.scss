@@ -1,14 +1,14 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss';
 
 .table {
-  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
-  border-radius: 25px;
   padding: 20px;
   height: 100%;
   width: 100%;
-  background-color: #fff;
+  border-radius: 25px;
   border-spacing: 0;
   border-collapse: separate;
+  background-color: #fff;
+  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
 
   td {
     padding: 5px;
@@ -16,6 +16,13 @@
 
   .tableHeader {
     height: 40px;
+
+    th {
+      padding: 20px 0;
+    }
+  }
+
+  .tableName {
   }
 
   &:last-child td:last-child {
