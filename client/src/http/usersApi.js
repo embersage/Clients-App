@@ -18,3 +18,8 @@ export const uploadUsers = async (file) => {
   const { data } = await $authHost.post('api/user/import', formData);
   return data.message;
 };
+
+export const deleteUser = async (id) => {
+  const { data } = await $authHost.delete(`api/user/${id}`);
+  return data.message;
+};

@@ -1,6 +1,5 @@
 import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
-import formatDate from '../utils/formatDate.js';
 
 const { Notification } = accountSchema;
 

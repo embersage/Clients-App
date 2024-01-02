@@ -1,8 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchUsers, fetchUser, uploadUsers } from '../../http/usersApi';
+import {
+  fetchUsers,
+  fetchUser,
+  uploadUsers,
+  deleteUser,
+} from '../../http/usersApi';
+import formatDate from '../../utils/formatDate';
 
 const initialState = {
-  items: [],
+  users: [],
+  selectedUsers: [],
   status: 'loading',
   page: 1,
   totalCount: 0,
@@ -14,6 +21,10 @@ export const getUsers = createAsyncThunk(
   'users/getUsers',
   async ({ limit, page, search }) => {
     const data = await fetchUsers(limit, page, search);
+    data.rows.forEach((item) => {
+      item.date_reg = formatDate(item.date_reg);
+      item.date_last_login = formatDate(item.date_last_login);
+    });
     return data;
   }
 );
@@ -31,12 +42,33 @@ export const importUsers = createAsyncThunk(
   }
 );
 
+export const removeUser = createAsyncThunk(
+  'users/removeUser',
+  async ({ id }) => {
+    const data = await deleteUser(id);
+    return data;
+  }
+);
+
+const findInd = (state, newItem) => {
+  return state.selectedUsers.findIndex((item) => item.id === newItem.id);
+};
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setUsers: (state, action) => {
-      state.items = action.payload;
+      state.users = action.payload;
+    },
+    setSelectedUsers: (state, action) => {
+      state.selectedUsers = action.payload;
+    },
+    addSelectedUser: (state, action) => {
+      state.selectedUsers = [...state.selectedUsers, action.payload];
+    },
+    removeSelectedUser: (state, action) => {
+      state.selectedUsers.splice(findInd(state, action.payload), 1);
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -55,37 +87,43 @@ export const usersSlice = createSlice({
     builder
       .addCase(getUsers.pending, (state) => {
         state.status = 'loading';
-        state.items = [];
+        state.users = [];
+        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload.rows;
+        state.users = action.payload.rows;
+        state.selectedUsers = [];
         state.totalCount = action.payload.count;
         state.user = {};
       })
       .addCase(getUsers.rejected, (state) => {
         state.status = 'error';
-        state.items = [];
+        state.users = [];
+        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
       .addCase(getUser.pending, (state) => {
         state.status = 'loading';
-        state.items = [];
+        state.users = [];
+        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = [];
+        state.users = [];
+        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = action.payload;
       })
       .addCase(getUser.rejected, (state) => {
         state.status = 'error';
-        state.items = [];
+        state.users = [];
+        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
@@ -100,11 +138,31 @@ export const usersSlice = createSlice({
       .addCase(importUsers.rejected, (state) => {
         state.status = 'error';
         state.user = {};
+      })
+      .addCase(removeUser.pending, (state) => {
+        state.status = 'loading';
+        state.user = {};
+      })
+      .addCase(removeUser.fulfilled, (state) => {
+        state.status = 'succeeded';
+        state.user = {};
+      })
+      .addCase(removeUser.rejected, (state) => {
+        state.status = 'error';
+        state.user = {};
       });
   },
 });
 
-export const { setUsers, setUser, setUsersPage, setTotalCount, setLimit } =
-  usersSlice.actions;
+export const {
+  setUsers,
+  setSelectedUsers,
+  addSelectedUser,
+  removeSelectedUser,
+  setUser,
+  setUsersPage,
+  setTotalCount,
+  setLimit,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchPayments } from '../../http/paymentsApi';
+import formatDate from '../../utils/formatDate';
 
 const initialState = {
   items: [],
@@ -13,6 +14,10 @@ export const getPayments = createAsyncThunk(
   'payments/getPayments',
   async ({ name, limit, page }) => {
     const data = await fetchPayments(name, limit, page);
+    data.rows.forEach((item) => {
+      item.date_start = formatDate(item.date_start);
+      item.date_end = formatDate(item.date_end);
+    });
     return data;
   }
 );

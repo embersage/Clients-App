@@ -2,7 +2,13 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
-import { getUsers, importUsers } from '../../redux/slices/usersSlice';
+import {
+  getUsers,
+  setSelectedUsers,
+  addSelectedUser,
+  removeSelectedUser,
+  importUsers,
+} from '../../redux/slices/usersSlice';
 import { setIsVisible } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -14,7 +20,8 @@ import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Users = () => {
   const inputRef = useRef();
-  const users = useSelector((state) => state.users.items);
+  const users = useSelector((state) => state.users.users);
+  const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
@@ -36,7 +43,7 @@ const Users = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      await dispatch(getUsers({ name: search, limit: 10, page }));
+      await dispatch(getUsers({ limit: 10, page, search }));
     };
 
     fetchUsers();
@@ -45,7 +52,7 @@ const Users = () => {
   const upload = async (file) => {
     const response = await dispatch(importUsers(file));
     if (response.payload) {
-      dispatch(getUsers({ name: search, limit: 10, page }));
+      dispatch(getUsers({ limit: 10, page, search }));
       dispatch(setIsVisible(false));
     } else {
       console.log('error');
@@ -83,6 +90,12 @@ const Users = () => {
                   }}
                   values={values}
                   showCheckbox={true}
+                  onSelect={() => {
+                    dispatch(addSelectedUser(item));
+                  }}
+                  onUnselect={() => {
+                    dispatch(removeSelectedUser(item));
+                  }}
                 >
                   {item}
                 </TableRow>

@@ -1,18 +1,21 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { getPayments } from '../../redux/slices/paymentsSlice';
-import styles from './Payments.module.scss';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
+import ModalWindow from '../../components/ModalWindow';
+import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
+import styles from './Payments.module.scss';
 
 const Payments = () => {
   const payments = useSelector((state) => state.payments.items);
   const page = useSelector((state) => state.payments.page);
   const status = useSelector((state) => state.payments.status);
   const search = useSelector((state) => state.filter.search);
+  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const dispatch = useDispatch();
   const values = [
     'id',
@@ -69,6 +72,17 @@ const Payments = () => {
           </div>
         )}
       </div>
+      <ModalWindow>
+        <form className={modalStyles.content}>
+          {pressedButton === 'filters' && (
+            <>
+              <label>
+                <span>Фильтры</span>
+              </label>
+            </>
+          )}
+        </form>
+      </ModalWindow>
     </>
   );
 };

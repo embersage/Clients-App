@@ -6,6 +6,6 @@ const paymentController = new PaymentController();
 const router = new Router();
 
 router.get('/', checkRoleMiddleware([2, 3]), paymentController.getAll);
-router.get('/:id', checkRoleMiddleware([2, 3]), paymentController.getOne);
+//router.get('/:id', checkRoleMiddleware([2, 3]), paymentController.getOne);
 
 export default router;

@@ -1,12 +1,15 @@
 import { Op } from 'sequelize';
 import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
-import formatDate from '../utils/formatDate.js';
 
 const { PaymentInfo, PaymentStatus, UserAccount, Tariff, Company, Currency } =
   accountSchema;
 
 class PaymentController {
+  /* TODO
+    - по сумме подписки
+    - по тарифу
+    - по валюте */
   async getAll(req, res) {
     const accountSchema = 'account';
     let { name, limit, page } = req.query;
@@ -102,15 +105,8 @@ class PaymentController {
       });
     }
 
-    payments.rows = payments.rows.map((payment) => {
-      payment.date_start = formatDate(payment.date_start);
-      payment.date_end = formatDate(payment.date_end);
-      return payment;
-    });
-
     return res.json(payments);
   }
-  async getOne(req, res) {}
 }
 
 export default PaymentController;
