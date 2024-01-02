@@ -12,8 +12,8 @@ const initialState = {
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
-  async ({ name, limit, page }) => {
-    const data = await fetchUsers(name, limit, page);
+  async ({ limit, page, search }) => {
+    const data = await fetchUsers(limit, page, search);
     return data;
   }
 );

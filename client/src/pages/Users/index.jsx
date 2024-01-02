@@ -9,7 +9,6 @@ import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
-import { setIsOpened } from '../../redux/slices/filterSlice';
 import styles from './Users.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
@@ -19,6 +18,7 @@ const Users = () => {
   const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
+  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const values = [
@@ -33,7 +33,6 @@ const Users = () => {
     'company.name',
     'access_level.name',
   ];
-  const isOpened = useSelector((state) => state.filter.isOpened);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -98,26 +97,30 @@ const Users = () => {
       </div>
       <ModalWindow>
         <form className={modalStyles.content}>
-          <label>
-            <span>Файл</span>
-            <input ref={inputRef} type="file" />
-          </label>
-          <button
-            type="submit"
-            onClick={(event) => {
-              event.preventDefault();
-              upload({ file: inputRef.current.files[0] });
-            }}
-          >
-            Импорт
-          </button>
-        </form>
-      </ModalWindow>
-      <ModalWindow>
-        <form className={modalStyles.content}>
-          <label>
-            <span>Фильтры</span>
-          </label>
+          {pressedButton === 'import' && (
+            <>
+              <label>
+                <span>Файл</span>
+                <input ref={inputRef} type="file" />
+              </label>
+              <button
+                type="submit"
+                onClick={(event) => {
+                  event.preventDefault();
+                  upload({ file: inputRef.current.files[0] });
+                }}
+              >
+                Импорт
+              </button>
+            </>
+          )}
+          {pressedButton === 'filters' && (
+            <>
+              <label>
+                <span>Фильтры</span>
+              </label>
+            </>
+          )}
         </form>
       </ModalWindow>
     </>

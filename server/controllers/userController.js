@@ -6,7 +6,8 @@ import { accountSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 import formatDate from '../utils/formatDate.js';
 
-const { AccessLevel, Role, Company, UserAccount, Tariff } = accountSchema;
+const { AccessLevel, Role, Company, UserAccount, UserConfig, Tariff } =
+  accountSchema;
 const { Presentation } = presentationSchema;
 
 const generateJwt = (id, email, id_access_level) => {
@@ -26,65 +27,140 @@ class UserController {
   }
 
   async getAll(req, res) {
+    /* TODO
+    - у кого скоро закончится тариф (1 - 5 дней)
+    - у кого только бесплатный
+    - у кого есть подписка
+    - у кого включено автопродление
+    - по сумме подписки
+    - по тарифу
+    - по валюте
+    - по имени
+    - по email
+    - по id
+    - по активации */
     const schema = 'account';
-    let { name, limit, page } = req.query;
+    let { limit, page, sortBy, sortType, search, activate, autoPayment } =
+      req.query;
     limit = limit || 10;
     page = page || 1;
+    sortBy = sortBy || 'id';
+    sortType = sortType || 'ASC';
+    search = search || '';
+    activate = activate || null;
+    autoPayment = autoPayment || null;
     const offset = page * limit - limit;
-    let users;
 
-    if (!name) {
-      users = await UserAccount.findAndCountAll({
-        include: [
-          {
-            model: Company,
-            attributes: ['name'],
-          },
-          {
-            model: AccessLevel,
-            attributes: ['name'],
-          },
-        ],
-        attributes: {
-          exclude: ['id_company', 'id_access_level'],
-        },
-        limit,
-        offset,
-        order: [['id', 'ASC']],
-        raw: true,
-        schema,
-      });
+    const includeOptions = [
+      {
+        model: Company,
+        attributes: ['name'],
+      },
+      {
+        model: AccessLevel,
+        attributes: ['name'],
+      },
+      {
+        model: UserConfig,
+        attributes: ['auto_payment'],
+      },
+    ];
+    let users = [];
+    let searchCriteria = {};
+
+    if (autoPayment) {
+      includeOptions[2].where = { auto_payment: autoPayment };
     }
 
-    if (name) {
-      users = await UserAccount.findAndCountAll({
-        where: {
-          [Op.or]: {
-            name: { [Op.iLike]: `%${name}%` },
-            email: { [Op.iLike]: `%${name}%` },
-          },
-        },
-        include: [
-          {
-            model: Company,
-            attributes: ['name'],
-          },
-          {
-            model: AccessLevel,
-            attributes: ['name'],
-          },
-        ],
-        attributes: {
-          exclude: ['id_company', 'id_access_level'],
-        },
-        limit,
-        offset,
-        order: [['id', 'ASC']],
-        raw: true,
-        schema,
-      });
+    if (search) {
+      if (!isNaN(search)) {
+        searchCriteria = {
+          id: parseInt(search),
+        };
+      } else {
+        searchCriteria = {
+          [Op.or]: [
+            { name: { [Op.iLike]: `%${search}%` } },
+            { email: { [Op.iLike]: `%${search}%` } },
+          ],
+        };
+      }
     }
 
+    if (activate) {
+      searchCriteria.activate = activate;
+    }
+
+    users = await UserAccount.findAndCountAll({
+      where: searchCriteria,
+      include: includeOptions,
+      attributes: {
+        exclude: ['id_company', 'id_access_level'],
+      },
+      limit,
+      offset,
+      order: [[sortBy, sortType]],
+      raw: true,
+      schema,
+    });
+
+    //if (!search) {
+    //  users = await UserAccount.findAndCountAll({
+    //    include: includeOptions,
+    //    attributes: {
+    //      exclude: ['id_company', 'id_access_level'],
+    //    },
+    //    limit,
+    //    offset,
+    //    order: [['id', 'ASC']],
+    //    raw: true,
+    //    schema,
+    //  });
+    //}
+    //
+    //if (search) {
+    //  let searchCriteria;
+    //
+    //  if (!isNaN(search)) {
+    //    searchCriteria = {
+    //      id: parseInt(search),
+    //    };
+    //  } else {
+    //    searchCriteria = {
+    //      [Op.or]: [
+    //        { name: { [Op.iLike]: `%${search}%` } },
+    //        { email: { [Op.iLike]: `%${search}%` } },
+    //      ],
+    //    };
+    //  }
+    //
+    //  users = await UserAccount.findAndCountAll({
+    //    where: searchCriteria,
+    //    include: [
+    //      {
+    //        model: Company,
+    //        attributes: ['name'],
+    //      },
+    //      {
+    //        model: AccessLevel,
+    //        attributes: ['name'],
+    //      },
+    //      {
+    //        model: UserConfig,
+    //        attributes: ['auto_payment'],
+    //      },
+    //    ],
+    //    attributes: {
+    //      exclude: ['id_company', 'id_access_level'],
+    //    },
+    //    limit,
+    //    offset,
+    //    order: [['id', 'ASC']],
+    //    raw: true,
+    //    schema,
+    //  });
+    //}
+    //
     users.rows = users.rows.map((user) => {
       user.date_reg = formatDate(user.date_reg);
       user.date_last_login = formatDate(user.date_last_login);
@@ -112,6 +188,10 @@ class UserController {
         {
           model: AccessLevel,
           attributes: ['name'],
+        },
+        {
+          model: UserConfig,
+          attributes: ['auto_payment'],
         },
         {
           model: Tariff,

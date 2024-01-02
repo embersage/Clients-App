@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   search: '',
-  isOpened: false,
   endSoon: false,
   hasFreeTariff: false,
   hasSubscription: false,
@@ -18,9 +17,6 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setSearch: (state, action) => {
-      state.search = action.payload;
-    },
-    setIsOpened: (state, action) => {
       state.search = action.payload;
     },
     setEndSoon: (state, action) => {
@@ -52,7 +48,6 @@ export const filterSlice = createSlice({
 
 export const {
   setSearch,
-  setIsOpened,
   setEndSoon,
   setHasFreeTariff,
   setHasSubscription,

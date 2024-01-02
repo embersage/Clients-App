@@ -52,9 +52,9 @@ const Menu = () => {
     return (
       <nav className={styles.menu}>
         <ul className={styles.pages}>
-          {pages.map((item) => {
+          {pages.map((item, index) => {
             return (
-              <li>
+              <li key={index}>
                 <Link
                   to={item.link}
                   {...(item.link === '/login' && {

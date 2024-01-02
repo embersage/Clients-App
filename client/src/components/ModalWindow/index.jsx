@@ -1,11 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useRef } from 'react';
-import { setIsVisible } from '../../redux/slices/modalSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import styles from './ModalWindow.module.scss';
 
 const ModalWindow = (props) => {
   const dispatch = useDispatch();
-  const modalRef = useRef();
   const isVisible = useSelector((state) => state.modal.isVisible);
 
   if (isVisible) {
@@ -15,11 +13,10 @@ const ModalWindow = (props) => {
           className={styles.darkBackground}
           onClick={() => {
             dispatch(setIsVisible(false));
+            dispatch(setPressedButton(''));
           }}
         />
-        <div className={styles.modalWindow} ref={modalRef}>
-          {props.children}
-        </div>
+        <div className={styles.modalWindow}>{props.children}</div>
       </>
     );
   }

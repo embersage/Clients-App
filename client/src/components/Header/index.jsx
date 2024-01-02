@@ -6,12 +6,11 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImport } from 'react-icons/ci';
 import { MdFilterAlt } from 'react-icons/md';
 import { setIsOpened } from '../../redux/slices/menuSlice';
-import { setIsVisible } from '../../redux/slices/modalSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Search from '../../components/Search';
 import Pagination from '../Pagination';
 import Button from '../Button';
 import styles from './Header.module.scss';
-import { useState } from 'react';
 
 const Header = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -41,6 +40,7 @@ const Header = () => {
         <Button
           onClick={() => {
             dispatch(setIsVisible(true));
+            dispatch(setPressedButton('import'));
           }}
         >
           <CiImport
@@ -57,6 +57,7 @@ const Header = () => {
         <Button
           onClick={() => {
             dispatch(setIsVisible(true));
+            dispatch(setPressedButton('filters'));
           }}
         >
           <MdFilterAlt
@@ -71,18 +72,6 @@ const Header = () => {
         location.pathname.includes('/payments')) && <Pagination />}
       {location.pathname.includes('/user/') && (
         <div className={styles.buttons}>
-          <Button
-            onClick={() => {
-              dispatch(setIsVisible(true));
-            }}
-          >
-            <CiEdit
-              size={30}
-              className={styles.icon}
-              color="rgba(171,171,171, 0.75)"
-            />
-            <span>Изменить</span>
-          </Button>
           <Button onClick={() => {}}>
             <AiOutlineDelete
               size={30}
