@@ -187,11 +187,11 @@ class UserController {
 
   async delete(req, res) {
     const schema = 'account';
-    const { id } = req.params;
+    const { ids } = req.params;
 
-    await UserAccount.destroy({ where: { id }, schema });
+    await UserAccount.destroy({ where: { id: ids }, schema });
 
-    return res.json({ message: 'Пользователь успешно удален.' });
+    return res.json({ message: 'Удаление произведено успешно.' });
   }
 
   async import(req, res, next) {

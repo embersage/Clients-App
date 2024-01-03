@@ -37,28 +37,28 @@ const Header = () => {
           }}
         />
       )}
-
       {(location.pathname.includes('/users') ||
         location.pathname.includes('/payments')) && <Search />}
-      {(location.pathname.includes('/users') ||
-        location.pathname.includes('/payments')) && (
-        <Button
-          onClick={() => {
-            dispatch(setIsVisible(true));
-            dispatch(setPressedButton('filters'));
-          }}
-        >
-          <MdFilterAlt
-            size={30}
-            className={styles.icon}
-            color="rgba(171,171,171, 0.75)"
-          />
-          <span>Фильтры</span>
-        </Button>
-      )}
-      {(location.pathname.includes('/user') ||
-        location.pathname.includes('/users')) && (
-        <div className={styles.buttons}>
+      <div className={styles.buttons}>
+        {(location.pathname.includes('/users') ||
+          location.pathname.includes('/payments')) && (
+          <Button
+            onClick={() => {
+              dispatch(setIsVisible(true));
+              dispatch(setPressedButton('filters'));
+            }}
+          >
+            <MdFilterAlt
+              size={30}
+              className={styles.icon}
+              color="rgba(171,171,171, 0.75)"
+            />
+            <span>Фильтры</span>
+          </Button>
+        )}
+        {(location.pathname.includes('/user/') ||
+          (location.pathname.includes('/users') &&
+            selectedUsers.length > 0)) && (
           <Button
             onClick={() => {
               if (location.pathname.includes('/users')) {
@@ -73,23 +73,23 @@ const Header = () => {
             />
             <span>Удалить</span>
           </Button>
-        </div>
-      )}
-      {location.pathname.includes('/users') && (
-        <Button
-          onClick={() => {
-            dispatch(setIsVisible(true));
-            dispatch(setPressedButton('import'));
-          }}
-        >
-          <CiImport
-            size={30}
-            className={styles.icon}
-            color="rgba(171,171,171, 0.75)"
-          />
-          <span>Импорт</span>
-        </Button>
-      )}
+        )}
+        {location.pathname.includes('/users') && (
+          <Button
+            onClick={() => {
+              dispatch(setIsVisible(true));
+              dispatch(setPressedButton('import'));
+            }}
+          >
+            <CiImport
+              size={30}
+              className={styles.icon}
+              color="rgba(171,171,171, 0.75)"
+            />
+            <span>Импорт</span>
+          </Button>
+        )}
+      </div>
       {(location.pathname.includes('/users') ||
         location.pathname.includes('/payments')) && <Pagination />}
     </header>
