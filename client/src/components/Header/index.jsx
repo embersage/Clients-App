@@ -9,8 +9,8 @@ import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Search from '../../components/Search';
 import Pagination from '../Pagination';
 import Button from '../Button';
+import { removeUsers } from '../../redux/slices/usersSlice';
 import styles from './Header.module.scss';
-import { removeUser } from '../../redux/slices/usersSlice';
 
 const Header = () => {
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -62,7 +62,8 @@ const Header = () => {
           <Button
             onClick={() => {
               if (location.pathname.includes('/users')) {
-                dispatch(removeUser(selectedUsers[0]));
+                console.log('selectedUsers in button:', selectedUsers);
+                dispatch(removeUsers({ users: selectedUsers }));
               }
             }}
           >

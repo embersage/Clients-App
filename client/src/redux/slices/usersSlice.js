@@ -3,7 +3,7 @@ import {
   fetchUsers,
   fetchUser,
   uploadUsers,
-  deleteUser,
+  deleteUsers,
 } from '../../http/usersApi';
 import formatDate from '../../utils/formatDate';
 
@@ -42,10 +42,11 @@ export const importUsers = createAsyncThunk(
   }
 );
 
-export const removeUser = createAsyncThunk(
-  'users/removeUser',
-  async ({ id }) => {
-    const data = await deleteUser(id);
+export const removeUsers = createAsyncThunk(
+  'users/removeUsers',
+  async ({ users }) => {
+    console.log('users in usersSlice:', users);
+    const data = await deleteUsers(users);
     return data;
   }
 );
@@ -139,16 +140,18 @@ export const usersSlice = createSlice({
         state.status = 'error';
         state.user = {};
       })
-      .addCase(removeUser.pending, (state) => {
+      .addCase(removeUsers.pending, (state) => {
         state.status = 'loading';
         state.user = {};
       })
-      .addCase(removeUser.fulfilled, (state) => {
+      .addCase(removeUsers.fulfilled, (state) => {
         state.status = 'succeeded';
+        state.selectedUsers = [];
         state.user = {};
       })
-      .addCase(removeUser.rejected, (state) => {
+      .addCase(removeUsers.rejected, (state) => {
         state.status = 'error';
+        state.selectedUsers = [];
         state.user = {};
       });
   },

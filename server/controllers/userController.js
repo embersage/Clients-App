@@ -123,7 +123,7 @@ class UserController {
         },
         {
           model: UserConfig,
-          attributes: ['auto_payment'],
+          attributes: ['language', 'usage_format', 'auto_payment'],
         },
         {
           model: Tariff,
@@ -187,9 +187,14 @@ class UserController {
 
   async delete(req, res) {
     const schema = 'account';
-    const { ids } = req.params;
+    const { users } = req.body;
+    console.log('users in backend:', users);
+    //let ids = [];
+    //users.forEach((item) => {
+    //  ids.push(item.id);
+    //});
 
-    await UserAccount.destroy({ where: { id: ids }, schema });
+    //await UserAccount.destroy({ where: { id: ids }, schema });
 
     return res.json({ message: 'Удаление произведено успешно.' });
   }

@@ -1,116 +1,85 @@
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import styles from './InformationBlock.module.scss';
 import formatDate from '../../utils/formatDate';
+import { useState } from 'react';
 
 const InformationBlock = (props) => {
-  const {
-    id,
-    name,
-    email,
-    password,
-    activate,
-    activate_code,
-    date_reg,
-    phone,
-    vk,
-    yandex,
-    temporary,
-    date_last_login,
-    email_status,
-  } = props;
-  const role = props['role.name'];
-  const company = props['company.name'];
-  const accessLevel = props['access_level.name'];
+  /* TODO
+      language
+      usage_format
+      auto_payment */
+  const [data, setData] = useState([
+    { name: 'id', value: props.id, canEdit: false },
+    { name: 'Имя', value: props.name, canEdit: true },
+    { name: 'Email', value: props.email, canEdit: true },
+    { name: 'Пароль', value: props.password, canEdit: true },
+    { name: 'Активирован', value: props.activate, canEdit: true },
+    { name: 'Код активации', value: props.activate_code, canEdit: false },
+    {
+      name: 'Дата регистрации',
+      value: formatDate(props.date_reg),
+      canEdit: false,
+    },
+    { name: 'Номер телефона', value: props.phone, canEdit: true },
+    { name: 'VK', value: props.vk, canEdit: false },
+    { name: 'Yandex', value: props.yandex, canEdit: false },
+    { name: 'Временный', value: props.temporary, canEdit: false },
+    {
+      name: 'Последняя активность',
+      value: formatDate(props.date_last_login),
+      canEdit: false,
+    },
+    { name: 'Email статус', value: props.email_status, canEdit: false },
+    { name: 'Компания', value: props?.company?.name, canEdit: false },
+    {
+      name: 'Уровень доступа',
+      value: props?.access_level?.name,
+      canEdit: false,
+    },
+    {
+      name: 'Язык',
+      value: props?.user_config?.language,
+      canEdit: false,
+    },
+    {
+      name: 'Формат использования',
+      value: props?.user_config?.usage_format,
+      canEdit: false,
+    },
+    {
+      name: 'Автоплатеж',
+      value: `${props?.user_config?.auto_payment}`,
+      canEdit: false,
+    },
+  ]);
 
   return (
     <div className={styles.informationBlock}>
       <h2>Данные</h2>
-      <ul className={styles.data}>
-        <li>
-          <span className={styles.heading}>id</span>
-          <span className={styles.value}>{id ? id : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Имя</span>
-          <span className={styles.value}>{name ? name : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Email</span>
-          <span className={styles.value}>{email ? email : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Пароль</span>
-          <span className={styles.value}>
-            {password ? (
-              <FaRegEye className={styles.icon} size={15} onClick={() => {}} />
-            ) : (
-              'Нет данных'
-            )}
-          </span>
-        </li>
-        <li>
-          <span className={styles.heading}>Активирован</span>
-          <span className={styles.value}>{activate ? 'Да' : 'Нет'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Код активации</span>
-          <span className={styles.value}>
-            {activate_code ? activate_code : 'Нет данных'}
-          </span>
-        </li>
-        <li>
-          <span className={styles.heading}>Дата регистрации</span>
-          <span className={styles.value}>{formatDate(date_reg)}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Телефон</span>
-          <span className={styles.value}>{phone ? phone : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>VK</span>
-          <span className={styles.value}>{vk ? vk : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Yandex</span>
-          <span className={styles.value}>
-            {yandex ? (
-              <FaRegEye className={styles.icon} size={15} onClick={() => {}} />
-            ) : (
-              'Нет данных'
-            )}
-          </span>
-        </li>
-        <li>
-          <span className={styles.heading}>Временный</span>
-          <span className={styles.value}>{temporary ? 'Да' : 'Нет'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Последняя активность</span>
-          <span className={styles.value}>{formatDate(date_last_login)}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Email статус</span>
-          <span className={styles.value}>
-            {email_status ? email_status : 'Нет данных'}
-          </span>
-        </li>
-        <li>
-          <span className={styles.heading}>Роль</span>
-          <span className={styles.value}>{role ? role : 'Нет данных'}</span>
-        </li>
-        <li>
-          <span className={styles.heading}>Компания</span>
-          <span className={styles.value}>
-            {company ? company : 'Нет данных'}
-          </span>
-        </li>
-        <li>
-          <span className={styles.heading}>Уровень доступа</span>
-          <span className={styles.value}>
-            {accessLevel ? accessLevel : 'Нет данных'}
-          </span>
-        </li>
-      </ul>
+      <form className={styles.data}>
+        {data.map((item, index) => {
+          return (
+            <label key={index}>
+              <span>{item.name}</span>
+              <input
+                type="text"
+                value={item.value ? item.value : ''}
+                placeholder={!item.value ? 'Нет данных' : ''}
+                onChange={(event) => {
+                  setData(
+                    data.map((object) => {
+                      return item.name === object.name
+                        ? { ...object, value: event.target.value }
+                        : object;
+                    })
+                  );
+                  console.log(data);
+                }}
+              />
+            </label>
+          );
+        })}
+      </form>
     </div>
   );
 };
