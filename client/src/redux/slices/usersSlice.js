@@ -45,7 +45,6 @@ export const importUsers = createAsyncThunk(
 export const removeUsers = createAsyncThunk(
   'users/removeUsers',
   async ({ users }) => {
-    console.log('users in usersSlice:', users);
     const data = await deleteUsers(users);
     return data;
   }

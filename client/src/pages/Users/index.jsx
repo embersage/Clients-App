@@ -2,20 +2,28 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { CiImport } from 'react-icons/ci';
+import { MdFilterAlt } from 'react-icons/md';
 import {
   getUsers,
   setSelectedUsers,
   addSelectedUser,
   removeSelectedUser,
   importUsers,
+  removeUsers,
 } from '../../redux/slices/usersSlice';
-import { setIsVisible } from '../../redux/slices/modalSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
+import Search from '../../components/Search';
+import Button from '../../components/Button';
+import Pagination from '../../components/Pagination';
 import styles from './Users.module.scss';
+import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Users = () => {
@@ -59,11 +67,61 @@ const Users = () => {
     }
   };
 
+  const deleteUsers = async (users) => {
+    const response = await dispatch(removeUsers(users));
+  };
+
   return (
     <>
       <Menu />
       <div className={styles.wrapper}>
-        <Header />
+        <Header>
+          <Search />
+          <div className={headerStyles.buttons}>
+            <Button
+              onClick={() => {
+                dispatch(setIsVisible(true));
+                dispatch(setPressedButton('filters'));
+              }}
+            >
+              <MdFilterAlt
+                size={30}
+                className={styles.icon}
+                color="rgba(171,171,171, 0.75)"
+              />
+              <span>Фильтры</span>
+            </Button>
+            {selectedUsers.length > 0 && (
+              <Button
+                onClick={(event) => {
+                  event.preventDefault();
+                  deleteUsers({ users: selectedUsers });
+                }}
+              >
+                <AiOutlineDelete
+                  size={30}
+                  className={styles.icon}
+                  color="rgba(171,171,171, 0.75)"
+                />
+                <span>Удалить</span>
+              </Button>
+            )}
+            <Button
+              onClick={() => {
+                dispatch(setIsVisible(true));
+                dispatch(setPressedButton('import'));
+              }}
+            >
+              <CiImport
+                size={30}
+                className={styles.icon}
+                color="rgba(171,171,171, 0.75)"
+              />
+              <span>Импорт</span>
+            </Button>
+          </div>
+          <Pagination />
+        </Header>
         {status === 'succeeded' ? (
           <>
             <Table

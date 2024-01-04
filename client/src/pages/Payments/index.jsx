@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
+import { MdFilterAlt } from 'react-icons/md';
 import { getPayments } from '../../redux/slices/paymentsSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
-import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
+import Pagination from '../../components/Pagination';
+import Button from '../../components/Button';
+import Search from '../../components/Search';
 import styles from './Payments.module.scss';
+import headerStyles from '../../components/Header/Header.module.scss';
+import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Payments = () => {
   const payments = useSelector((state) => state.payments.items);
@@ -41,7 +47,25 @@ const Payments = () => {
     <>
       <Menu />
       <div className={styles.wrapper}>
-        <Header />
+        <Header>
+          <Search />
+          <div className={headerStyles.buttons}>
+            <Button
+              onClick={() => {
+                dispatch(setIsVisible(true));
+                dispatch(setPressedButton('filters'));
+              }}
+            >
+              <MdFilterAlt
+                size={30}
+                className={styles.icon}
+                color="rgba(171,171,171, 0.75)"
+              />
+              <span>Фильтры</span>
+            </Button>
+          </div>
+          <Pagination />
+        </Header>
         {status === 'succeeded' ? (
           <>
             <Table

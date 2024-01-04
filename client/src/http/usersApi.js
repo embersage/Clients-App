@@ -20,9 +20,8 @@ export const uploadUsers = async (file) => {
 };
 
 export const deleteUsers = async (users) => {
-  console.log('users in usersAPI:', users);
-  const { data } = await $authHost.delete(`api/user`, {
-    users,
+  const { response } = await $authHost.delete('api/user', {
+    data: { users },
   });
-  return data.message;
+  return response.message;
 };

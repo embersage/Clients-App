@@ -188,13 +188,12 @@ class UserController {
   async delete(req, res) {
     const schema = 'account';
     const { users } = req.body;
-    console.log('users in backend:', users);
-    //let ids = [];
-    //users.forEach((item) => {
-    //  ids.push(item.id);
-    //});
+    let ids = [];
+    users.forEach((item) => {
+      ids.push(item.id);
+    });
 
-    //await UserAccount.destroy({ where: { id: ids }, schema });
+    await UserAccount.destroy({ where: { id: ids }, schema });
 
     return res.json({ message: 'Удаление произведено успешно.' });
   }
