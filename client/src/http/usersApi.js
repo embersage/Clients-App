@@ -19,6 +19,14 @@ export const uploadUsers = async (file) => {
   return data.message;
 };
 
+export const updateUser = async (id, data) => {
+  const response = await $authHost.patch(`api/user/${id}`, {
+    data,
+  });
+  console.log(response.data);
+  return response.data;
+};
+
 export const deleteUsers = async (users) => {
   const { response } = await $authHost.delete('api/user', {
     data: { users },

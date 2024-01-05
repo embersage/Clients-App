@@ -4,6 +4,7 @@ import {
   fetchUser,
   uploadUsers,
   deleteUsers,
+  updateUser,
 } from '../../http/usersApi';
 import formatDate from '../../utils/formatDate';
 
@@ -39,6 +40,14 @@ export const importUsers = createAsyncThunk(
   async ({ file }) => {
     const data = await uploadUsers(file);
     return data;
+  }
+);
+
+export const editUser = createAsyncThunk(
+  'users/editUser',
+  async ({ id, data }) => {
+    const response = await updateUser(id, data);
+    return response;
   }
 );
 
@@ -109,21 +118,18 @@ export const usersSlice = createSlice({
       .addCase(getUser.pending, (state) => {
         state.status = 'loading';
         state.users = [];
-        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.users = [];
-        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = action.payload;
       })
       .addCase(getUser.rejected, (state) => {
         state.status = 'error';
         state.users = [];
-        state.selectedUsers = [];
         state.totalCount = 0;
         state.user = {};
       })
@@ -137,6 +143,24 @@ export const usersSlice = createSlice({
       })
       .addCase(importUsers.rejected, (state) => {
         state.status = 'error';
+        state.user = {};
+      })
+      .addCase(editUser.pending, (state) => {
+        state.status = 'loading';
+        state.users = [];
+        state.totalCount = 0;
+        state.user = {};
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.users = [];
+        state.totalCount = 0;
+        state.user = action.payload;
+      })
+      .addCase(editUser.rejected, (state) => {
+        state.status = 'error';
+        state.users = [];
+        state.totalCount = 0;
         state.user = {};
       })
       .addCase(removeUsers.pending, (state) => {

@@ -144,6 +144,7 @@ const Users = () => {
                 <TableRow
                   key={item.id}
                   onClick={() => {
+                    dispatch(setSelectedUsers([item]));
                     navigate(`/user/${item.id}`);
                   }}
                   values={values}

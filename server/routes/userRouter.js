@@ -13,7 +13,7 @@ router.get('/', checkRoleMiddleware([2, 3]), userController.getAll);
 router.get('/:id', checkRoleMiddleware([2, 3]), userController.getOne);
 router.post('/login', userController.login);
 router.post('/import', upload.single('file'), userController.import);
-router.put('/:id', checkRoleMiddleware([2, 3]), userController.update);
+router.patch('/:id', checkRoleMiddleware([2, 3]), userController.update);
 router.delete('/', checkRoleMiddleware([2, 3]), userController.delete);
 
 export default router;

@@ -1,34 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { BsArrowClockwise } from 'react-icons/bs';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { getUser, removeUsers } from '../../redux/slices/usersSlice';
+import { deleteUsers } from '../../http/usersApi';
+import { USERS_ROUTE } from '../../utils/consts';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import InformationBlock from '../../components/InformationBlock';
 import TariffBlock from '../../components/TariffBlock';
 import PresentationBlock from '../../components/PresentationBlock';
-import ModalWindow from '../../components/ModalWindow';
+import Button from '../../components/Button';
 import styles from './User.module.scss';
-import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../redux/slices/usersSlice';
-import { setUser } from '../../redux/slices/userSlice';
-import { BsArrowClockwise } from 'react-icons/bs';
+import headerStyles from '../../components/Header/Header.module.scss';
 
 const User = () => {
-  const user = useSelector((state) => state.users.user);
   const { id } = useParams();
+  const user = useSelector((state) => state.users.user);
   const status = useSelector((state) => state.users.status);
+  const selectedUsers = useSelector((state) => state.users.selectedUsers);
+  const navigate = useNavigate();
   //const [user, setUser] = useState();
   const dispatch = useDispatch();
-  const accessLevels = ['user', 'moderator', 'administrator'];
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    number: '',
-    role: '',
-    company: '',
-    accessLevel: '',
-  });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,15 +32,32 @@ const User = () => {
     fetchUser();
   }, []);
 
-  if (!user) {
-    return <p>Загрузка</p>;
-  }
+  const deleteUsers = async (users) => {
+    const response = await dispatch(removeUsers(users));
+  };
 
   return (
     <>
       <Menu />
       <div className={styles.wrapper}>
-        <Header />
+        <Header>
+          <div className={headerStyles.buttons}>
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+                deleteUsers({ users: selectedUsers });
+                navigate(USERS_ROUTE);
+              }}
+            >
+              <AiOutlineDelete
+                size={30}
+                className={styles.icon}
+                color="rgba(171,171,171, 0.75)"
+              />
+              <span>Удалить</span>
+            </Button>
+          </div>
+        </Header>
         <div className={styles.content}>
           {status === 'succeeded' ? (
             <>

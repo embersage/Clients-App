@@ -146,41 +146,53 @@ class UserController {
   async update(req, res) {
     const schema = 'account';
     const { id } = req.params;
-    const {
-      name,
-      email,
-      password,
-      activate,
-      activate_code,
-      date_reg,
-      phone,
-      vk,
-      yandex,
-      temporary,
-      date_last_login,
-      email_status,
-      company,
-      access_level,
-    } = req.body;
-    const user = await UserAccount.update(
+    const { data } = req.body;
+    const property = Object.keys(data)[0];
+    const value = Object.values(data)[0];
+
+    await UserAccount.update(
       {
-        name,
-        email,
-        password,
-        activate,
-        activate_code,
-        date_reg,
-        phone,
-        vk,
-        yandex,
-        temporary,
-        date_last_login,
-        email_status,
-        company,
-        access_level,
+        [property]: value,
       },
-      { where: { id }, schema }
+      {
+        where: { id },
+        schema,
+      }
     );
+
+    const user = await UserAccount.findOne({
+      where: { id },
+      include: [
+        {
+          model: Role,
+          attributes: ['name'],
+        },
+        {
+          model: Company,
+          attributes: ['name'],
+        },
+        {
+          model: AccessLevel,
+          attributes: ['name'],
+        },
+        {
+          model: UserConfig,
+          attributes: ['language', 'usage_format', 'auto_payment'],
+        },
+        {
+          model: Tariff,
+          attributes: ['name'],
+        },
+        {
+          model: Presentation,
+          attributes: ['id', 'name', 'description'],
+        },
+      ],
+      attributes: {
+        exclude: ['id_company', 'id_role', 'id_access_level'],
+      },
+      schema,
+    });
 
     return res.json(user);
   }
