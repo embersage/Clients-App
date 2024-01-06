@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
@@ -28,14 +28,15 @@ import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Users = () => {
   const inputRef = useRef();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector((state) => state.users.users);
   const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [allAreSelected, setAllAreSelected] = useState(false);
   const values = [
     'id',
     'name',
@@ -68,8 +69,18 @@ const Users = () => {
   };
 
   const deleteUsers = async (users) => {
-    const response = await dispatch(removeUsers(users));
+    await dispatch(removeUsers(users));
   };
+
+  //const selectAll = () => {
+  //  if (allAreSelected) {
+  //    dispatch(setSelectedUsers([]));
+  //  } else {
+  //    dispatch(setSelectedUsers(users));
+  //  }
+  //
+  //  setAllAreSelected(!allAreSelected);
+  //};
 
   return (
     <>
@@ -139,6 +150,16 @@ const Users = () => {
                 'Уровень доступа',
               ]}
               name={'Клиенты'}
+              checked={selectedUsers.length === users.length ? true : false}
+              allAreSelected={allAreSelected}
+              onSelect={() => {
+                dispatch(setSelectedUsers(users));
+                setAllAreSelected(true);
+              }}
+              onUnselect={() => {
+                dispatch(setSelectedUsers([]));
+                setAllAreSelected(false);
+              }}
             >
               {users.map((item) => (
                 <TableRow
@@ -155,6 +176,7 @@ const Users = () => {
                   onUnselect={() => {
                     dispatch(removeSelectedUser(item));
                   }}
+                  allAreSelected={allAreSelected}
                 >
                   {item}
                 </TableRow>

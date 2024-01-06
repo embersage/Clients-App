@@ -3,7 +3,7 @@ import styles from './TableRow.module.scss';
 
 const TableRow = (props) => {
   const checkboxRef = useRef();
-  const [isPressed, setIsPressed] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   const handleRowClick = (event) => {
     if (checkboxRef.current && checkboxRef.current.contains(event.target)) {
@@ -14,9 +14,9 @@ const TableRow = (props) => {
   };
 
   const handleCheckboxClick = (event) => {
-    setIsPressed(!isPressed);
+    setIsSelected(!isSelected);
 
-    if (!isPressed) {
+    if (!isSelected) {
       props?.onSelect?.();
     } else {
       props?.onUnselect?.();
