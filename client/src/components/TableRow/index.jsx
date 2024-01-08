@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './TableRow.module.scss';
 
 const TableRow = (props) => {
   const checkboxRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
+  const { allAreSelected } = props;
 
   const handleRowClick = (event) => {
     if (checkboxRef.current && checkboxRef.current.contains(event.target)) {
@@ -23,6 +24,14 @@ const TableRow = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (allAreSelected) {
+      setIsSelected(true);
+    } else {
+      setIsSelected(false);
+    }
+  }, [allAreSelected]);
+
   return (
     <tr className={styles.tableRow} onClick={handleRowClick}>
       {props.showCheckbox && (
@@ -31,6 +40,7 @@ const TableRow = (props) => {
             ref={checkboxRef}
             type="checkbox"
             onChange={handleCheckboxClick}
+            checked={isSelected}
           />
         </td>
       )}

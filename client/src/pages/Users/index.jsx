@@ -54,8 +54,9 @@ const Users = () => {
     const fetchUsers = async () => {
       await dispatch(getUsers({ limit: 10, page, search }));
     };
-
     fetchUsers();
+
+    setAllAreSelected(false);
   }, [search, page]);
 
   const upload = async (file) => {
@@ -71,16 +72,6 @@ const Users = () => {
   const deleteUsers = async (users) => {
     await dispatch(removeUsers(users));
   };
-
-  //const selectAll = () => {
-  //  if (allAreSelected) {
-  //    dispatch(setSelectedUsers([]));
-  //  } else {
-  //    dispatch(setSelectedUsers(users));
-  //  }
-  //
-  //  setAllAreSelected(!allAreSelected);
-  //};
 
   return (
     <>
@@ -152,13 +143,22 @@ const Users = () => {
               name={'Клиенты'}
               checked={selectedUsers.length === users.length ? true : false}
               allAreSelected={allAreSelected}
-              onSelect={() => {
+              /* onSelect={() => {
                 dispatch(setSelectedUsers(users));
                 setAllAreSelected(true);
               }}
               onUnselect={() => {
                 dispatch(setSelectedUsers([]));
                 setAllAreSelected(false);
+              }} */
+              onSelect={() => {
+                if (selectedUsers.length !== users.length) {
+                  dispatch(setSelectedUsers(users));
+                  setAllAreSelected(true);
+                } else {
+                  dispatch(setSelectedUsers([]));
+                  setAllAreSelected(false);
+                }
               }}
             >
               {users.map((item) => (

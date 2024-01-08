@@ -5,11 +5,13 @@ const Table = (props) => {
   const { allAreSelected, checked } = props;
 
   const handleCheckboxClick = (event) => {
-    if (!allAreSelected) {
+    /* if (!allAreSelected) {
       props?.onSelect?.();
     } else {
       props?.onUnselect?.();
-    }
+    } */
+
+    props?.onSelect?.();
   };
 
   return (

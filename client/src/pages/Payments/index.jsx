@@ -1,8 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
-import { getPayments } from '../../redux/slices/paymentsSlice';
+import {
+  getPayments,
+  setSelectedItems,
+  addSelectedItem,
+  removeSelectedItem,
+} from '../../redux/slices/paymentsSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -17,12 +22,14 @@ import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Payments = () => {
+  const dispatch = useDispatch();
   const payments = useSelector((state) => state.payments.items);
+  const selectedItems = useSelector((state) => state.payments.selectedItems);
   const page = useSelector((state) => state.payments.page);
   const status = useSelector((state) => state.payments.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  const dispatch = useDispatch();
+  const [allAreSelected, setAllAreSelected] = useState(false);
   const values = [
     'id',
     'date_start',
@@ -38,9 +45,11 @@ const Payments = () => {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      await dispatch(getPayments({ name: search, limit: 10, page }));
+      await dispatch(getPayments({ limit: 10, page, name: search }));
     };
     fetchPayments();
+    
+    setAllAreSelected(false);
   }, [search, page]);
 
   return (
@@ -82,9 +91,30 @@ const Payments = () => {
                 'Статус оплаты',
               ]}
               name={'Операции'}
+              checked={selectedItems.length === payments.length ? true : false}
+              allAreSelected={allAreSelected}
+              onSelect={() => {
+                dispatch(setSelectedItems(payments));
+                setAllAreSelected(true);
+              }}
+              onUnselect={() => {
+                dispatch(setSelectedItems([]));
+                setAllAreSelected(false);
+              }}
             >
               {payments.map((item) => (
-                <TableRow key={item.id} values={values}>
+                <TableRow
+                  key={item.id}
+                  values={values}
+                  showCheckbox={true}
+                  onSelect={() => {
+                    dispatch(addSelectedItem(item));
+                  }}
+                  onUnselect={() => {
+                    dispatch(removeSelectedItem(item));
+                  }}
+                  allAreSelected={allAreSelected}
+                >
                   {item}
                 </TableRow>
               ))}
