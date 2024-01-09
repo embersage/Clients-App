@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
-import styles from './Pagination.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { setUsersPage } from '../../redux/slices/usersSlice';
 import { setPaymentsPage } from '../../redux/slices/paymentsSlice';
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import styles from './Pagination.module.scss';
 
 const Pagination = () => {
   const dispatch = useDispatch();

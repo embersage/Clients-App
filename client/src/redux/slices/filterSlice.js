@@ -2,14 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   search: '',
-  endSoon: false,
-  hasFreeTariff: false,
-  hasSubscription: false,
-  hasAutoPayment: false,
+  endSoon: '',
+  hasFreeTariff: '',
+  hasSubscription: '',
+  autoPayment: '',
   amount: 0,
   tariff: '',
   currency: '',
-  isActivated: false,
+  activate: '',
+  sortBy: '',
+  sortType: '',
 };
 
 export const filterSlice = createSlice({
@@ -28,8 +30,8 @@ export const filterSlice = createSlice({
     setHasSubscription: (state, action) => {
       state.hasSubscription = action.payload;
     },
-    setHasAutoPayment: (state, action) => {
-      state.hasAutoPayment = action.payload;
+    setAutoPayment: (state, action) => {
+      state.autoPayment = action.payload;
     },
     setAmount: (state, action) => {
       state.amount = action.payload;
@@ -40,8 +42,14 @@ export const filterSlice = createSlice({
     setCurrency: (state, action) => {
       state.currency = action.payload;
     },
-    setIsActivated: (state, action) => {
-      state.isActivated = action.payload;
+    setActivate: (state, action) => {
+      state.activate = action.payload;
+    },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    },
+    setSortType: (state, action) => {
+      state.sortType = action.payload;
     },
   },
 });
@@ -51,11 +59,13 @@ export const {
   setEndSoon,
   setHasFreeTariff,
   setHasSubscription,
-  setHasAutoPayment,
+  setAutoPayment,
   setAmount,
   setTariff,
   setCurrency,
-  setIsActivated,
+  setActivate,
+  setSortBy,
+  setSortType,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

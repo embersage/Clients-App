@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImport } from 'react-icons/ci';
 import { MdFilterAlt } from 'react-icons/md';
+import { IoIosArrowRoundDown } from 'react-icons/io';
+import { IoIosArrowRoundUp } from 'react-icons/io';
 import {
   getUsers,
   setSelectedUsers,
@@ -13,6 +15,16 @@ import {
   importUsers,
   removeUsers,
 } from '../../redux/slices/usersSlice';
+import {
+  setEndSoon,
+  setHasFreeTariff,
+  setHasSubscription,
+  setAutoPayment,
+  setTariff,
+  setActivate,
+  setSortBy,
+  setSortType,
+} from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -36,6 +48,11 @@ const Users = () => {
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
+  const autoPayment = useSelector((state) => state.filter.autoPayment);
+  const activate = useSelector((state) => state.filter.activate);
+  const sortBy = useSelector((state) => state.filter.sortBy);
+  const sortType = useSelector((state) => state.filter.sortType);
+  const [clickedHeader, setClickedHeader] = useState();
   const values = [
     'id',
     'name',
@@ -48,18 +65,50 @@ const Users = () => {
     'company.name',
     'access_level.name',
   ];
+  const headers = [
+    'id',
+    'Имя',
+    'Email',
+    'Активирован',
+    'Дата регистрации',
+    'Номер телефона',
+    'Временный',
+    'Последняя активность',
+    'Компания',
+    'Уровень доступа',
+  ];
 
   useEffect(() => {
     const fetchUsers = async () => {
-      await dispatch(getUsers({ limit: 10, page, search }));
+      await dispatch(
+        getUsers({
+          limit: 10,
+          page,
+          sortBy,
+          sortType,
+          search,
+          activate,
+          autoPayment,
+        })
+      );
     };
     fetchUsers();
-  }, [search, page]);
+  }, [page, sortBy, sortType, search, activate, autoPayment]);
 
   const upload = async (file) => {
     const response = await dispatch(importUsers(file));
     if (response.payload) {
-      dispatch(getUsers({ limit: 10, page, search }));
+      dispatch(
+        getUsers({
+          limit: 10,
+          page,
+          sortBy,
+          sortType,
+          search,
+          activate,
+          autoPayment,
+        })
+      );
       dispatch(setIsVisible(false));
     } else {
       console.log('error');
@@ -68,7 +117,17 @@ const Users = () => {
 
   const deleteUsers = async (users) => {
     await dispatch(removeUsers(users));
-    await dispatch(getUsers({ limit: 10, page, search }));
+    await dispatch(
+      getUsers({
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+        activate,
+        autoPayment,
+      })
+    );
   };
 
   const handleCheckboxClick = () => {
@@ -133,19 +192,31 @@ const Users = () => {
         {status === 'succeeded' ? (
           <>
             <Table
-              headers={[
-                'id',
-                'Имя',
-                'Email',
-                'Активирован',
-                'Дата регистрации',
-                'Номер телефона',
-                'Временный',
-                'Последняя активность',
-                'Компания',
-                'Уровень доступа',
-              ]}
               name={'Клиенты'}
+              headers={headers}
+              values={values}
+              clickedHeader={clickedHeader}
+              onHeaderClick={(item) => {
+                dispatch(setSortBy(item));
+                setClickedHeader(item);
+                if (sortType === 'DESC' || !sortType) {
+                  dispatch(setSortType('ASC'));
+                }
+                if (sortType === 'ASC') {
+                  dispatch(setSortType('DESC'));
+                } else if (sortType) {
+                  dispatch(setSortType(''));
+                }
+              }}
+              icon={
+                sortType === 'ASC' ? (
+                  <IoIosArrowRoundUp />
+                ) : sortType === 'DESC' ? (
+                  <IoIosArrowRoundDown />
+                ) : (
+                  ''
+                )
+              }
               checked={selectedUsers.length === users.length}
               onSelect={handleCheckboxClick}
             >
@@ -199,7 +270,42 @@ const Users = () => {
           {pressedButton === 'filters' && (
             <>
               <label>
-                <span>Фильтры</span>
+                <span>Активированный аккаунт</span>
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (!activate) {
+                      dispatch(setActivate(true));
+                    } else {
+                      dispatch(setActivate(''));
+                    }
+                  }}
+                />
+              </label>
+              <label>
+                <span>Бесплатный тариф</span>
+                <input type="checkbox" />
+              </label>
+              <label>
+                <span>Скоро закончится тариф</span>
+                <input type="checkbox" />
+              </label>
+              <label>
+                <span>Есть подписка</span>
+                <input type="checkbox" />
+              </label>
+              <label>
+                <span>Включено автопродление</span>
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (!autoPayment) {
+                      dispatch(setAutoPayment(true));
+                    } else {
+                      dispatch(setAutoPayment(''));
+                    }
+                  }}
+                />
               </label>
             </>
           )}

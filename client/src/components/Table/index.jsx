@@ -1,8 +1,8 @@
 import styles from './Table.module.scss';
 
 const Table = (props) => {
-  const headers = props.headers;
-  const { checked } = props;
+  const { checked, headers, values, onHeaderClick, icon, clickedHeader } =
+    props;
 
   const handleCheckboxClick = (event) => {
     props?.onSelect?.();
@@ -25,7 +25,15 @@ const Table = (props) => {
             />
           </th>
           {headers.map((item, index) => (
-            <th key={index}>{item}</th>
+            <th
+              key={index}
+              onClick={() => {
+                onHeaderClick(values[index]);
+              }}
+            >
+              {item}
+              {clickedHeader === values[index] && <span>{icon}</span>}
+            </th>
           ))}
         </tr>
       </thead>

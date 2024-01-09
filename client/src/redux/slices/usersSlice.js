@@ -20,8 +20,17 @@ const initialState = {
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
-  async ({ limit, page, search }) => {
-    const data = await fetchUsers(limit, page, search);
+
+  async ({ limit, page, sortBy, sortType, search, activate, autoPayment }) => {
+    const data = await fetchUsers(
+      limit,
+      page,
+      sortBy,
+      sortType,
+      search,
+      activate,
+      autoPayment
+    );
     data.rows.forEach((item) => {
       item.date_reg = formatDate(item.date_reg);
       item.date_last_login = formatDate(item.date_last_login);
