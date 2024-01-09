@@ -4,6 +4,8 @@ import filterReducer from './slices/filterSlice';
 import userReducer from './slices/userSlice';
 import usersReducer from './slices/usersSlice';
 import paymentsReducer from './slices/paymentsSlice';
+import promocodesReducer from './slices/promocodesSlice';
+import notificationsReducer from './slices/notificationsSlice';
 import modalReducer from './slices/modalSlice';
 
 export const store = configureStore({
@@ -11,6 +13,8 @@ export const store = configureStore({
     user: userReducer,
     users: usersReducer,
     payments: paymentsReducer,
+    promocodes: promocodesReducer,
+    notifications: notificationsReducer,
     menu: menuReducer,
     filter: filterReducer,
     modal: modalReducer,

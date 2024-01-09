@@ -29,7 +29,7 @@ const Payments = () => {
   const status = useSelector((state) => state.payments.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  const [allAreSelected, setAllAreSelected] = useState(false);
+  //const [allAreSelected, setAllAreSelected] = useState(false);
   const values = [
     'id',
     'date_start',
@@ -42,15 +42,33 @@ const Payments = () => {
     'currency.name',
     'ckassa_payment_status.name',
   ];
+  const headers = [
+    'id',
+    'Дата начала',
+    'Дата окончания',
+    'Сумма',
+    'Тариф',
+    'id аккаунта',
+    'Имя',
+    'Компания',
+    'Валюта',
+    'Статус оплаты',
+  ];
 
   useEffect(() => {
     const fetchPayments = async () => {
       await dispatch(getPayments({ limit: 10, page, name: search }));
     };
     fetchPayments();
-    
-    setAllAreSelected(false);
   }, [search, page]);
+
+  const handleCheckboxClick = () => {
+    if (selectedItems.length !== payments.length) {
+      dispatch(setSelectedItems(payments));
+    } else {
+      dispatch(setSelectedItems([]));
+    }
+  };
 
   return (
     <>
@@ -78,42 +96,28 @@ const Payments = () => {
         {status === 'succeeded' ? (
           <>
             <Table
-              headers={[
-                'id',
-                'Дата начала',
-                'Дата окончания',
-                'Сумма',
-                'Тариф',
-                'id аккаунта',
-                'Имя',
-                'Компания',
-                'Валюта',
-                'Статус оплаты',
-              ]}
-              name={'Операции'}
-              checked={selectedItems.length === payments.length ? true : false}
-              allAreSelected={allAreSelected}
-              onSelect={() => {
-                dispatch(setSelectedItems(payments));
-                setAllAreSelected(true);
-              }}
-              onUnselect={() => {
-                dispatch(setSelectedItems([]));
-                setAllAreSelected(false);
-              }}
+              name={'Промокоды'}
+              headers={headers}
+              values={values}
+              checked={selectedItems.length === payments.length}
+              onSelect={handleCheckboxClick}
             >
               {payments.map((item) => (
                 <TableRow
                   key={item.id}
+                  onClick={() => {
+                    dispatch(setSelectedItems([item]));
+                    //navigate(`/user/${item.id}`);
+                  }}
                   values={values}
                   showCheckbox={true}
+                  checked={selectedItems.includes(item)}
                   onSelect={() => {
                     dispatch(addSelectedItem(item));
                   }}
                   onUnselect={() => {
                     dispatch(removeSelectedItem(item));
                   }}
-                  allAreSelected={allAreSelected}
                 >
                   {item}
                 </TableRow>

@@ -63,7 +63,7 @@ const Users = () => {
     'temporary',
     'date_last_login',
     'company.name',
-    'access_level.name',
+    //'access_level.name',
   ];
   const headers = [
     'id',
@@ -75,7 +75,7 @@ const Users = () => {
     'Временный',
     'Последняя активность',
     'Компания',
-    'Уровень доступа',
+    //'Уровень доступа',
   ];
 
   useEffect(() => {
