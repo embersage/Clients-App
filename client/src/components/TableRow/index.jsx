@@ -4,7 +4,7 @@ import styles from './TableRow.module.scss';
 const TableRow = (props) => {
   const checkboxRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
-  const { allAreSelected } = props;
+  const { checked } = props;
 
   const handleRowClick = (event) => {
     if (checkboxRef.current && checkboxRef.current.contains(event.target)) {
@@ -25,12 +25,8 @@ const TableRow = (props) => {
   };
 
   useEffect(() => {
-    if (allAreSelected) {
-      setIsSelected(true);
-    } else {
-      setIsSelected(false);
-    }
-  }, [allAreSelected]);
+    setIsSelected(checked);
+  }, [checked]);
 
   return (
     <tr className={styles.tableRow} onClick={handleRowClick}>
@@ -40,7 +36,7 @@ const TableRow = (props) => {
             ref={checkboxRef}
             type="checkbox"
             onChange={handleCheckboxClick}
-            checked={isSelected}
+            checked={checked}
           />
         </td>
       )}

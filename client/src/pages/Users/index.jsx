@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
@@ -36,7 +36,6 @@ const Users = () => {
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  const [allAreSelected, setAllAreSelected] = useState(false);
   const values = [
     'id',
     'name',
@@ -55,8 +54,6 @@ const Users = () => {
       await dispatch(getUsers({ limit: 10, page, search }));
     };
     fetchUsers();
-
-    setAllAreSelected(false);
   }, [search, page]);
 
   const upload = async (file) => {
@@ -71,6 +68,15 @@ const Users = () => {
 
   const deleteUsers = async (users) => {
     await dispatch(removeUsers(users));
+    await dispatch(getUsers({ limit: 10, page, search }));
+  };
+
+  const handleCheckboxClick = () => {
+    if (selectedUsers.length !== users.length) {
+      dispatch(setSelectedUsers(users));
+    } else {
+      dispatch(setSelectedUsers([]));
+    }
   };
 
   return (
@@ -128,7 +134,6 @@ const Users = () => {
           <>
             <Table
               headers={[
-                '',
                 'id',
                 'Имя',
                 'Email',
@@ -141,25 +146,8 @@ const Users = () => {
                 'Уровень доступа',
               ]}
               name={'Клиенты'}
-              checked={selectedUsers.length === users.length ? true : false}
-              allAreSelected={allAreSelected}
-              /* onSelect={() => {
-                dispatch(setSelectedUsers(users));
-                setAllAreSelected(true);
-              }}
-              onUnselect={() => {
-                dispatch(setSelectedUsers([]));
-                setAllAreSelected(false);
-              }} */
-              onSelect={() => {
-                if (selectedUsers.length !== users.length) {
-                  dispatch(setSelectedUsers(users));
-                  setAllAreSelected(true);
-                } else {
-                  dispatch(setSelectedUsers([]));
-                  setAllAreSelected(false);
-                }
-              }}
+              checked={selectedUsers.length === users.length}
+              onSelect={handleCheckboxClick}
             >
               {users.map((item) => (
                 <TableRow
@@ -170,13 +158,13 @@ const Users = () => {
                   }}
                   values={values}
                   showCheckbox={true}
+                  checked={selectedUsers.includes(item)}
                   onSelect={() => {
                     dispatch(addSelectedUser(item));
                   }}
                   onUnselect={() => {
                     dispatch(removeSelectedUser(item));
                   }}
-                  allAreSelected={allAreSelected}
                 >
                   {item}
                 </TableRow>

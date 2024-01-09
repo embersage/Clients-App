@@ -2,15 +2,9 @@ import styles from './Table.module.scss';
 
 const Table = (props) => {
   const headers = props.headers;
-  const { allAreSelected, checked } = props;
+  const { checked } = props;
 
   const handleCheckboxClick = (event) => {
-    /* if (!allAreSelected) {
-      props?.onSelect?.();
-    } else {
-      props?.onUnselect?.();
-    } */
-
     props?.onSelect?.();
   };
 

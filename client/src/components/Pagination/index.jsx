@@ -12,8 +12,8 @@ const Pagination = () => {
   const location = useLocation();
   const usersTotalCount = useSelector((state) => state.users.totalCount);
   const paymentsTotalCount = useSelector((state) => state.payments.totalCount);
-  const usersPage = useSelector((state) => state.users.usersPage);
-  const paymentsPage = useSelector((state) => state.payments.paymentsPage);
+  const usersPage = useSelector((state) => state.users.page);
+  const paymentsPage = useSelector((state) => state.payments.page);
   const usersLimit = useSelector((state) => state.users.limit);
   const paymentsLimit = useSelector((state) => state.payments.limit);
   const usersPageCount = Math.ceil(usersTotalCount / usersLimit);
