@@ -23,8 +23,13 @@ export const fetchUsers = async (
   return data;
 };
 
-export const fetchUser = async (id) => {
-  const { data } = await $authHost.get(`api/user/${id}`);
+export const fetchUser = async (id, sortBy, sortType) => {
+  const { data } = await $authHost.get(`api/user/${id}`, {
+    params: {
+      sortBy,
+      sortType,
+    },
+  });
   return data;
 };
 
@@ -44,7 +49,7 @@ export const updateUser = async (id, data) => {
 };
 
 export const deleteUsers = async (users) => {
-  const { response } = await $authHost.delete('api/user', {
+  const  response  = await $authHost.delete('api/user', {
     data: { users },
   });
   return response.message;

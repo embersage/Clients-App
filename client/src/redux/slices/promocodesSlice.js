@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchPromocodes } from '../../http/promocodeApi';
+import {
+  fetchPromocodes,
+  fetchPromocode,
+  deletePromocodes,
+} from '../../http/promocodeApi';
 import formatDate from '../../utils/formatDate';
 
 const initialState = {
@@ -9,6 +13,7 @@ const initialState = {
   page: 1,
   totalCount: 0,
   limit: 10,
+  promocode: {},
 };
 
 export const getPromocodes = createAsyncThunk(
@@ -19,6 +24,22 @@ export const getPromocodes = createAsyncThunk(
       item.date_start = formatDate(item.date_start);
       item.date_end = formatDate(item.date_end);
     });
+    return data;
+  }
+);
+
+export const getPromocode = createAsyncThunk(
+  'users/getPromocode',
+  async ({ id }) => {
+    const data = await fetchPromocode(id);
+    return data;
+  }
+);
+
+export const removePromocodes = createAsyncThunk(
+  'users/removePromocodes',
+  async ({ promocodes }) => {
+    const data = await deletePromocodes(promocodes);
     return data;
   }
 );
@@ -43,6 +64,9 @@ export const promocodesSlice = createSlice({
     removeSelectedItem: (state, action) => {
       state.selectedItems.splice(findInd(state, action.payload), 1);
     },
+    setPromocode: (state, action) => {
+      state.promocode = action.payload;
+    },
     setPromocodesPage: (state, action) => {
       state.page = action.payload;
     },
@@ -60,18 +84,53 @@ export const promocodesSlice = createSlice({
         state.items = [];
         state.selectedItems = [];
         state.totalCount = 0;
+        state.promocode = {};
       })
       .addCase(getPromocodes.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload.rows;
         state.selectedItems = [];
         state.totalCount = action.payload.count;
+        state.promocode = {};
       })
       .addCase(getPromocodes.rejected, (state) => {
         state.status = 'error';
         state.items = [];
         state.selectedItems = [];
         state.totalCount = 0;
+        state.promocode = {};
+      })
+      .addCase(getPromocode.pending, (state) => {
+        state.status = 'loading';
+        state.promocodes = [];
+        state.totalCount = 0;
+        state.promocode = {};
+      })
+      .addCase(getPromocode.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.promocodes = [];
+        state.totalCount = 0;
+        state.promocode = action.payload;
+      })
+      .addCase(getPromocode.rejected, (state) => {
+        state.status = 'error';
+        state.promocodes = [];
+        state.totalCount = 0;
+        state.promocode = {};
+      })
+      .addCase(removePromocodes.pending, (state) => {
+        state.status = 'loading';
+        state.promocode = {};
+      })
+      .addCase(removePromocodes.fulfilled, (state) => {
+        state.status = 'succeeded';
+        state.selectedPromocodes = [];
+        state.promocode = {};
+      })
+      .addCase(removePromocodes.rejected, (state) => {
+        state.status = 'error';
+        state.selectedPromocodes = [];
+        state.promocode = {};
       });
   },
 });

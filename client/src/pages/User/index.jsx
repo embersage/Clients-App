@@ -1,17 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { getUser, removeUsers } from '../../redux/slices/usersSlice';
-import { deleteUsers } from '../../http/usersApi';
+import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
+import {
+  addSelectedPresentation,
+  getUser,
+  removeSelectedPresentation,
+  removeUsers,
+  setSelectedPresentations,
+} from '../../redux/slices/usersSlice';
 import { USERS_ROUTE } from '../../utils/consts';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import InformationBlock from '../../components/InformationBlock';
 import TariffBlock from '../../components/TariffBlock';
-import PresentationBlock from '../../components/PresentationBlock';
 import Button from '../../components/Button';
+import Table from '../../components/Table';
+import TableRow from '../../components/TableRow';
 import styles from './User.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 
@@ -19,21 +27,163 @@ const User = () => {
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
   const status = useSelector((state) => state.users.status);
-  const selectedUsers = useSelector((state) => state.users.selectedUsers);
+  const selectedPresentations = useSelector(
+    (state) => state.users.selectedPresentations
+  );
   const navigate = useNavigate();
-  //const [user, setUser] = useState();
   const dispatch = useDispatch();
+  const sortBy = useSelector((state) => state.filter.sortBy);
+  const sortType = useSelector((state) => state.filter.sortType);
+  const [clickedHeader, setClickedHeader] = useState();
+  const [data, setData] = useState([
+    {
+      propName: 'id',
+      name: 'id',
+      value: user.id,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'name',
+      name: 'Имя',
+      value: user.name,
+      disabled: false,
+      type: 'text',
+    },
+    {
+      propName: 'email',
+      name: 'Email',
+      value: user.email,
+      disabled: false,
+      type: 'email',
+    },
+    {
+      propName: 'password',
+      name: 'Пароль',
+      value: user.password,
+      disabled: false,
+      type: 'text',
+    },
+    {
+      propName: 'activate',
+      name: 'Активирован',
+      value: user.activate,
+      disabled: false,
+      type: 'text',
+    },
+    {
+      propName: 'activate_code',
+      name: 'Код активации',
+      value: user.activate_code,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'date_reg',
+      name: 'Дата регистрации',
+      value: user.date_reg,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'phone',
+      name: 'Номер телефона',
+      value: user.phone,
+      disabled: false,
+      type: 'tel',
+    },
+    {
+      propName: 'vk',
+      name: 'VK',
+      value: user.vk,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'yandex',
+      name: 'Yandex',
+      value: user.yandex,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'temporary',
+      name: 'Временный',
+      value: user.temporary,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'date_last_login',
+      name: 'Последняя активность',
+      value: user.date_last_login,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'email_status',
+      name: 'Email статус',
+      value: user.email_status,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'company.name',
+      name: 'Компания',
+      value: user.company?.name,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'access_level.name',
+      name: 'Уровень доступа',
+      value: user.access_level?.name,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'user_config.language',
+      name: 'Язык',
+      value: user.user_config?.language,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'user_config.usage_format',
+      name: 'Формат использования',
+      value: user.user_config?.usage_format,
+      disabled: true,
+      type: 'text',
+    },
+    {
+      propName: 'user_config.auto_payment',
+      name: 'Автоплатеж',
+      value: user.user_config?.auto_payment,
+      disabled: true,
+      type: 'text',
+    },
+  ]);
+  const values = ['id', 'name', 'description'];
+  const headers = ['id', 'Название', 'Описание'];
 
   useEffect(() => {
     const fetchUser = async () => {
-      await dispatch(getUser({ id }));
+      await dispatch(getUser({ id, sortBy, sortType }));
     };
 
     fetchUser();
-  }, []);
+  }, [sortBy, sortType]);
 
   const deleteUsers = async (users) => {
-    const response = await dispatch(removeUsers(users));
+    await dispatch(removeUsers(users));
+  };
+
+  const handleCheckboxClick = () => {
+    if (selectedPresentations.length !== user.presentations.length) {
+      dispatch(setSelectedPresentations(user.presentations));
+    } else {
+      dispatch(setSelectedPresentations([]));
+    }
   };
 
   return (
@@ -45,7 +195,8 @@ const User = () => {
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                deleteUsers({ users: selectedUsers });
+                console.log(user);
+                deleteUsers({ users: [user] });
                 navigate(USERS_ROUTE);
               }}
             >
@@ -61,10 +212,64 @@ const User = () => {
         <div className={styles.content}>
           {status === 'succeeded' ? (
             <>
-              <InformationBlock {...user} />
+              <InformationBlock data={data} setData={setData} user={user} />
               <div className={styles.additionalInfo}>
                 <TariffBlock />
-                <PresentationBlock presentations={user.presentations} />
+                <>
+                  {user.presentations && user.presentations.length ? (
+                    <Table
+                      name={'Презентации'}
+                      headers={headers}
+                      values={values}
+                      clickedHeader={clickedHeader}
+                      onHeaderClick={(item) => {
+                        dispatch(setSortBy(item));
+                        setClickedHeader(item);
+                        if (sortType === 'DESC' || !sortType) {
+                          dispatch(setSortType('ASC'));
+                        }
+                        if (sortType === 'ASC') {
+                          dispatch(setSortType('DESC'));
+                        } else if (sortType) {
+                          dispatch(setSortType(''));
+                        }
+                      }}
+                      icon={
+                        sortType === 'ASC' ? (
+                          <IoIosArrowRoundUp />
+                        ) : sortType === 'DESC' ? (
+                          <IoIosArrowRoundDown />
+                        ) : (
+                          ''
+                        )
+                      }
+                      checked={
+                        selectedPresentations.length ===
+                        user.presentations.length
+                      }
+                      onSelect={handleCheckboxClick}
+                    >
+                      {user.presentations.map((item) => (
+                        <TableRow
+                          key={item.id}
+                          values={values}
+                          showCheckbox={true}
+                          checked={selectedPresentations.includes(item)}
+                          onSelect={() => {
+                            dispatch(addSelectedPresentation(item));
+                          }}
+                          onUnselect={() => {
+                            dispatch(removeSelectedPresentation(item));
+                          }}
+                        >
+                          {item}
+                        </TableRow>
+                      ))}
+                    </Table>
+                  ) : (
+                    <span>Нет презентаций ☹️</span>
+                  )}
+                </>
               </div>
             </>
           ) : (

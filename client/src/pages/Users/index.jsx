@@ -14,6 +14,7 @@ import {
   removeSelectedUser,
   importUsers,
   removeUsers,
+  setUser,
 } from '../../redux/slices/usersSlice';
 import {
   setEndSoon,
@@ -224,7 +225,8 @@ const Users = () => {
                 <TableRow
                   key={item.id}
                   onClick={() => {
-                    dispatch(setSelectedUsers([item]));
+                    //dispatch(setSelectedUsers([item]));
+                    dispatch(setUser(item));
                     navigate(`/user/${item.id}`);
                   }}
                   values={values}

@@ -3,6 +3,7 @@ import Users from './pages/Users';
 import User from './pages/User';
 import Payments from './pages/Payments';
 import Promocodes from './pages/Promocodes';
+import Promocode from './pages/Promocode';
 import Notifications from './pages/Notifications';
 import Login from './pages/Login';
 import {
@@ -11,6 +12,7 @@ import {
   USER_ROUTE,
   PAYMENTS_ROUTE,
   PROMOCODES_ROUTE,
+  PROMOCODE_ROUTE,
   NOTIFICATIONS_ROUTE,
   LOGIN_ROUTE,
 } from './utils/consts';
@@ -35,6 +37,10 @@ export const authRoutes = [
   {
     path: PROMOCODES_ROUTE,
     element: <Promocodes />,
+  },
+  {
+    path: PROMOCODE_ROUTE,
+    element: <Promocode />,
   },
   {
     path: NOTIFICATIONS_ROUTE,

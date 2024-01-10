@@ -26,14 +26,6 @@ class UserController {
   }
 
   async getAll(req, res) {
-    /* TODO
-    - у кого скоро закончится тариф (1 - 5 дней)
-    - у кого только бесплатный
-    - у кого есть подписка
-    - у кого включено автопродление
-    - по сумме подписки
-    - по тарифу
-    - по валюте */
     const schema = 'account';
     let { limit, page, sortBy, sortType, search, activate, autoPayment } =
       req.query;
@@ -105,6 +97,9 @@ class UserController {
   async getOne(req, res) {
     const schema = 'account';
     const { id } = req.params;
+    let { sortBy, sortType } = req.query;
+    sortBy = sortBy || 'id';
+    sortType = sortType || 'ASC';
 
     const user = await UserAccount.findOne({
       where: { id },
@@ -137,6 +132,7 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
+      order: [[Presentation, sortBy, sortType]],
       schema,
     });
 
@@ -204,7 +200,6 @@ class UserController {
     users.forEach((item) => {
       ids.push(item.id);
     });
-
     await UserAccount.destroy({ where: { id: ids }, schema });
 
     return res.json({ message: 'Удаление произведено успешно.' });

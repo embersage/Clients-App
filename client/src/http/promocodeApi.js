@@ -6,3 +6,15 @@ export const fetchPromocodes = async (limit = 10, page = 1, name) => {
   });
   return data;
 };
+
+export const fetchPromocode = async (id) => {
+  const { data } = await $authHost.get(`api/promocode/${id}`);
+  return data;
+};
+
+export const deletePromocodes = async (promocodes) => {
+  const { response } = await $authHost.delete('api/promocode', {
+    data: { promocodes },
+  });
+  return response.message;
+};
