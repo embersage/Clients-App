@@ -17,11 +17,8 @@ import {
   setUser,
 } from '../../redux/slices/usersSlice';
 import {
-  setEndSoon,
-  setHasFreeTariff,
-  setHasSubscription,
+  setUsePagination,
   setAutoPayment,
-  setTariff,
   setActivate,
   setSortBy,
   setSortType,
@@ -43,17 +40,18 @@ const Users = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [clickedHeader, setClickedHeader] = useState();
   const users = useSelector((state) => state.users.users);
   const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
-  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const autoPayment = useSelector((state) => state.filter.autoPayment);
   const activate = useSelector((state) => state.filter.activate);
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
-  const [clickedHeader, setClickedHeader] = useState();
+  const usePagination = useSelector((state) => state.filter.usePagination);
+  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const values = [
     'id',
     'name',
@@ -64,7 +62,6 @@ const Users = () => {
     'temporary',
     'date_last_login',
     'company.name',
-    //'access_level.name',
   ];
   const headers = [
     'id',
@@ -76,13 +73,13 @@ const Users = () => {
     'Временный',
     'Последняя активность',
     'Компания',
-    //'Уровень доступа',
   ];
 
   useEffect(() => {
     const fetchUsers = async () => {
       await dispatch(
         getUsers({
+          usePagination,
           limit: 10,
           page,
           sortBy,
@@ -93,14 +90,16 @@ const Users = () => {
         })
       );
     };
+
     fetchUsers();
-  }, [page, sortBy, sortType, search, activate, autoPayment]);
+  }, [usePagination, page, sortBy, sortType, search, activate, autoPayment]);
 
   const upload = async (file) => {
     const response = await dispatch(importUsers(file));
     if (response.payload) {
       dispatch(
         getUsers({
+          usePagination,
           limit: 10,
           page,
           sortBy,
@@ -120,6 +119,7 @@ const Users = () => {
     await dispatch(removeUsers(users));
     await dispatch(
       getUsers({
+        usePagination,
         limit: 10,
         page,
         sortBy,
@@ -188,7 +188,7 @@ const Users = () => {
               <span>Импорт</span>
             </Button>
           </div>
-          <Pagination />
+          {usePagination && <Pagination />}
         </Header>
         {status === 'succeeded' ? (
           <>
@@ -307,6 +307,32 @@ const Users = () => {
                       dispatch(setAutoPayment(''));
                     }
                   }}
+                />
+              </label>
+              <label>
+                <span>Включить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (!usePagination) {
+                      dispatch(setUsePagination(true));
+                    }
+                  }}
+                  checked={usePagination}
+                />
+              </label>
+              <label>
+                <span>Выключить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (usePagination) {
+                      dispatch(setUsePagination(false));
+                    }
+                  }}
+                  checked={!usePagination}
                 />
               </label>
             </>

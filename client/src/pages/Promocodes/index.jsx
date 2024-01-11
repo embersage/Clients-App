@@ -8,6 +8,7 @@ import {
   addSelectedItem,
   removeSelectedItem,
 } from '../../redux/slices/promocodesSlice';
+import { setUsePagination } from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -28,8 +29,8 @@ const Promocodes = () => {
   const page = useSelector((state) => state.promocodes.page);
   const status = useSelector((state) => state.promocodes.status);
   const search = useSelector((state) => state.filter.search);
+  const usePagination = useSelector((state) => state.filter.usePagination);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  //const [allAreSelected, setAllAreSelected] = useState(false);
   const values = ['id', 'code', 'discount', 'date_start', 'date_end'];
   const headers = ['id', 'Код', 'Скидка', 'Дата начала', 'Дата окончания'];
 
@@ -113,7 +114,30 @@ const Promocodes = () => {
           {pressedButton === 'filters' && (
             <>
               <label>
-                <span>Фильтры</span>
+                <span>Включить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (!usePagination) {
+                      dispatch(setUsePagination(true));
+                    }
+                  }}
+                  checked={usePagination}
+                />
+              </label>
+              <label>
+                <span>Выключить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (usePagination) {
+                      dispatch(setUsePagination(false));
+                    }
+                  }}
+                  checked={!usePagination}
+                />
               </label>
             </>
           )}

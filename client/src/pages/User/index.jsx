@@ -8,6 +8,7 @@ import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
 import {
   addSelectedPresentation,
   getUser,
+  editUser,
   removeSelectedPresentation,
   removeUsers,
   setSelectedPresentations,
@@ -35,134 +36,7 @@ const User = () => {
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
   const [clickedHeader, setClickedHeader] = useState();
-  const [data, setData] = useState([
-    {
-      propName: 'id',
-      name: 'id',
-      value: user.id,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'name',
-      name: 'Имя',
-      value: user.name,
-      disabled: false,
-      type: 'text',
-    },
-    {
-      propName: 'email',
-      name: 'Email',
-      value: user.email,
-      disabled: false,
-      type: 'email',
-    },
-    {
-      propName: 'password',
-      name: 'Пароль',
-      value: user.password,
-      disabled: false,
-      type: 'text',
-    },
-    {
-      propName: 'activate',
-      name: 'Активирован',
-      value: user.activate,
-      disabled: false,
-      type: 'text',
-    },
-    {
-      propName: 'activate_code',
-      name: 'Код активации',
-      value: user.activate_code,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'date_reg',
-      name: 'Дата регистрации',
-      value: user.date_reg,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'phone',
-      name: 'Номер телефона',
-      value: user.phone,
-      disabled: false,
-      type: 'tel',
-    },
-    {
-      propName: 'vk',
-      name: 'VK',
-      value: user.vk,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'yandex',
-      name: 'Yandex',
-      value: user.yandex,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'temporary',
-      name: 'Временный',
-      value: user.temporary,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'date_last_login',
-      name: 'Последняя активность',
-      value: user.date_last_login,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'email_status',
-      name: 'Email статус',
-      value: user.email_status,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'company.name',
-      name: 'Компания',
-      value: user.company?.name,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'access_level.name',
-      name: 'Уровень доступа',
-      value: user.access_level?.name,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'user_config.language',
-      name: 'Язык',
-      value: user.user_config?.language,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'user_config.usage_format',
-      name: 'Формат использования',
-      value: user.user_config?.usage_format,
-      disabled: true,
-      type: 'text',
-    },
-    {
-      propName: 'user_config.auto_payment',
-      name: 'Автоплатеж',
-      value: user.user_config?.auto_payment,
-      disabled: true,
-      type: 'text',
-    },
-  ]);
+  const [data, setData] = useState([]);
   const values = ['id', 'name', 'description'];
   const headers = ['id', 'Название', 'Описание'];
 
@@ -171,8 +45,141 @@ const User = () => {
       await dispatch(getUser({ id, sortBy, sortType }));
     };
 
-    fetchUser();
+    fetchUser().then(() => {});
   }, [sortBy, sortType]);
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      setData([
+        {
+          propName: 'id',
+          name: 'id',
+          value: user.id,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'name',
+          name: 'Имя',
+          value: user.name,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'email',
+          name: 'Email',
+          value: user.email,
+          disabled: false,
+          type: 'email',
+        },
+        {
+          propName: 'password',
+          name: 'Пароль',
+          value: user.password,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'activate',
+          name: 'Активирован',
+          value: user.activate,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'activate_code',
+          name: 'Код активации',
+          value: user.activate_code,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'date_reg',
+          name: 'Дата регистрации',
+          value: user.date_reg,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'phone',
+          name: 'Номер телефона',
+          value: user.phone,
+          disabled: false,
+          type: 'tel',
+        },
+        {
+          propName: 'vk',
+          name: 'VK',
+          value: user.vk,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'yandex',
+          name: 'Yandex',
+          value: user.yandex,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'temporary',
+          name: 'Временный',
+          value: user.temporary,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'date_last_login',
+          name: 'Последняя активность',
+          value: user.date_last_login,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'email_status',
+          name: 'Email статус',
+          value: user.email_status,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'company.name',
+          name: 'Компания',
+          value: user.company?.name,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'access_level.name',
+          name: 'Уровень доступа',
+          value: user.access_level?.name,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'user_config.language',
+          name: 'Язык',
+          value: user.user_config?.language,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'user_config.usage_format',
+          name: 'Формат использования',
+          value: user.user_config?.usage_format,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'user_config.auto_payment',
+          name: 'Автоплатеж',
+          value: user.user_config?.auto_payment,
+          disabled: true,
+          type: 'text',
+        },
+      ]);
+    }
+  }, [status]);
 
   const deleteUsers = async (users) => {
     await dispatch(removeUsers(users));
@@ -186,6 +193,17 @@ const User = () => {
     }
   };
 
+  const edit = (editingIndex) => {
+    dispatch(
+      editUser({
+        id: data[0].value,
+        data: {
+          [data[editingIndex].propName]: data[editingIndex].value,
+        },
+      })
+    );
+  };
+
   return (
     <>
       <Menu />
@@ -195,7 +213,6 @@ const User = () => {
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                console.log(user);
                 deleteUsers({ users: [user] });
                 navigate(USERS_ROUTE);
               }}
@@ -210,9 +227,14 @@ const User = () => {
           </div>
         </Header>
         <div className={styles.content}>
-          {status === 'succeeded' ? (
+          {data.length > 0 ? (
             <>
-              <InformationBlock data={data} setData={setData} user={user} />
+              <InformationBlock
+                data={data}
+                setData={setData}
+                user={user}
+                edit={edit}
+              />
               <div className={styles.additionalInfo}>
                 <TariffBlock />
                 <>

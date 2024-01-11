@@ -13,8 +13,28 @@ const initialState = {
 
 export const getPayments = createAsyncThunk(
   'payments/getPayments',
-  async ({ name, limit, page }) => {
-    const data = await fetchPayments(name, limit, page);
+  async ({
+    usePagination,
+    limit,
+    page,
+    sortBy,
+    sortType,
+    search,
+    amount,
+    tariff,
+    currency,
+  }) => {
+    const data = await fetchPayments(
+      usePagination,
+      limit,
+      page,
+      sortBy,
+      sortType,
+      search,
+      amount,
+      tariff,
+      currency
+    );
     data.rows.forEach((item) => {
       item.date_start = formatDate(item.date_start);
       item.date_end = formatDate(item.date_end);

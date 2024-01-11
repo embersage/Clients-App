@@ -9,6 +9,7 @@ import {
   removeSelectedItem,
 } from '../../redux/slices/notificationsSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
+import { setUsePagination } from '../../redux/slices/filterSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -31,7 +32,7 @@ const Notifications = () => {
   const status = useSelector((state) => state.notifications.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  //const [allAreSelected, setAllAreSelected] = useState(false);
+  const usePagination = useSelector((state) => state.filter.usePagination);
   const values = [
     'id',
     'name',
@@ -129,7 +130,30 @@ const Notifications = () => {
           {pressedButton === 'filters' && (
             <>
               <label>
-                <span>Фильтры</span>
+                <span>Включить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (!usePagination) {
+                      dispatch(setUsePagination(true));
+                    }
+                  }}
+                  checked={usePagination}
+                />
+              </label>
+              <label>
+                <span>Выключить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (usePagination) {
+                      dispatch(setUsePagination(false));
+                    }
+                  }}
+                  checked={!usePagination}
+                />
               </label>
             </>
           )}

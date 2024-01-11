@@ -17,13 +17,13 @@ import headerStyles from '../../components/Header/Header.module.scss';
 
 const Promocode = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const promocode = useSelector((state) => state.promocodes.promocode);
   const status = useSelector((state) => state.promocodes.status);
   const selectedPromocodes = useSelector(
     (state) => state.promocodes.selectedPromocodes
   );
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchPromocode = async () => {

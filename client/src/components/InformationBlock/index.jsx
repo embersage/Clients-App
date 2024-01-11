@@ -1,20 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { editUser } from '../../redux/slices/usersSlice';
 import styles from './InformationBlock.module.scss';
 
 const InformationBlock = (props) => {
-  const { data, setData, user } = props;
+  const { data, setData, edit } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const inputRef = useRef();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditing) {
       inputRef.current.focus();
     }
-  }, [isEditing, user]);
+  }, [isEditing]);
 
   const onClickHandle = (index) => {
     setIsEditing(true);
@@ -58,8 +55,7 @@ const InformationBlock = (props) => {
                     }
                   }}
                 >
-                  {/*   {item.value ? `${item.value}` : 'Нет данных'} */}
-                  {user[item.propName] ? user[item.propName] : 'Нет данных'}
+                  {item.value ? `${item.value}` : 'Нет данных'}
                 </span>
               )}
             </label>
@@ -72,14 +68,7 @@ const InformationBlock = (props) => {
               event.preventDefault();
               setIsEditing(false);
               setEditingIndex(null);
-              dispatch(
-                editUser({
-                  id: data[0].value,
-                  data: {
-                    [data[editingIndex].propName]: data[editingIndex].value,
-                  },
-                })
-              );
+              edit(editingIndex);
             }}
           >
             Сохранить

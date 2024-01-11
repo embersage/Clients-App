@@ -8,6 +8,7 @@ import {
   addSelectedItem,
   removeSelectedItem,
 } from '../../redux/slices/paymentsSlice';
+import { setUsePagination } from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -29,7 +30,12 @@ const Payments = () => {
   const status = useSelector((state) => state.payments.status);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
-  //const [allAreSelected, setAllAreSelected] = useState(false);
+  const usePagination = useSelector((state) => state.filter.usePagination);
+  const sortBy = useSelector((state) => state.filter.sortBy);
+  const sortType = useSelector((state) => state.filter.sortType);
+  const amount = useSelector((state) => state.filter.amount);
+  const tariff = useSelector((state) => state.filter.tariff);
+  const currency = useSelector((state) => state.filter.currency);
   const values = [
     'id',
     'date_start',
@@ -57,10 +63,22 @@ const Payments = () => {
 
   useEffect(() => {
     const fetchPayments = async () => {
-      await dispatch(getPayments({ limit: 10, page, name: search }));
+      await dispatch(
+        getPayments({
+          usePagination,
+          limit: 10,
+          page,
+          sortBy,
+          sortType,
+          search,
+          amount,
+          tariff,
+          currency,
+        })
+      );
     };
     fetchPayments();
-  }, [search, page]);
+  }, [usePagination, page, sortBy, sortType, search, amount, tariff]);
 
   const handleCheckboxClick = () => {
     if (selectedItems.length !== payments.length) {
@@ -91,7 +109,7 @@ const Payments = () => {
               <span>Фильтры</span>
             </Button>
           </div>
-          <Pagination />
+          {usePagination && <Pagination />}
         </Header>
         {status === 'succeeded' ? (
           <>
@@ -105,9 +123,8 @@ const Payments = () => {
               {payments.map((item) => (
                 <TableRow
                   key={item.id}
-                  onClick={() => {
+                  onClick={(event) => {
                     dispatch(setSelectedItems([item]));
-                    //navigate(`/user/${item.id}`);
                   }}
                   values={values}
                   showCheckbox={true}
@@ -135,7 +152,30 @@ const Payments = () => {
           {pressedButton === 'filters' && (
             <>
               <label>
-                <span>Фильтры</span>
+                <span>Включить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (!usePagination) {
+                      dispatch(setUsePagination(true));
+                    }
+                  }}
+                  checked={usePagination}
+                />
+              </label>
+              <label>
+                <span>Выключить пагинацию</span>
+                <input
+                  type="radio"
+                  name="usePagination"
+                  onChange={() => {
+                    if (usePagination) {
+                      dispatch(setUsePagination(false));
+                    }
+                  }}
+                  checked={!usePagination}
+                />
               </label>
             </>
           )}

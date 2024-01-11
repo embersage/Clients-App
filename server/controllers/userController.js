@@ -27,8 +27,18 @@ class UserController {
 
   async getAll(req, res) {
     const schema = 'account';
-    let { limit, page, sortBy, sortType, search, activate, autoPayment } =
-      req.query;
+    let {
+      usePagination,
+      limit,
+      page,
+      sortBy,
+      sortType,
+      search,
+      activate,
+      autoPayment,
+    } = req.query;
+    usePagination =
+      usePagination === (undefined || '') ? true : usePagination === 'true';
     limit = limit || 10;
     page = page || 1;
     sortBy = sortBy || 'id';
@@ -78,18 +88,23 @@ class UserController {
       searchCriteria.activate = activate;
     }
 
-    users = await UserAccount.findAndCountAll({
+    const queryOptions = {
       where: searchCriteria,
       include: includeOptions,
       attributes: {
         exclude: ['id_company', 'id_access_level'],
       },
-      limit,
-      offset,
       order: [[sortBy, sortType]],
       raw: true,
       schema,
-    });
+    };
+
+    if (usePagination) {
+      queryOptions.limit = limit;
+      queryOptions.offset = offset;
+    }
+
+    users = await UserAccount.findAndCountAll(queryOptions);
 
     return res.json(users);
   }

@@ -1,6 +1,7 @@
 import { $authHost } from './index';
 
 export const fetchUsers = async (
+  usePagination,
   limit = 10,
   page = 1,
   sortBy,
@@ -11,6 +12,7 @@ export const fetchUsers = async (
 ) => {
   const { data } = await $authHost.get('api/user', {
     params: {
+      usePagination,
       limit,
       page,
       sortBy,
@@ -49,7 +51,7 @@ export const updateUser = async (id, data) => {
 };
 
 export const deleteUsers = async (users) => {
-  const  response  = await $authHost.delete('api/user', {
+  const response = await $authHost.delete('api/user', {
     data: { users },
   });
   return response.message;

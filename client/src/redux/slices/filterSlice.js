@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  usePagination: true,
   search: '',
   endSoon: '',
   hasFreeTariff: '',
   hasSubscription: '',
   autoPayment: '',
-  amount: 0,
+  amount: '',
   tariff: '',
   currency: '',
   activate: '',
@@ -18,6 +19,9 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
+    setUsePagination: (state, action) => {
+      state.usePagination = action.payload;
+    },
     setSearch: (state, action) => {
       state.search = action.payload;
     },
@@ -55,6 +59,7 @@ export const filterSlice = createSlice({
 });
 
 export const {
+  setUsePagination,
   setSearch,
   setEndSoon,
   setHasFreeTariff,

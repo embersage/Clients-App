@@ -6,15 +6,25 @@ const { Promocode, TariffPromocode } = accountSchema;
 class promocodeController {
   async getAll(req, res) {
     const schema = 'account';
-    let { limit, page } = req.query;
+    let { usePagination, limit, page } = req.query;
+    usePagination =
+      usePagination === (undefined || '') ? true : usePagination === 'true';
     limit = limit || 10;
     page = page || 1;
     const offset = page * limit - limit;
-    const promocodes = await Promocode.findAndCountAll({
+
+    const queryOptions = {
       limit,
       offset,
       schema,
-    });
+    };
+
+    if (usePagination) {
+      queryOptions.limit = limit;
+      queryOptions.offset = offset;
+    }
+
+    const promocodes = await Promocode.findAndCountAll(queryOptions);
 
     return res.json(promocodes);
   }
