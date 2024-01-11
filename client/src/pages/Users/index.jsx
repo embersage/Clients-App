@@ -225,7 +225,6 @@ const Users = () => {
                 <TableRow
                   key={item.id}
                   onClick={() => {
-                    //dispatch(setSelectedUsers([item]));
                     dispatch(setUser(item));
                     navigate(`/user/${item.id}`);
                   }}

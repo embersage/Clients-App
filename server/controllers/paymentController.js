@@ -66,8 +66,10 @@ class PaymentController {
           id: parseInt(search),
         };
       } else {
-        searchCriteria = {
-          [Op.or]: [{ name: { [Op.iLike]: `%${search}%` } }],
+        includeOptions[1].where = {
+          [Op.or]: {
+            name: { [Op.iLike]: `%${search}%` },
+          },
         };
       }
     }

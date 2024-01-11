@@ -8,7 +8,11 @@ import {
   addSelectedItem,
   removeSelectedItem,
 } from '../../redux/slices/paymentsSlice';
-import { setUsePagination } from '../../redux/slices/filterSlice';
+import {
+  setSortBy,
+  setSortType,
+  setUsePagination,
+} from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -21,9 +25,11 @@ import Search from '../../components/Search';
 import styles from './Payments.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
+import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 
 const Payments = () => {
   const dispatch = useDispatch();
+  const [clickedHeader, setClickedHeader] = useState();
   const payments = useSelector((state) => state.payments.items);
   const selectedItems = useSelector((state) => state.payments.selectedItems);
   const page = useSelector((state) => state.payments.page);
@@ -114,16 +120,38 @@ const Payments = () => {
         {status === 'succeeded' ? (
           <>
             <Table
-              name={'Промокоды'}
+              name={'Операции'}
               headers={headers}
               values={values}
+              clickedHeader={clickedHeader}
+              onHeaderClick={(item) => {
+                dispatch(setSortBy(item));
+                setClickedHeader(item);
+                if (sortType === 'DESC' || !sortType) {
+                  dispatch(setSortType('ASC'));
+                }
+                if (sortType === 'ASC') {
+                  dispatch(setSortType('DESC'));
+                } else if (sortType) {
+                  dispatch(setSortType(''));
+                }
+              }}
+              icon={
+                sortType === 'ASC' ? (
+                  <IoIosArrowRoundUp />
+                ) : sortType === 'DESC' ? (
+                  <IoIosArrowRoundDown />
+                ) : (
+                  ''
+                )
+              }
               checked={selectedItems.length === payments.length}
               onSelect={handleCheckboxClick}
             >
               {payments.map((item) => (
                 <TableRow
                   key={item.id}
-                  onClick={(event) => {
+                  onClick={() => {
                     dispatch(setSelectedItems([item]));
                   }}
                   values={values}

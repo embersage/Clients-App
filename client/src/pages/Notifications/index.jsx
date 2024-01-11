@@ -86,7 +86,7 @@ const Notifications = () => {
               <span>Фильтры</span>
             </Button>
           </div>
-          <Pagination />
+          {usePagination && <Pagination />}
         </Header>
         {status === 'succeeded' ? (
           <>
