@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import userRouter from './userRouter.js';
-import promocodeRouter from './promocodeRouter.js';
-import paymentRouter from './paymentRouter.js';
-import notificationRouter from './notificationRouter.js';
+import usersRouter from './usersRouter.js';
+import sessionsRouter from './sessionsRouter.js';
+import promocodesRouter from './promocodesRouter.js';
+import tariffsRouter from './tariffsRouter.js';
+import paymentsRouter from './paymentsRouter.js';
+import notificationsRouter from './notificationsRouter.js';
 
 const router = new Router();
 
-router.use('/user', userRouter);
-router.use('/promocode', promocodeRouter);
-router.use('/payment', paymentRouter);
-router.use('/notification', notificationRouter);
+router.use('/users', usersRouter);
+router.use('/sessions', sessionsRouter);
+router.use('/promocodes', promocodesRouter);
+router.use('/tariffs', tariffsRouter);
+router.use('/payments', paymentsRouter);
+router.use('/notifications', notificationsRouter);
 
 export default router;

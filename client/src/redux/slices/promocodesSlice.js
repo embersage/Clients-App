@@ -18,8 +18,15 @@ const initialState = {
 
 export const getPromocodes = createAsyncThunk(
   'promocodes/getPromocodes',
-  async ({ limit, page, name }) => {
-    const data = await fetchPromocodes(limit, page, name);
+  async ({ usePagination, limit, page, sortBy, sortType, search }) => {
+    const data = await fetchPromocodes(
+      usePagination,
+      limit,
+      page,
+      sortBy,
+      sortType,
+      search
+    );
     data.rows.forEach((item) => {
       item.date_start = formatDate(item.date_start);
       item.date_end = formatDate(item.date_end);
@@ -140,6 +147,7 @@ export const {
   setSelectedItems,
   addSelectedItem,
   removeSelectedItem,
+  setPromocode,
   setPromocodesPage,
   setTotalCount,
   setLimit,

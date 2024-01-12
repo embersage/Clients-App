@@ -11,7 +11,7 @@ export const fetchPayments = async (
   tariff,
   currency
 ) => {
-  const { data } = await $authHost.get('api/payment', {
+  const { data } = await $authHost.get('api/payments', {
     params: {
       usePagination,
       limit,

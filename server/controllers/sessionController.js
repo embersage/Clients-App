@@ -2,11 +2,11 @@ import { Op } from 'sequelize';
 import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 
-const { Promocode, Tariff } = accountSchema;
+const { session } = accountSchema;
 
-class promocodeController {
+class sessionController {
   async getAll(req, res) {
-    const schema = 'account';
+    const schema = 'session';
     let { usePagination, limit, page, sortBy, sortType, search } = req.query;
     usePagination =
       usePagination === (undefined || '') ? true : usePagination === 'true';
@@ -39,47 +39,47 @@ class promocodeController {
       queryOptions.offset = offset;
     }
 
-    const promocodes = await Promocode.findAndCountAll(queryOptions);
+    const sessions = await session.findAndCountAll(queryOptions);
 
-    return res.json(promocodes);
+    return res.json(sessions);
   }
 
   async getOne(req, res) {
-    const schema = 'account';
+    const schema = 'session';
     let { id } = req.params;
 
-    const includeOptions = [
+    /*     const includeOptions = [
       {
         model: Tariff,
         attributes: ['name'],
       },
-    ];
+    ]; */
 
     const searchCriteria = { id };
 
     const queryOptions = {
       where: searchCriteria,
-      include: includeOptions,
+      //include: includeOptions,
       schema,
     };
 
-    const promocode = await Promocode.findOne(queryOptions);
+    const session = await session.findOne(queryOptions);
 
-    return res.json(promocode);
+    return res.json(session);
   }
 
   async delete(req, res) {
     const schema = 'account';
-    const { promocodes } = req.body;
+    const { sessions } = req.body;
     let ids = [];
-    promocodes.forEach((item) => {
+    sessions.forEach((item) => {
       ids.push(item.id);
     });
 
-    await Promocode.destroy({ where: { id: ids }, schema });
+    await session.destroy({ where: { id: ids }, schema });
 
     return res.json({ message: 'Удаление произведено успешно.' });
   }
 }
 
-export default promocodeController;
+export default sessionController;

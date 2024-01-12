@@ -1,8 +1,15 @@
 import { $authHost } from './index';
 
-export const fetchNotifications = async (limit = 10, page = 1, name) => {
-  const { data } = await $authHost.get('api/notification', {
-    params: { limit, page, name },
+export const fetchNotifications = async (
+  usePagination,
+  limit = 10,
+  page = 1,
+  sortBy,
+  sortType,
+  search
+) => {
+  const { data } = await $authHost.get('api/notifications', {
+    params: { usePagination, limit, page, sortBy, sortType, search },
   });
   return data;
 };

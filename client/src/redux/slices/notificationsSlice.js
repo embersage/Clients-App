@@ -13,8 +13,8 @@ const initialState = {
 
 export const getNotifications = createAsyncThunk(
   'notifications/getNotifications',
-  async ({ limit, page, name }) => {
-    const data = await fetchNotifications(limit, page, name);
+  async ({  usePagination, limit, page, sortBy, sortType, search  }) => {
+    const data = await fetchNotifications( usePagination, limit, page, sortBy, sortType, search );
     data.rows.forEach((item) => {
       item.date_start = formatDate(item.date_start);
       item.date_end = formatDate(item.date_end);

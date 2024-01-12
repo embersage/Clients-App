@@ -9,7 +9,11 @@ import {
   removeSelectedItem,
 } from '../../redux/slices/notificationsSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
-import { setUsePagination } from '../../redux/slices/filterSlice';
+import {
+  setSortBy,
+  setSortType,
+  setUsePagination,
+} from '../../redux/slices/filterSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -21,9 +25,11 @@ import Search from '../../components/Search';
 import styles from './Notifications.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
+import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 
 const Notifications = () => {
   const dispatch = useDispatch();
+  const [clickedHeader, setClickedHeader] = useState();
   const notifications = useSelector((state) => state.notifications.items);
   const selectedItems = useSelector(
     (state) => state.notifications.selectedItems
@@ -33,6 +39,8 @@ const Notifications = () => {
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
   const usePagination = useSelector((state) => state.filter.usePagination);
+  const sortBy = useSelector((state) => state.filter.sortBy);
+  const sortType = useSelector((state) => state.filter.sortType);
   const values = [
     'id',
     'name',
@@ -52,10 +60,19 @@ const Notifications = () => {
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      await dispatch(getNotifications({ limit: 10, page, name: search }));
+      await dispatch(
+        getNotifications({
+          usePagination,
+          limit: 10,
+          page,
+          sortBy,
+          sortType,
+          search,
+        })
+      );
     };
     fetchNotifications();
-  }, [search, page]);
+  }, [usePagination, page, sortBy, sortType, search]);
 
   const handleCheckboxClick = () => {
     if (selectedItems.length !== notifications.length) {
@@ -94,6 +111,28 @@ const Notifications = () => {
               name={'Уведомления'}
               headers={headers}
               values={values}
+              clickedHeader={clickedHeader}
+              onHeaderClick={(item) => {
+                dispatch(setSortBy(item));
+                setClickedHeader(item);
+                if (sortType === 'DESC' || !sortType) {
+                  dispatch(setSortType('ASC'));
+                }
+                if (sortType === 'ASC') {
+                  dispatch(setSortType('DESC'));
+                } else if (sortType) {
+                  dispatch(setSortType(''));
+                }
+              }}
+              icon={
+                sortType === 'ASC' ? (
+                  <IoIosArrowRoundUp />
+                ) : sortType === 'DESC' ? (
+                  <IoIosArrowRoundDown />
+                ) : (
+                  ''
+                )
+              }
               checked={selectedItems.length === notifications.length}
               onSelect={handleCheckboxClick}
             >
@@ -102,7 +141,6 @@ const Notifications = () => {
                   key={item.id}
                   onClick={() => {
                     dispatch(setSelectedItems([item]));
-                    //navigate(`/user/${item.id}`);
                   }}
                   values={values}
                   showCheckbox={true}

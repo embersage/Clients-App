@@ -2,9 +2,9 @@ import { Op } from 'sequelize';
 import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 
-const { Notification } = accountSchema;
+const { Tariff } = accountSchema;
 
-class notificationController {
+class tariffController {
   async getAll(req, res) {
     const schema = 'account';
     let { usePagination, limit, page, sortBy, sortType, search } = req.query;
@@ -24,19 +24,13 @@ class notificationController {
           id: parseInt(search),
         };
       } else {
-        searchCriteria = {
-          [Op.or]: [
-            { name: { [Op.iLike]: `%${search}%` } },
-            { priority: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
+        searchCriteria = { code: { [Op.iLike]: `%${search}%` } };
       }
     }
 
     const queryOptions = {
       where: searchCriteria,
       order: [[sortBy, sortType]],
-      raw: true,
       schema,
     };
 
@@ -45,17 +39,39 @@ class notificationController {
       queryOptions.offset = offset;
     }
 
-    const notifications = await Notification.findAndCountAll(queryOptions);
+    const tariffs = await Tariff.findAndCountAll(queryOptions);
 
-    return res.json(notifications);
+    return res.json(tariffs);
   }
 
   async getOne(req, res) {
     const schema = 'account';
-    const { id } = req.params;
-    const notification = await Notification.findOne({ where: { id }, schema });
-    return res.json(notification);
+    let { id } = req.params;
+
+    const searchCriteria = { id };
+
+    const queryOptions = {
+      where: searchCriteria,
+      schema,
+    };
+
+    const tariff = await Tariff.findOne(queryOptions);
+
+    return res.json(tariff);
+  }
+
+  async delete(req, res) {
+    const schema = 'account';
+    const { tariffs } = req.body;
+    let ids = [];
+    tariffs.forEach((item) => {
+      ids.push(item.id);
+    });
+
+    await Tariff.destroy({ where: { id: ids }, schema });
+
+    return res.json({ message: 'Удаление произведено успешно.' });
   }
 }
 
-export default notificationController;
+export default tariffController;

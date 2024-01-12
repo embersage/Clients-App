@@ -4,7 +4,6 @@ import SessionController from '../controllers/sessionController.js';
 const sessionController = new SessionController();
 const router = new Router();
 
-
 router.get('/', sessionController.getAll);
 router.get('/:id', sessionController.getOne);
 
