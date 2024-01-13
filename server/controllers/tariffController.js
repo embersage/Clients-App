@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { accountSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 
-const { Tariff } = accountSchema;
+const { Tariff, TariffDescription, Currency } = accountSchema;
 
 class tariffController {
   async getAll(req, res) {

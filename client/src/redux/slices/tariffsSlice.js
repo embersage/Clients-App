@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchNotifications } from '../../http/notificationsApi';
-import formatDate from '../../utils/formatDate';
+import { fetchTariffs } from '../../http/tariffsApi';
 
 const initialState = {
   items: [],
@@ -11,14 +10,17 @@ const initialState = {
   limit: 10,
 };
 
-export const getNotifications = createAsyncThunk(
-  'notifications/getNotifications',
-  async ({  usePagination, limit, page, sortBy, sortType, search  }) => {
-    const data = await fetchNotifications( usePagination, limit, page, sortBy, sortType, search );
-    data.rows.forEach((item) => {
-      item.date_start = formatDate(item.date_start);
-      item.date_end = formatDate(item.date_end);
-    });
+export const getTariffs = createAsyncThunk(
+  'tariffs/getTariffs',
+  async ({ usePagination, limit, page, sortBy, sortType, search }) => {
+    const data = await fetchTariffs(
+      usePagination,
+      limit,
+      page,
+      sortBy,
+      sortType,
+      search
+    );
     return data;
   }
 );
@@ -27,11 +29,11 @@ const findInd = (state, newItem) => {
   return state.selectedItems.findIndex((item) => item.id === newItem.id);
 };
 
-export const notificationsSlice = createSlice({
-  name: 'notifications',
+export const tariffsSlice = createSlice({
+  name: 'tariffs',
   initialState,
   reducers: {
-    setItems: (state, action) => {
+    setTariffs: (state, action) => {
       state.items = action.payload;
     },
     setSelectedItems: (state, action) => {
@@ -43,7 +45,7 @@ export const notificationsSlice = createSlice({
     removeSelectedItem: (state, action) => {
       state.selectedItems.splice(findInd(state, action.payload), 1);
     },
-    setNotificationsPage: (state, action) => {
+    setTariffsPage: (state, action) => {
       state.page = action.payload;
     },
     setTotalCount: (state, action) => {
@@ -55,19 +57,19 @@ export const notificationsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getNotifications.pending, (state) => {
+      .addCase(getTariffs.pending, (state) => {
         state.status = 'loading';
         state.items = [];
         state.selectedItems = [];
         state.totalCount = 0;
       })
-      .addCase(getNotifications.fulfilled, (state, action) => {
+      .addCase(getTariffs.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload.rows;
         state.selectedItems = [];
         state.totalCount = action.payload.count;
       })
-      .addCase(getNotifications.rejected, (state) => {
+      .addCase(getTariffs.rejected, (state) => {
         state.status = 'error';
         state.items = [];
         state.selectedItems = [];
@@ -77,13 +79,13 @@ export const notificationsSlice = createSlice({
 });
 
 export const {
-  setItems,
+  setTariffs,
   setSelectedItems,
   addSelectedItem,
   removeSelectedItem,
-  setNotificationsPage,
+  setTariffsPage,
   setTotalCount,
   setLimit,
-} = notificationsSlice.actions;
+} = tariffsSlice.actions;
 
-export default notificationsSlice.reducer;
+export default tariffsSlice.reducer;

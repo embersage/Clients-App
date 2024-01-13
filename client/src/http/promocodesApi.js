@@ -19,6 +19,13 @@ export const fetchPromocode = async (id) => {
   return data;
 };
 
+export const updatePromocode = async (id, data) => {
+  const response = await $authHost.patch(`api/promocodes/${id}`, {
+    data,
+  });
+  return response.data;
+};
+
 export const deletePromocodes = async (promocodes) => {
   const { response } = await $authHost.delete('api/promocodes', {
     data: { promocodes },

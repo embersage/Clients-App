@@ -226,7 +226,7 @@ const Users = () => {
                   key={item.id}
                   onClick={() => {
                     dispatch(setUser(item));
-                    navigate(`/user/${item.id}`);
+                    navigate(`/users/${item.id}`);
                   }}
                   values={values}
                   showCheckbox={true}

@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
+import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 import {
   getPromocodes,
   setSelectedItems,
   setPromocode,
   addSelectedItem,
   removeSelectedItem,
+  removePromocodes,
 } from '../../redux/slices/promocodesSlice';
 import {
   setSortBy,
@@ -26,8 +29,7 @@ import Search from '../../components/Search';
 import styles from './Promocodes.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const Promocodes = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,20 @@ const Promocodes = () => {
     fetchPromocodes();
   }, [usePagination, page, sortBy, sortType, search]);
 
+  const deletePromocodes = async (promocodes) => {
+    await dispatch(removePromocodes(promocodes));
+    await dispatch(
+      getPromocodes({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+      })
+    );
+  };
+
   const handleCheckboxClick = () => {
     if (selectedItems.length !== promocodes.length) {
       dispatch(setSelectedItems(promocodes));
@@ -89,6 +105,21 @@ const Promocodes = () => {
               />
               <span>Фильтры</span>
             </Button>
+            {selectedItems.length > 0 && (
+              <Button
+                onClick={(event) => {
+                  event.preventDefault();
+                  deletePromocodes({ promocodes: selectedItems });
+                }}
+              >
+                <AiOutlineDelete
+                  size={30}
+                  className={styles.icon}
+                  color="rgba(171,171,171, 0.75)"
+                />
+                <span>Удалить</span>
+              </Button>
+            )}
           </div>
           {usePagination && <Pagination />}
         </Header>
@@ -128,7 +159,7 @@ const Promocodes = () => {
                   key={item.id}
                   onClick={() => {
                     dispatch(setPromocode(item));
-                    navigate(`/promocode/${item.id}`);
+                    navigate(`/promocodes/${item.id}`);
                   }}
                   values={values}
                   showCheckbox={true}
