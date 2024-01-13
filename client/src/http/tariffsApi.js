@@ -1,15 +1,8 @@
 import { $authHost } from './index';
 
-export const fetchTariffs = async (
-  usePagination,
-  limit = 10,
-  page = 1,
-  sortBy,
-  sortType,
-  search
-) => {
+export const fetchTariffs = async (usePagination, sortBy, sortType) => {
   const { data } = await $authHost.get('api/tariffs', {
-    params: { usePagination, limit, page, sortBy, sortType, search },
+    params: { usePagination, sortBy, sortType },
   });
   return data;
 };

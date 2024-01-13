@@ -33,79 +33,68 @@ const Promocode = () => {
   const [clickedHeader, setClickedHeader] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const promocode = useSelector((state) => state.promocodes.promocode);
   const promocodesStatus = useSelector((state) => state.promocodes.status);
+  const tariffs = useSelector((state) => state.tariffs.items);
+  const selectedItems = useSelector((state) => state.tariffs.selectedItems);
   const tariffsStatus = useSelector((state) => state.tariffs.status);
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
   const values = ['id', 'name', 'amount'];
   const headers = ['id', 'Название', 'Сумма'];
 
-  const promocode = useSelector((state) => state.promocodes.promocode);
-
-  const tariffs = useSelector((state) => state.tariffs.items);
-  const selectedItems = useSelector((state) => state.tariffs.selectedItems);
-
   useEffect(() => {
-    const fetchPromocode = async () => {
-      await dispatch(getPromocode({ id }));
-      await dispatch(getTariffs({ usePagination: false, sortBy, sortType }));
-    };
-
-    fetchPromocode();
+    dispatch(getPromocode({ id }));
+    dispatch(getTariffs({ usePagination: false, sortBy, sortType }));
   }, [sortBy, sortType]);
 
   useEffect(() => {
-    const selectData = async () => {
-      if (promocodesStatus === 'succeeded') {
-        setData([
-          {
-            propName: 'id',
-            name: 'id',
-            value: promocode.id,
-            disabled: true,
-            type: 'text',
-          },
-          {
-            propName: 'code',
-            name: 'Код',
-            value: promocode.code,
-            disabled: false,
-            type: 'text',
-          },
-          {
-            propName: 'discount',
-            name: 'Скидка',
-            value: promocode.discount,
-            disabled: false,
-            type: 'email',
-          },
-          {
-            propName: 'date_start',
-            name: 'Дата начала',
-            value: promocode.date_start,
-            disabled: true,
-            type: 'text',
-          },
-          {
-            propName: 'date_end',
-            name: 'Дата окончания',
-            value: promocode.date_end,
-            disabled: true,
-            type: 'text',
-          },
-        ]);
-      }
-
-      if (tariffsStatus === 'succeeded') {
-        await dispatch(setSelectedItems(promocode.tariffs));
-      }
-    };
-
-    selectData();
+    if (promocodesStatus === 'succeeded') {
+      setData([
+        {
+          propName: 'id',
+          name: 'id',
+          value: promocode.id,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'code',
+          name: 'Код',
+          value: promocode.code,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'discount',
+          name: 'Скидка',
+          value: promocode.discount,
+          disabled: false,
+          type: 'email',
+        },
+        {
+          propName: 'date_start',
+          name: 'Дата начала',
+          value: promocode.date_start,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'date_end',
+          name: 'Дата окончания',
+          value: promocode.date_end,
+          disabled: true,
+          type: 'text',
+        },
+      ]);
+    }
+    if (tariffsStatus === 'succeeded') {
+      dispatch(setSelectedItems(promocode.tariffs));
+    }
   }, [promocodesStatus, tariffsStatus]);
 
-  const deletePromocodes = async (promocodes) => {
-    await dispatch(removePromocodes(promocodes));
+  const deletePromocodes = (promocodes) => {
+    dispatch(removePromocodes(promocodes));
   };
 
   const edit = (editingIndex) => {

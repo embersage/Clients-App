@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { AiOutlineDelete } from 'react-icons/ai';
 import {
   getPromocodes,
   setSelectedItems,
@@ -29,7 +30,6 @@ import Search from '../../components/Search';
 import styles from './Promocodes.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
-import { AiOutlineDelete } from 'react-icons/ai';
 
 const Promocodes = () => {
   const dispatch = useDispatch();

@@ -73,10 +73,6 @@ class promocodeController {
     const { data } = req.body;
     const property = Object.keys(data)[0];
     const value = Object.values(data)[0];
-    console.log(
-      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-    );
-    console.log(data);
 
     const includeOptions = [
       {
