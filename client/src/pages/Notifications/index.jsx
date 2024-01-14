@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
@@ -13,6 +13,8 @@ import {
   removeSelectedItem,
   removeNotifications,
   setNotificationsPage,
+  getNotification,
+  editNotification,
 } from '../../redux/slices/notificationsSlice';
 import {
   setSortBy,
@@ -33,10 +35,16 @@ import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Notifications = () => {
+  const inputRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
   const notifications = useSelector((state) => state.notifications.items);
+  const notification = useSelector((state) => state.notifications.notification);
   const selectedItems = useSelector(
     (state) => state.notifications.selectedItems
   );
@@ -79,6 +87,80 @@ const Notifications = () => {
     );
   }, [usePagination, page, sortBy, sortType, search]);
 
+  useEffect(() => {
+    if (
+      status === 'succeeded' &&
+      notification.date_start &&
+      notification.date_end
+    ) {
+      setData([
+        {
+          propName: 'id',
+          name: 'id',
+          value: notification.id,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'name',
+          name: 'Название',
+          value: notification.name,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'description',
+          name: 'Описание',
+          value: notification.description,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'priority',
+          name: 'Приоритет',
+          value: notification.priority,
+          disabled: false,
+          type: 'text',
+        },
+        {
+          propName: 'date_start',
+          name: 'Дата начала',
+          value: notification.date_start,
+          disabled: false,
+          type: 'datetime-local',
+        },
+        {
+          propName: 'date_end',
+          name: 'Дата окончания',
+          value: notification.date_end,
+          disabled: false,
+          type: 'datetime-local',
+        },
+      ]);
+    }
+  }, [status, notification.date_end, notification.date_start]);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
+  const onClickHandle = (index) => {
+    setIsEditing(true);
+    setEditingIndex(index);
+  };
+
+  const onChangeHandle = (event, item) => {
+    setData(
+      data.map((object) => {
+        return item.name === object.name
+          ? { ...object, value: event.target.value }
+          : object;
+      })
+    );
+  };
+
   const deleteNotifications = async (notifications) => {
     await dispatch(removeNotifications(notifications));
     await dispatch(
@@ -99,6 +181,30 @@ const Notifications = () => {
     } else {
       dispatch(setSelectedItems([]));
     }
+  };
+
+  const edit = async (editingIndex) => {
+    const id = notification.id;
+    await dispatch(
+      editNotification({
+        id,
+        data: {
+          [data[editingIndex].propName]: data[editingIndex].value,
+        },
+      })
+    );
+    await dispatch(
+      getNotifications({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+      })
+    );
+    const updatedNotification = await dispatch(getNotification({ id }));
+    await dispatch(setNotification(updatedNotification.payload));
   };
 
   return (
@@ -179,9 +285,12 @@ const Notifications = () => {
               {notifications.map((item) => (
                 <TableRow
                   key={item.id}
-                  onClick={() => {
-                    dispatch(setNotification(item));
-                    navigate(`/notifications/${item.id}`);
+                  onClick={async () => {
+                    await dispatch(getNotification({ id: item.id }));
+                    await dispatch(setNotification(item));
+                    await dispatch(setPressedButton('notification'));
+                    await dispatch(setIsVisible(true));
+                    /* navigate(`/notifications/${item.id}`); */
                   }}
                   values={values}
                   showCheckbox={true}
@@ -234,6 +343,72 @@ const Notifications = () => {
                   checked={!usePagination}
                 />
               </label>
+            </>
+          )}
+          {pressedButton === 'notification' && (
+            <>
+              {data.map((item, index) => {
+                return (
+                  <label key={index}>
+                    <span>{item.name}</span>
+                    {isEditing && editingIndex === index ? (
+                      <input
+                        ref={inputRef}
+                        type={item.type}
+                        value={inputValue}
+                        placeholder={!item.value ? 'Нет данных' : ''}
+                        disabled={item.disabled}
+                        onChange={(event) => {
+                          setInputValue(event.target.value);
+                          onChangeHandle(event, item);
+                        }}
+                      />
+                    ) : (
+                      <span
+                        onClick={() => {
+                          if (!item.disabled) {
+                            onClickHandle(index);
+                            setInputValue(
+                              item.value
+                                ? item.type === 'datetime-local'
+                                  ? new Date(
+                                      new Date(item.value).getTime() -
+                                        new Date(
+                                          item.value
+                                        ).getTimezoneOffset() *
+                                          60000
+                                    )
+                                      .toISOString()
+                                      .slice(0, -1)
+                                  : item.value
+                                : ''
+                            );
+                          }
+                        }}
+                      >
+                        {item.value
+                          ? item.type === 'datetime-local'
+                            ? new Date(item.value).toLocaleString()
+                            : `${item.value}`
+                          : 'Нет данных'}
+                      </span>
+                    )}
+                  </label>
+                );
+              })}
+              {isEditing && (
+                <button
+                  type="submit"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    edit(editingIndex);
+                    setIsEditing(false);
+                    setEditingIndex(null);
+                  }}
+                >
+                  Сохранить
+                </button>
+              )}
             </>
           )}
         </form>

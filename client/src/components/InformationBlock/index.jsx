@@ -41,18 +41,6 @@ const InformationBlock = (props) => {
                 <input
                   ref={inputRef}
                   type={item.type}
-                  /* value={
-                    item.value
-                      ? item.type === 'datetime-local'
-                        ? new Date(
-                            new Date(item.value).getTime() -
-                              new Date(item.value).getTimezoneOffset() * 60000
-                          )
-                            .toISOString()
-                            .slice(0, -1)
-                        : item.value
-                      : ''
-                  } */
                   value={inputValue}
                   placeholder={!item.value ? 'Нет данных' : ''}
                   disabled={item.disabled}

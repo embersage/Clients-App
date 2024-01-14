@@ -116,34 +116,40 @@ export const notificationsSlice = createSlice({
         state.totalCount = 0;
         state.notification = {};
       })
+      .addCase(getNotification.pending, (state, action) => {
+        state.status = 'loading';
+        //state.items = [];
+        //state.totalCount = 0;
+        state.notification = {};
+      })
       .addCase(getNotification.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = [];
-        state.totalCount = 0;
+        //state.items = [];
+        //state.totalCount = 0;
         state.notification = action.payload;
       })
       .addCase(getNotification.rejected, (state) => {
         state.status = 'error';
-        state.items = [];
-        state.totalCount = 0;
+        //state.items = [];
+        //state.totalCount = 0;
         state.notification = {};
       })
       .addCase(editNotification.pending, (state) => {
         state.status = 'loading';
-        state.items = [];
-        state.totalCount = 0;
-        state.notification = {};
+        /* state.items = [];
+        state.totalCount = 0; */
+        /* state.notification = {}; */
       })
       .addCase(editNotification.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = [];
-        state.totalCount = 0;
+        /* state.items = [];
+        state.totalCount = 0; */
         state.notification = action.payload;
       })
       .addCase(editNotification.rejected, (state) => {
         state.status = 'error';
-        state.items = [];
-        state.totalCount = 0;
+        /* state.items = [];
+        state.totalCount = 0; */
         state.notification = {};
       })
       .addCase(removeNotifications.pending, (state) => {
