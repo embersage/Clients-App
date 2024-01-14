@@ -36,7 +36,7 @@ const TableRow = (props) => {
             ref={checkboxRef}
             type="checkbox"
             onChange={handleCheckboxClick}
-            checked={checked}
+            checked={isSelected}
           />
         </td>
       )}

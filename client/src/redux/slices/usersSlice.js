@@ -53,8 +53,6 @@ export const getUser = createAsyncThunk(
   'users/getUser',
   async ({ id, sortBy, sortType }) => {
     const data = await fetchUser(id, sortBy, sortType);
-    data.date_reg = formatDate(data.date_reg);
-    data.date_last_login = formatDate(data.date_last_login);
     return data;
   }
 );

@@ -15,6 +15,7 @@ import {
   importUsers,
   removeUsers,
   setUser,
+  setUsersPage,
 } from '../../redux/slices/usersSlice';
 import {
   setUsePagination,
@@ -44,6 +45,8 @@ const Users = () => {
   const users = useSelector((state) => state.users.users);
   const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
+  const totalCount = useSelector((state) => state.users.totalCount);
+  const limit = useSelector((state) => state.users.limit);
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const autoPayment = useSelector((state) => state.filter.autoPayment);
@@ -76,22 +79,18 @@ const Users = () => {
   ];
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      await dispatch(
-        getUsers({
-          usePagination,
-          limit: 10,
-          page,
-          sortBy,
-          sortType,
-          search,
-          activate,
-          autoPayment,
-        })
-      );
-    };
-
-    fetchUsers();
+    dispatch(
+      getUsers({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+        activate,
+        autoPayment,
+      })
+    );
   }, [usePagination, page, sortBy, sortType, search, activate, autoPayment]);
 
   const upload = async (file) => {
@@ -188,7 +187,13 @@ const Users = () => {
               <span>Импорт</span>
             </Button>
           </div>
-          {usePagination && <Pagination />}
+          {usePagination && (
+            <Pagination
+              totalCount={totalCount}
+              limit={limit}
+              setPage={(item) => dispatch(setUsersPage(item))}
+            />
+          )}
         </Header>
         {status === 'succeeded' ? (
           <>

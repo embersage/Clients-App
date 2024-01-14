@@ -24,19 +24,13 @@ class notificationController {
           id: parseInt(search),
         };
       } else {
-        searchCriteria = {
-          [Op.or]: [
-            { name: { [Op.iLike]: `%${search}%` } },
-            { priority: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
+        searchCriteria = { name: { [Op.iLike]: `%${search}%` } };
       }
     }
 
     const queryOptions = {
       where: searchCriteria,
       order: [[sortBy, sortType]],
-      raw: true,
       schema,
     };
 
@@ -53,8 +47,61 @@ class notificationController {
   async getOne(req, res) {
     const schema = 'account';
     const { id } = req.params;
-    const notification = await Notification.findOne({ where: { id }, schema });
+
+    const searchCriteria = { id };
+
+    const queryOptions = {
+      where: searchCriteria,
+      schema,
+    };
+
+    const notification = await Notification.findOne(queryOptions);
+
     return res.json(notification);
+  }
+
+  async update(req, res) {
+    const schema = 'account';
+    const { id } = req.params;
+    const { data } = req.body;
+    const property = Object.keys(data)[0];
+    const value = Object.values(data)[0];
+
+    const searchCriteria = { id };
+
+    const queryOptions = {
+      where: searchCriteria,
+      schema,
+    };
+
+    await Notification.update(
+      {
+        [property]: value,
+      },
+      {
+        where: { id },
+        schema,
+      }
+    );
+
+    const updatedNotification = await Notification.findOne(queryOptions);
+
+    console.log(updatedNotification);
+
+    return res.json(updatedNotification);
+  }
+
+  async delete(req, res) {
+    const schema = 'account';
+    const { notifications } = req.body;
+    let ids = [];
+    notifications.forEach((item) => {
+      ids.push(item.id);
+    });
+
+    await Notification.destroy({ where: { id: ids }, schema });
+
+    return res.json({ message: 'Удаление произведено успешно.' });
   }
 }
 

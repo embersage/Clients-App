@@ -7,6 +7,7 @@ import {
   setSelectedItems,
   addSelectedItem,
   removeSelectedItem,
+  setPaymentsPage,
 } from '../../redux/slices/paymentsSlice';
 import {
   setSortBy,
@@ -34,6 +35,8 @@ const Payments = () => {
   const selectedItems = useSelector((state) => state.payments.selectedItems);
   const page = useSelector((state) => state.payments.page);
   const status = useSelector((state) => state.payments.status);
+  const limit = useSelector((state) => state.payments.limit);
+  const totalCount = useSelector((state) => state.payments.totalCount);
   const search = useSelector((state) => state.filter.search);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
   const usePagination = useSelector((state) => state.filter.usePagination);
@@ -68,22 +71,19 @@ const Payments = () => {
   ];
 
   useEffect(() => {
-    const fetchPayments = async () => {
-      await dispatch(
-        getPayments({
-          usePagination,
-          limit: 10,
-          page,
-          sortBy,
-          sortType,
-          search,
-          amount,
-          tariff,
-          currency,
-        })
-      );
-    };
-    fetchPayments();
+    dispatch(
+      getPayments({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+        amount,
+        tariff,
+        currency,
+      })
+    );
   }, [usePagination, page, sortBy, sortType, search, amount, tariff]);
 
   const handleCheckboxClick = () => {
@@ -115,7 +115,13 @@ const Payments = () => {
               <span>Фильтры</span>
             </Button>
           </div>
-          {usePagination && <Pagination />}
+          {usePagination && (
+            <Pagination
+              totalCount={totalCount}
+              limit={limit}
+              setPage={(item) => dispatch(setPaymentsPage(item))}
+            />
+          )}
         </Header>
         {status === 'succeeded' ? (
           <>

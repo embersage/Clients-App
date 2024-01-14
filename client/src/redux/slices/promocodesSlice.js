@@ -40,8 +40,6 @@ export const getPromocode = createAsyncThunk(
   'promocodes/getPromocode',
   async ({ id }) => {
     const data = await fetchPromocode(id);
-    data.date_start = formatDate(data.date_start);
-    data.date_end = formatDate(data.date_end);
     return data;
   }
 );

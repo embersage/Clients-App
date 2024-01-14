@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './InformationBlock.module.scss';
 
 const InformationBlock = (props) => {
+  const inputRef = useRef();
   const { data, setData, edit } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-  const inputRef = useRef();
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     if (isEditing) {
@@ -40,10 +41,23 @@ const InformationBlock = (props) => {
                 <input
                   ref={inputRef}
                   type={item.type}
-                  value={item.value ? item.value : ''}
+                  /* value={
+                    item.value
+                      ? item.type === 'datetime-local'
+                        ? new Date(
+                            new Date(item.value).getTime() -
+                              new Date(item.value).getTimezoneOffset() * 60000
+                          )
+                            .toISOString()
+                            .slice(0, -1)
+                        : item.value
+                      : ''
+                  } */
+                  value={inputValue}
                   placeholder={!item.value ? 'Нет данных' : ''}
                   disabled={item.disabled}
                   onChange={(event) => {
+                    setInputValue(event.target.value);
                     onChangeHandle(event, item);
                   }}
                 />
@@ -52,10 +66,27 @@ const InformationBlock = (props) => {
                   onClick={() => {
                     if (!item.disabled) {
                       onClickHandle(index);
+                      setInputValue(
+                        item.value
+                          ? item.type === 'datetime-local'
+                            ? new Date(
+                                new Date(item.value).getTime() -
+                                  new Date(item.value).getTimezoneOffset() *
+                                    60000
+                              )
+                                .toISOString()
+                                .slice(0, -1)
+                            : item.value
+                          : ''
+                      );
                     }
                   }}
                 >
-                  {item.value ? `${item.value}` : 'Нет данных'}
+                  {item.value
+                    ? item.type === 'datetime-local'
+                      ? new Date(item.value).toLocaleString()
+                      : `${item.value}`
+                    : 'Нет данных'}
                 </span>
               )}
             </label>

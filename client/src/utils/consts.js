@@ -6,4 +6,5 @@ export const PAYMENTS_ROUTE = '/payments';
 export const PROMOCODES_ROUTE = '/promocodes';
 export const PROMOCODE_ROUTE = '/promocodes/:id';
 export const NOTIFICATIONS_ROUTE = '/notifications';
+export const NOTIFICATION_ROUTE = '/notifications/:id';
 export const LOGIN_ROUTE = '/login';

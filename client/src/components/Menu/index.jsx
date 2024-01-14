@@ -7,13 +7,14 @@ import { LiaRubleSignSolid } from 'react-icons/lia';
 import { BsTextParagraph } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
+import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
 import Button from '../Button';
 import styles from './Menu.module.scss';
 
 const Menu = () => {
-  const isOpened = useSelector((state) => state.menu.isOpened);
   const location = useLocation();
   const dispatch = useDispatch();
+  const isOpened = useSelector((state) => state.menu.isOpened);
 
   const pages = [
     {
@@ -64,6 +65,10 @@ const Menu = () => {
                       localStorage.clear();
                     },
                   })}
+                  onClick={() => {
+                    dispatch(setSortBy(''));
+                    dispatch(setSortType(''));
+                  }}
                 >
                   <Button
                     isActive={

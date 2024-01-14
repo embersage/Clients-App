@@ -41,11 +41,7 @@ const User = () => {
   const headers = ['id', 'Название', 'Описание'];
 
   useEffect(() => {
-    const fetchUser = async () => {
-      await dispatch(getUser({ id, sortBy, sortType }));
-    };
-
-    fetchUser().then(() => {});
+    dispatch(getUser({ id, sortBy, sortType }));
   }, [sortBy, sortType]);
 
   useEffect(() => {
@@ -56,7 +52,7 @@ const User = () => {
           name: 'id',
           value: user.id,
           disabled: true,
-          type: 'text',
+          type: 'number',
         },
         {
           propName: 'name',
@@ -91,14 +87,14 @@ const User = () => {
           name: 'Код активации',
           value: user.activate_code,
           disabled: true,
-          type: 'text',
+          type: 'number',
         },
         {
           propName: 'date_reg',
           name: 'Дата регистрации',
           value: user.date_reg,
           disabled: true,
-          type: 'text',
+          type: 'datetime-local',
         },
         {
           propName: 'phone',
@@ -112,14 +108,14 @@ const User = () => {
           name: 'VK',
           value: user.vk,
           disabled: true,
-          type: 'text',
+          type: 'number',
         },
         {
           propName: 'yandex',
           name: 'Yandex',
           value: user.yandex,
           disabled: true,
-          type: 'text',
+          type: 'number',
         },
         {
           propName: 'temporary',
@@ -133,7 +129,7 @@ const User = () => {
           name: 'Последняя активность',
           value: user.date_last_login,
           disabled: true,
-          type: 'text',
+          type: 'datetime-local',
         },
         {
           propName: 'email_status',

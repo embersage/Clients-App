@@ -12,6 +12,7 @@ import {
   addSelectedItem,
   removeSelectedItem,
   removePromocodes,
+  setPromocodesPage,
 } from '../../redux/slices/promocodesSlice';
 import {
   setSortBy,
@@ -39,6 +40,8 @@ const Promocodes = () => {
   const selectedItems = useSelector((state) => state.promocodes.selectedItems);
   const page = useSelector((state) => state.promocodes.page);
   const status = useSelector((state) => state.promocodes.status);
+  const limit = useSelector((state) => state.promocodes.limit);
+  const totalCount = useSelector((state) => state.promocodes.totalCount);
   const search = useSelector((state) => state.filter.search);
   const usePagination = useSelector((state) => state.filter.usePagination);
   const sortBy = useSelector((state) => state.filter.sortBy);
@@ -48,19 +51,16 @@ const Promocodes = () => {
   const headers = ['id', 'Код', 'Скидка', 'Дата начала', 'Дата окончания'];
 
   useEffect(() => {
-    const fetchPromocodes = async () => {
-      await dispatch(
-        getPromocodes({
-          usePagination,
-          limit: 10,
-          page,
-          sortBy,
-          sortType,
-          search,
-        })
-      );
-    };
-    fetchPromocodes();
+    dispatch(
+      getPromocodes({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+      })
+    );
   }, [usePagination, page, sortBy, sortType, search]);
 
   const deletePromocodes = async (promocodes) => {
@@ -121,7 +121,13 @@ const Promocodes = () => {
               </Button>
             )}
           </div>
-          {usePagination && <Pagination />}
+          {usePagination && (
+            <Pagination
+              totalCount={totalCount}
+              limit={limit}
+              setPage={(item) => dispatch(setPromocodesPage(item))}
+            />
+          )}
         </Header>
         {status === 'succeeded' ? (
           <>

@@ -13,11 +13,7 @@ const initialState = {
 export const getTariffs = createAsyncThunk(
   'tariffs/getTariffs',
   async ({ usePagination, sortBy, sortType }) => {
-    const data = await fetchTariffs(
-      usePagination,
-      sortBy,
-      sortType
-    );
+    const data = await fetchTariffs(usePagination, sortBy, sortType);
     return data;
   }
 );

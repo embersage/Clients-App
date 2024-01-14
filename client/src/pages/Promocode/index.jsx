@@ -56,7 +56,7 @@ const Promocode = () => {
           name: 'id',
           value: promocode.id,
           disabled: true,
-          type: 'text',
+          type: 'number',
         },
         {
           propName: 'code',
@@ -70,21 +70,21 @@ const Promocode = () => {
           name: 'Скидка',
           value: promocode.discount,
           disabled: false,
-          type: 'email',
+          type: 'number',
         },
         {
           propName: 'date_start',
           name: 'Дата начала',
           value: promocode.date_start,
-          disabled: true,
-          type: 'text',
+          disabled: false,
+          type: 'datetime-local',
         },
         {
           propName: 'date_end',
           name: 'Дата окончания',
           value: promocode.date_end,
-          disabled: true,
-          type: 'text',
+          disabled: false,
+          type: 'datetime-local',
         },
       ]);
     }
@@ -144,7 +144,7 @@ const Promocode = () => {
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                deletePromocodes({ promocodes: promocode });
+                deletePromocodes({ promocodes: [promocode] });
                 navigate(PROMOCODES_ROUTE);
               }}
             >

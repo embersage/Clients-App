@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
+import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { AiOutlineDelete } from 'react-icons/ai';
 import {
   getNotifications,
   setSelectedItems,
+  setNotification,
   addSelectedItem,
   removeSelectedItem,
+  removeNotifications,
+  setNotificationsPage,
 } from '../../redux/slices/notificationsSlice';
-import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import {
   setSortBy,
   setSortType,
   setUsePagination,
 } from '../../redux/slices/filterSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -25,22 +31,24 @@ import Search from '../../components/Search';
 import styles from './Notifications.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 
 const Notifications = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [clickedHeader, setClickedHeader] = useState();
   const notifications = useSelector((state) => state.notifications.items);
   const selectedItems = useSelector(
     (state) => state.notifications.selectedItems
   );
   const page = useSelector((state) => state.notifications.page);
+  const limit = useSelector((state) => state.notifications.limit);
+  const totalCount = useSelector((state) => state.notifications.totalCount);
   const status = useSelector((state) => state.notifications.status);
   const search = useSelector((state) => state.filter.search);
-  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const usePagination = useSelector((state) => state.filter.usePagination);
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
+  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const values = [
     'id',
     'name',
@@ -59,20 +67,31 @@ const Notifications = () => {
   ];
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      await dispatch(
-        getNotifications({
-          usePagination,
-          limit: 10,
-          page,
-          sortBy,
-          sortType,
-          search,
-        })
-      );
-    };
-    fetchNotifications();
+    dispatch(
+      getNotifications({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+      })
+    );
   }, [usePagination, page, sortBy, sortType, search]);
+
+  const deleteNotifications = async (notifications) => {
+    await dispatch(removeNotifications(notifications));
+    await dispatch(
+      getNotifications({
+        usePagination,
+        limit: 10,
+        page,
+        sortBy,
+        sortType,
+        search,
+      })
+    );
+  };
 
   const handleCheckboxClick = () => {
     if (selectedItems.length !== notifications.length) {
@@ -102,8 +121,29 @@ const Notifications = () => {
               />
               <span>Фильтры</span>
             </Button>
+            {selectedItems.length > 0 && (
+              <Button
+                onClick={(event) => {
+                  event.preventDefault();
+                  deleteNotifications({ notifications: selectedItems });
+                }}
+              >
+                <AiOutlineDelete
+                  size={30}
+                  className={styles.icon}
+                  color="rgba(171,171,171, 0.75)"
+                />
+                <span>Удалить</span>
+              </Button>
+            )}
           </div>
-          {usePagination && <Pagination />}
+          {usePagination && (
+            <Pagination
+              totalCount={totalCount}
+              limit={limit}
+              setPage={(item) => dispatch(setNotificationsPage(item))}
+            />
+          )}
         </Header>
         {status === 'succeeded' ? (
           <>
@@ -140,7 +180,8 @@ const Notifications = () => {
                 <TableRow
                   key={item.id}
                   onClick={() => {
-                    dispatch(setSelectedItems([item]));
+                    dispatch(setNotification(item));
+                    navigate(`/notifications/${item.id}`);
                   }}
                   values={values}
                   showCheckbox={true}
