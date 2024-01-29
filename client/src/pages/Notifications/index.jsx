@@ -138,7 +138,7 @@ const Notifications = () => {
         },
       ]);
     }
-  }, [status, notification.date_end, notification.date_start]);
+  }, [status]);
 
   useEffect(() => {
     if (isEditing) {
