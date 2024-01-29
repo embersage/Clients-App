@@ -5,6 +5,7 @@ import { GoPeople } from 'react-icons/go';
 import { PiNotificationLight } from 'react-icons/pi';
 import { LiaRubleSignSolid } from 'react-icons/lia';
 import { BsTextParagraph } from 'react-icons/bs';
+import { RiComputerLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
@@ -36,6 +37,11 @@ const Menu = () => {
       link: '/promocodes',
       icon: <BsTextParagraph size={30} color="rgba(171,171,171, 0.75)" />,
       name: 'Промокоды',
+    },
+    {
+      link: '/sessions',
+      icon: <RiComputerLine size={30} color="rgba(171,171,171, 0.75)" />,
+      name: 'Сессии',
     },
     {
       link: '/notifications',

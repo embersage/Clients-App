@@ -1,8 +1,10 @@
 import { Op } from 'sequelize';
-import { accountSchema } from '../models/index.js';
+import { sessionSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
+import SessionUser from '../models/session/SessionUser.js';
+import SessionUserInfo from '../models/session/SessionUserInfo.js';
 
-const { session } = accountSchema;
+const { Session } = sessionSchema;
 
 class sessionController {
   async getAll(req, res) {
@@ -39,7 +41,7 @@ class sessionController {
       queryOptions.offset = offset;
     }
 
-    const sessions = await session.findAndCountAll(queryOptions);
+    const sessions = await Session.findAndCountAll(queryOptions);
 
     return res.json(sessions);
   }
@@ -48,37 +50,24 @@ class sessionController {
     const schema = 'session';
     let { id } = req.params;
 
-    /*     const includeOptions = [
+    const includeOptions = [
       {
-        model: Tariff,
-        attributes: ['name'],
+        model: SessionUser,
+        include: [SessionUserInfo],
       },
-    ]; */
+    ];
 
     const searchCriteria = { id };
 
     const queryOptions = {
       where: searchCriteria,
-      //include: includeOptions,
+      include: includeOptions,
       schema,
     };
 
-    const session = await session.findOne(queryOptions);
+    const session = await Session.findOne(queryOptions);
 
     return res.json(session);
-  }
-
-  async delete(req, res) {
-    const schema = 'account';
-    const { sessions } = req.body;
-    let ids = [];
-    sessions.forEach((item) => {
-      ids.push(item.id);
-    });
-
-    await session.destroy({ where: { id: ids }, schema });
-
-    return res.json({ message: 'Удаление произведено успешно.' });
   }
 }
 
