@@ -6,6 +6,7 @@ import usersReducer from './slices/usersSlice';
 import paymentsReducer from './slices/paymentsSlice';
 import promocodesReducer from './slices/promocodesSlice';
 import tariffsReducer from './slices/tariffsSlice';
+import sessionsReducer from './slices/sessionsSlice';
 import notificationsReducer from './slices/notificationsSlice';
 import modalReducer from './slices/modalSlice';
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     payments: paymentsReducer,
     promocodes: promocodesReducer,
     tariffs: tariffsReducer,
+    sessions: sessionsReducer,
     notifications: notificationsReducer,
     menu: menuReducer,
     filter: filterReducer,

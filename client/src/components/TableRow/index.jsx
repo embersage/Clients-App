@@ -1,10 +1,11 @@
+// TableRow component
 import { useEffect, useRef, useState } from 'react';
 import styles from './TableRow.module.scss';
 
 const TableRow = (props) => {
   const checkboxRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
-  const { checked } = props;
+  const { checked, values } = props;
 
   const handleRowClick = (event) => {
     if (checkboxRef.current && checkboxRef.current.contains(event.target)) {
@@ -40,10 +41,13 @@ const TableRow = (props) => {
           />
         </td>
       )}
-      {[props.children].map((item) => {
-        return props.values.map((value, index) => {
-          return <td key={index}>{item[value]}</td>;
+      {values.map((value, index) => {
+        const nestedProperties = value.split('.');
+        let propertyValue = props.children;
+        nestedProperties.forEach((prop) => {
+          propertyValue = propertyValue?.[prop];
         });
+        return <td key={index}>{propertyValue}</td>;
       })}
     </tr>
   );

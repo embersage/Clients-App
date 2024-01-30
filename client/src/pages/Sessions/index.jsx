@@ -4,12 +4,12 @@ import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 import {
-  getPayments,
+  getSessions,
   setSelectedItems,
   addSelectedItem,
   removeSelectedItem,
-  setPaymentsPage,
-} from '../../redux/slices/paymentsSlice';
+  setSessionsPage,
+} from '../../redux/slices/sessionsSlice';
 import {
   setSortBy,
   setSortType,
@@ -20,75 +20,61 @@ import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
-import ModalWindow from '../../components/ModalWindow';
 import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import Search from '../../components/Search';
-import styles from './Payments.module.scss';
+import styles from './Sessions.module.scss';
 import headerStyles from '../../components/Header/Header.module.scss';
+import ModalWindow from '../../components/ModalWindow';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
-const Payments = () => {
+const Sessions = () => {
   const dispatch = useDispatch();
   const [clickedHeader, setClickedHeader] = useState();
-  const payments = useSelector((state) => state.payments.items);
-  const selectedItems = useSelector((state) => state.payments.selectedItems);
-  const page = useSelector((state) => state.payments.page);
-  const status = useSelector((state) => state.payments.status);
-  const limit = useSelector((state) => state.payments.limit);
-  const totalCount = useSelector((state) => state.payments.totalCount);
+  const sessions = useSelector((state) => state.sessions.items);
+  const selectedItems = useSelector((state) => state.sessions.selectedItems);
+  const page = useSelector((state) => state.sessions.page);
+  const limit = useSelector((state) => state.sessions.limit);
+  const totalCount = useSelector((state) => state.sessions.totalCount);
+  const status = useSelector((state) => state.sessions.status);
   const search = useSelector((state) => state.filter.search);
-  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const usePagination = useSelector((state) => state.filter.usePagination);
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
-  const amount = useSelector((state) => state.filter.amount);
-  const tariff = useSelector((state) => state.filter.tariff);
-  const currency = useSelector((state) => state.filter.currency);
+  const pressedButton = useSelector((state) => state.modal.pressedButton);
   const values = [
     'id',
     'date_start',
     'date_end',
-    'amount',
-    'tariff.name',
-    'user_account.id',
-    'user_account.name',
-    'company.name',
-    'currency.name',
-    'ckassa_payment_status.name',
+    'code',
+    'id_presentation',
+    'presentation.name',
   ];
   const headers = [
     'id',
     'Дата начала',
     'Дата окончания',
-    'Сумма',
-    'Тариф',
-    'id аккаунта',
-    'Имя',
-    'Компания',
-    'Валюта',
-    'Статус оплаты',
+    'Код',
+    'id презентации',
+    'Название презентации',
   ];
 
   useEffect(() => {
     dispatch(
-      getPayments({
+      getSessions({
         usePagination,
         limit: 10,
         page,
         sortBy,
         sortType,
         search,
-        amount,
-        tariff,
-        currency,
       })
     );
-  }, [usePagination, page, sortBy, sortType, search, amount, tariff]);
+  }, [usePagination, page, sortBy, sortType, search]);
 
   const handleCheckboxClick = () => {
-    if (selectedItems.length !== payments.length) {
-      dispatch(setSelectedItems(payments));
+    if (selectedItems.length !== sessions.length) {
+      dispatch(setSelectedItems(sessions));
     } else {
       dispatch(setSelectedItems([]));
     }
@@ -119,14 +105,14 @@ const Payments = () => {
             <Pagination
               totalCount={totalCount}
               limit={limit}
-              setPage={(item) => dispatch(setPaymentsPage(item))}
+              setPage={(item) => dispatch(setSessionsPage(item))}
             />
           )}
         </Header>
         {status === 'succeeded' ? (
           <>
             <Table
-              name={'Операции'}
+              name={'Сессии'}
               headers={headers}
               values={values}
               clickedHeader={clickedHeader}
@@ -151,15 +137,12 @@ const Payments = () => {
                   ''
                 )
               }
-              checked={selectedItems.length === payments.length}
+              checked={selectedItems.length === sessions.length}
               onSelect={handleCheckboxClick}
             >
-              {payments.map((item) => (
+              {sessions.map((item) => (
                 <TableRow
                   key={item.id}
-                  onClick={() => {
-                    dispatch(setSelectedItems([item]));
-                  }}
                   values={values}
                   showCheckbox={true}
                   checked={selectedItems.includes(item)}
@@ -219,4 +202,4 @@ const Payments = () => {
   );
 };
 
-export default Payments;
+export default Sessions;

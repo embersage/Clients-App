@@ -1,10 +1,16 @@
 import { Op } from 'sequelize';
-import { sessionSchema } from '../models/index.js';
+import {
+  sessionSchema,
+  presentationSchema,
+  accountSchema,
+} from '../models/index.js';
 import ApiError from '../error/ApiError.js';
-import SessionUser from '../models/session/SessionUser.js';
-import SessionUserInfo from '../models/session/SessionUserInfo.js';
+/* import SessionUser from '../models/session/SessionUser.js';
+import SessionUserInfo from '../models/session/SessionUserInfo.js'; */
 
-const { Session } = sessionSchema;
+const { Session, SessionUser, SessionUserInfo } = sessionSchema;
+const { Presentation } = presentationSchema;
+const { UserAccount } = accountSchema;
 
 class sessionController {
   async getAll(req, res) {
@@ -30,9 +36,21 @@ class sessionController {
       }
     }
 
+    const includeOptions = [
+      {
+        model: SessionUser,
+        include: [SessionUserInfo],
+      },
+      {
+        model: Presentation,
+      },
+    ];
+
     const queryOptions = {
       where: searchCriteria,
       order: [[sortBy, sortType]],
+      include: includeOptions,
+      distinct: true,
       schema,
     };
 
@@ -54,6 +72,9 @@ class sessionController {
       {
         model: SessionUser,
         include: [SessionUserInfo],
+      },
+      {
+        model: Presentation,
       },
     ];
 

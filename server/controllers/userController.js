@@ -95,7 +95,7 @@ class UserController {
         exclude: ['id_company', 'id_access_level'],
       },
       order: [[sortBy, sortType]],
-      raw: true,
+      raw: false,
       schema,
     };
 
@@ -276,32 +276,3 @@ class UserController {
 }
 
 export default UserController;
-
-[
-  {
-    name: 'Минимум',
-    id: 12,
-    date_start: '2023-04-01T17:41:03.296Z',
-    date_end: '2123-05-01T17:41:16.663Z',
-    amount: 0,
-    payment_number: null,
-    id_user_account: 30,
-    id_tariff: 5,
-    id_ckassa_payment_status: null,
-    id_currency: 10,
-    id_company: null,
-    name: 'Базовый',
-  },
-  {
-    id: 3436,
-    date_start: '2023-12-10T15:45:37.615Z',
-    date_end: '2024-01-09T15:45:37.615Z',
-    amount: 490,
-    payment_number: '1702223167',
-    id_user_account: 30,
-    id_tariff: 6,
-    id_ckassa_payment_status: 5,
-    id_currency: 10,
-    id_company: null,
-  },
-];

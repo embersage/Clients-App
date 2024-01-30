@@ -87,7 +87,7 @@ class PaymentController {
         ],
       },
       order: [[sortBy, sortType]],
-      raw: true,
+      raw: false,
       schema,
     };
 
