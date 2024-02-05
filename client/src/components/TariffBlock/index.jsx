@@ -16,8 +16,9 @@ const TariffBlock = (props) => {
   const sortedTariffs = validTariffs?.sort((a, b) => {
     const dateA = new Date(a.payment_info.date_end);
     const dateB = new Date(b.payment_info.date_end);
-    return dateB - dateA;
+    return dateA - dateB; // Sort in ascending order
   });
+  
 
   const currentTariff = sortedTariffs.length > 0 ? sortedTariffs[0] : null;
 

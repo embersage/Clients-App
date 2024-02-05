@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
@@ -37,7 +36,6 @@ import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 const Notifications = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -290,7 +288,6 @@ const Notifications = () => {
                     await dispatch(setNotification(item));
                     await dispatch(setPressedButton('notification'));
                     await dispatch(setIsVisible(true));
-                    /* navigate(`/notifications/${item.id}`); */
                   }}
                   values={values}
                   showCheckbox={true}

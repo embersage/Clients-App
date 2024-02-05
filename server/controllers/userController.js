@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import exceljs from 'exceljs';
 import { accountSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
+import PaymentInfo from '../models/account/PaymentInfo.js';
 
 const { UserAccount, Company, AccessLevel, Role, UserConfig, Tariff } =
   accountSchema;
@@ -35,10 +36,12 @@ class UserController {
       sortType,
       search,
       activate,
+      endSoon,
       autoPayment,
     } = req.query;
     usePagination =
       usePagination === (undefined || '') ? true : usePagination === 'true';
+    endSoon = endSoon === (undefined || '') ? true : endSoon === 'true';
     limit = limit || 10;
     page = page || 1;
     sortBy = sortBy || 'id';
@@ -60,6 +63,10 @@ class UserController {
       {
         model: UserConfig,
         attributes: ['auto_payment'],
+      },
+      {
+        model: Tariff,
+        attributes: ['name'],
       },
     ];
     let users = [];
@@ -86,6 +93,16 @@ class UserController {
 
     if (activate) {
       searchCriteria.activate = activate;
+    }
+
+    if (endSoon) {
+      const currentDate = new Date();
+      searchCriteria['$tariffs.payment_info.date_end$'] = {
+        [Op.between]: [
+          currentDate,
+          new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
+        ],
+      };
     }
 
     const queryOptions = {

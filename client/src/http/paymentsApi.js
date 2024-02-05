@@ -26,3 +26,22 @@ export const fetchPayments = async (
   });
   return data;
 };
+
+export const fetchPayment = async (id) => {
+  const { data } = await $authHost.get(`api/payments/${id}`);
+  return data;
+};
+
+export const updatePayment = async (id, data) => {
+  const response = await $authHost.patch(`api/payments/${id}`, {
+    data,
+  });
+  return response.data;
+};
+
+export const deletePayments = async (payments) => {
+  const { response } = await $authHost.delete('api/payments', {
+    data: { payments },
+  });
+  return response.message;
+};

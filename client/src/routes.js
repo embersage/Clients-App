@@ -1,4 +1,3 @@
-import Home from './pages/Home';
 import Users from './pages/Users';
 import User from './pages/User';
 import Payments from './pages/Payments';
@@ -9,7 +8,6 @@ import Notifications from './pages/Notifications';
 import Notification from './pages/Notification';
 import Login from './pages/Login';
 import {
-  HOME_ROUTE,
   USERS_ROUTE,
   USER_ROUTE,
   PAYMENTS_ROUTE,
@@ -22,10 +20,6 @@ import {
 } from './utils/consts';
 
 export const authRoutes = [
-  {
-    path: HOME_ROUTE,
-    element: <Home />,
-  },
   {
     path: USERS_ROUTE,
     element: <Users />,

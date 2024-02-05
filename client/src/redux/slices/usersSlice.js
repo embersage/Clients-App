@@ -29,6 +29,7 @@ export const getUsers = createAsyncThunk(
     sortType,
     search,
     activate,
+    endSoon,
     autoPayment,
   }) => {
     const data = await fetchUsers(
@@ -39,6 +40,7 @@ export const getUsers = createAsyncThunk(
       sortType,
       search,
       activate,
+      endSoon,
       autoPayment
     );
     data.rows.forEach((item) => {

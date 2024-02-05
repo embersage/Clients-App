@@ -8,6 +8,7 @@ export const fetchUsers = async (
   sortType,
   search,
   activate,
+  endSoon,
   autoPayment
 ) => {
   const { data } = await $authHost.get('api/users', {
@@ -19,6 +20,7 @@ export const fetchUsers = async (
       sortType,
       search,
       activate,
+      endSoon,
       autoPayment,
     },
   });

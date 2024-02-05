@@ -19,11 +19,6 @@ const Menu = () => {
 
   const pages = [
     {
-      link: '/',
-      icon: <BiStats size={30} color="rgba(171,171,171, 0.75)" />,
-      name: 'Главная',
-    },
-    {
       link: '/users',
       icon: <GoPeople size={30} color="rgba(171,171,171, 0.75)" />,
       name: 'Клиенты',

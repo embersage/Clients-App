@@ -21,6 +21,7 @@ import {
   setUsePagination,
   setAutoPayment,
   setActivate,
+  setEndSoon,
   setSortBy,
   setSortType,
 } from '../../redux/slices/filterSlice';
@@ -51,6 +52,7 @@ const Users = () => {
   const search = useSelector((state) => state.filter.search);
   const autoPayment = useSelector((state) => state.filter.autoPayment);
   const activate = useSelector((state) => state.filter.activate);
+  const endSoon = useSelector((state) => state.filter.endSoon);
   const sortBy = useSelector((state) => state.filter.sortBy);
   const sortType = useSelector((state) => state.filter.sortType);
   const usePagination = useSelector((state) => state.filter.usePagination);
@@ -88,10 +90,20 @@ const Users = () => {
         sortType,
         search,
         activate,
+        endSoon,
         autoPayment,
       })
     );
-  }, [usePagination, page, sortBy, sortType, search, activate, autoPayment]);
+  }, [
+    usePagination,
+    page,
+    sortBy,
+    sortType,
+    search,
+    activate,
+    endSoon,
+    autoPayment,
+  ]);
 
   const upload = async (file) => {
     const response = await dispatch(importUsers(file));
@@ -105,6 +117,7 @@ const Users = () => {
           sortType,
           search,
           activate,
+          endSoon,
           autoPayment,
         })
       );
@@ -125,6 +138,7 @@ const Users = () => {
         sortType,
         search,
         activate,
+        endSoon,
         autoPayment,
       })
     );
@@ -294,7 +308,16 @@ const Users = () => {
               </label>
               <label>
                 <span>Скоро закончится тариф</span>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (!endSoon) {
+                      dispatch(setEndSoon(true));
+                    } else {
+                      dispatch(setEndSoon(''));
+                    }
+                  }}
+                />
               </label>
               <label>
                 <span>Есть подписка</span>

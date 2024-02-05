@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { signIn } from '../../redux/slices/userSlice';
-import { HOME_ROUTE } from '../../utils/consts';
+import { USERS_ROUTE } from '../../utils/consts';
 import styles from './LoginBlock.module.scss';
 
 const AuthorizationBlock = () => {
@@ -21,7 +21,7 @@ const AuthorizationBlock = () => {
   const login = async (email, password) => {
     const response = await dispatch(signIn({ email, password }));
     if (response.payload) {
-      navigate(HOME_ROUTE);
+      navigate(USERS_ROUTE);
     } else {
       setValid(false);
     }
