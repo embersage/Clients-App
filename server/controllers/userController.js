@@ -97,11 +97,14 @@ class UserController {
 
     if (endSoon) {
       const currentDate = new Date();
-      searchCriteria['$tariffs.payment_info.date_end$'] = {
-        [Op.between]: [
-          currentDate,
-          new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
-        ],
+
+      includeOptions[3].where = {
+        '$tariffs.payment_info.date_end$': {
+          [Op.between]: [
+            currentDate,
+            new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
+          ],
+        },
       };
     }
 
@@ -111,8 +114,10 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_access_level'],
       },
+      subQuery: false,
       order: [[sortBy, sortType]],
       raw: false,
+      distinct: true,
       schema,
     };
 

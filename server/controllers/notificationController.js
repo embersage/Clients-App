@@ -65,8 +65,6 @@ class notificationController {
     const { data } = req.body;
     const property = Object.keys(data)[0];
     const value = Object.values(data)[0];
-    console.log(id);
-    console.log(data);
 
     const searchCriteria = { id };
 

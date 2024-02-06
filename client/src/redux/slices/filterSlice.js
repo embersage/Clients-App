@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   usePagination: true,
   search: '',
-  endSoon: '',
+  endSoon: false,
   hasFreeTariff: '',
   hasSubscription: '',
   autoPayment: '',

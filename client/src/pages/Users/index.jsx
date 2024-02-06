@@ -314,7 +314,7 @@ const Users = () => {
                     if (!endSoon) {
                       dispatch(setEndSoon(true));
                     } else {
-                      dispatch(setEndSoon(''));
+                      dispatch(setEndSoon(false));
                     }
                   }}
                 />
