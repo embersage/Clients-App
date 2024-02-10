@@ -5,6 +5,7 @@ import promocodesRouter from './promocodesRouter.js';
 import tariffsRouter from './tariffsRouter.js';
 import paymentsRouter from './paymentsRouter.js';
 import notificationsRouter from './notificationsRouter.js';
+import currenciesRouter from './currenciesRouter.js';
 
 const router = new Router();
 
@@ -14,5 +15,6 @@ router.use('/promocodes', promocodesRouter);
 router.use('/tariffs', tariffsRouter);
 router.use('/payments', paymentsRouter);
 router.use('/notifications', notificationsRouter);
+router.use('/currencies', currenciesRouter);
 
 export default router;

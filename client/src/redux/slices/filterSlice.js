@@ -8,11 +8,15 @@ const initialState = {
   hasSubscription: '',
   autoPayment: '',
   amount: '',
-  tariff: '',
-  currency: '',
+  selectedTariffs: '',
+  selectedCurrencies: '',
   activate: '',
   sortBy: '',
   sortType: '',
+};
+
+const findInd = (state, where, newItem) => {
+  return state[where].findIndex((item) => item.id === newItem.id);
 };
 
 export const filterSlice = createSlice({
@@ -40,11 +44,23 @@ export const filterSlice = createSlice({
     setAmount: (state, action) => {
       state.amount = action.payload;
     },
-    setTariff: (state, action) => {
-      state.tariff = action.payload;
+    addSelectedTariff: (state, action) => {
+      state.selectedTariffs = [...state.selectedTariffs, action.payload];
     },
-    setCurrency: (state, action) => {
-      state.currency = action.payload;
+    removeSelectedTariff: (state, action) => {
+      state.selectedTariffs.splice(
+        findInd(state, 'selectedTariffs', action.payload),
+        1
+      );
+    },
+    addSelectedCurrency: (state, action) => {
+      state.selectedCurrencies = [...state.selectedCurrencies, action.payload];
+    },
+    removeSelectedCurrency: (state, action) => {
+      state.selectedCurrencies.splice(
+        findInd(state, 'selectedCurrencies', action.payload),
+        1
+      );
     },
     setActivate: (state, action) => {
       state.activate = action.payload;
@@ -66,8 +82,10 @@ export const {
   setHasSubscription,
   setAutoPayment,
   setAmount,
-  setTariff,
-  setCurrency,
+  addSelectedTariff,
+  removeSelectedTariff,
+  addSelectedCurrency,
+  removeSelectedCurrency,
   setActivate,
   setSortBy,
   setSortType,

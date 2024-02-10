@@ -27,8 +27,8 @@ export const getPayments = createAsyncThunk(
     sortType,
     search,
     amount,
-    tariff,
-    currency,
+    tariffs,
+    currencies,
   }) => {
     const data = await fetchPayments(
       usePagination,
@@ -38,8 +38,8 @@ export const getPayments = createAsyncThunk(
       sortType,
       search,
       amount,
-      tariff,
-      currency
+      tariffs,
+      currencies
     );
     data.rows.forEach((item) => {
       item.date_start = formatDate(item.date_start);

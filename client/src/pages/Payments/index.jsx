@@ -15,7 +15,12 @@ import {
   getPayment,
   editPayment,
 } from '../../redux/slices/paymentsSlice';
+import { getCurrencies } from '../../redux/slices/currenciesSlice';
 import {
+  addSelectedTariff,
+  removeSelectedTariff,
+  addSelectedCurrency,
+  removeSelectedCurrency,
   setSortBy,
   setSortType,
   setUsePagination,
@@ -41,6 +46,7 @@ const Payments = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
+  const currencies = useSelector((state) => state.currencies.items);
   const payments = useSelector((state) => state.payments.items);
   const payment = useSelector((state) => state.payments.payment);
   const selectedItems = useSelector((state) => state.payments.selectedItems);
@@ -54,8 +60,10 @@ const Payments = () => {
   const sortType = useSelector((state) => state.filter.sortType);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
   const amount = useSelector((state) => state.filter.amount);
-  const tariff = useSelector((state) => state.filter.tariff);
-  const currency = useSelector((state) => state.filter.currency);
+  const selectedTariffs = useSelector((state) => state.filter.selectedTariffs);
+  const selectedCurrencies = useSelector(
+    (state) => state.filter.selectedCurrencies
+  );
   const values = [
     'id',
     'date_start',
@@ -93,11 +101,21 @@ const Payments = () => {
         sortType,
         search,
         amount,
-        tariff,
-        currency,
+        selectedTariffs,
+        selectedCurrencies,
       })
     );
-  }, [usePagination, page, sortBy, sortType, search, amount, tariff, currency]);
+    dispatch(getCurrencies());
+  }, [
+    usePagination,
+    page,
+    sortBy,
+    sortType,
+    search,
+    amount,
+    selectedTariffs,
+    selectedCurrencies,
+  ]);
 
   useEffect(() => {
     if (status === 'succeeded' && payment.date_start && payment.date_end) {
@@ -208,8 +226,8 @@ const Payments = () => {
         sortType,
         search,
         amount,
-        tariff,
-        currency,
+        selectedTariffs,
+        selectedCurrencies,
       })
     );
   };
@@ -241,8 +259,8 @@ const Payments = () => {
         sortType,
         search,
         amount,
-        tariff,
-        currency,
+        selectedTariffs,
+        selectedCurrencies,
       })
     );
     const updatedPayment = await dispatch(getPayment({ id }));
@@ -358,6 +376,31 @@ const Payments = () => {
         <form className={modalStyles.content}>
           {pressedButton === 'filters' && (
             <>
+              {currencies && (
+                <>
+                  <button>Валюты</button>
+                  <ul>
+                    {currencies.map((item) => {
+                      return (
+                        <li key={item.id}>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={() => {
+                                !selectedCurrencies.includes(item)
+                                  ? dispatch(addSelectedCurrency(item))
+                                  : dispatch(removeSelectedCurrency(item));
+                              }}
+                              checked={selectedCurrencies.includes(item)}
+                            />
+                            {item.name}
+                          </label>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
               <label>
                 <span>Включить пагинацию</span>
                 <input
