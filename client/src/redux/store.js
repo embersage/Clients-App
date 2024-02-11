@@ -10,6 +10,7 @@ import sessionsReducer from './slices/sessionsSlice';
 import notificationsReducer from './slices/notificationsSlice';
 import currenciesReducer from './slices/currenciesSlice';
 import modalReducer from './slices/modalSlice';
+import emailReducer from './slices/emailSlice';
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
     menu: menuReducer,
     filter: filterReducer,
     modal: modalReducer,
+    email: emailReducer,
   },
 });

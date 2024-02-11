@@ -27,6 +27,12 @@ import {
   setSortType,
 } from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
+import {
+  setName,
+  setTemplate,
+  addVariable,
+  removeVariable,
+} from '../../redux/slices/emailSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -44,6 +50,8 @@ const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [clickedHeader, setClickedHeader] = useState();
+  const [emailName, setEmailName] = useState();
+  const [templateId, setTemplateId] = useState();
   const users = useSelector((state) => state.users.users);
   const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
@@ -58,6 +66,9 @@ const Users = () => {
   const sortType = useSelector((state) => state.filter.sortType);
   const usePagination = useSelector((state) => state.filter.usePagination);
   const pressedButton = useSelector((state) => state.modal.pressedButton);
+  const name = useSelector((state) => state.email.name);
+  const template = useSelector((state) => state.email.template);
+  const variables = useSelector((state) => state.email.variables);
   const values = [
     'id',
     'name',
@@ -191,6 +202,8 @@ const Users = () => {
                 <Button
                   onClick={(event) => {
                     event.preventDefault();
+                    dispatch(setIsVisible(true));
+                    dispatch(setPressedButton('email'));
                   }}
                 >
                   <MdOutlineMailOutline
@@ -299,6 +312,52 @@ const Users = () => {
                 }}
               >
                 Импорт
+              </button>
+            </>
+          )}
+          {pressedButton === 'email' && (
+            <>
+              <label>
+                <input
+                  placeholder="Название рассылки"
+                  onChange={(event) => {
+                    setEmailName(event.target.value);
+                  }}
+                  value={emailName}
+                />
+              </label>
+              <label>
+                <input
+                  placeholder="ID шаблона"
+                  onChange={(event) => {
+                    setTemplateId(event.target.value);
+                  }}
+                  value={templateId}
+                />
+              </label>
+              {variables.map((item, index) => {
+                return (
+                  <div className={modalStyles.variables} key={index}>
+                    <input placeholder="Code" />
+                    <input placeholder="Value" />
+                  </div>
+                );
+              })}
+              <button
+                onClick={(event) => {
+                  event.preventDefault();
+                  dispatch(addVariable());
+                }}
+              >
+                Добавить переменную
+              </button>
+              <button
+                onClick={(event) => {
+                  event.preventDefault();
+                }}
+                type="submit"
+              >
+                Отправить
               </button>
             </>
           )}
