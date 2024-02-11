@@ -8,15 +8,15 @@ const initialState = {
   hasSubscription: '',
   autoPayment: '',
   amount: '',
-  selectedTariffs: '',
-  selectedCurrencies: '',
+  selectedTariffs: [],
+  selectedCurrencies: [],
   activate: '',
   sortBy: '',
   sortType: '',
 };
 
 const findInd = (state, where, newItem) => {
-  return state[where].findIndex((item) => item.id === newItem.id);
+  return state[where].findIndex((item) => item === newItem);
 };
 
 export const filterSlice = createSlice({

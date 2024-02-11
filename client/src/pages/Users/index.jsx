@@ -7,6 +7,7 @@ import { CiImport } from 'react-icons/ci';
 import { MdFilterAlt } from 'react-icons/md';
 import { IoIosArrowRoundDown } from 'react-icons/io';
 import { IoIosArrowRoundUp } from 'react-icons/io';
+import { MdOutlineMailOutline } from 'react-icons/md';
 import {
   getUsers,
   setSelectedUsers,
@@ -173,19 +174,33 @@ const Users = () => {
               <span>Фильтры</span>
             </Button>
             {selectedUsers.length > 0 && (
-              <Button
-                onClick={(event) => {
-                  event.preventDefault();
-                  deleteUsers({ users: selectedUsers });
-                }}
-              >
-                <AiOutlineDelete
-                  size={30}
-                  className={styles.icon}
-                  color="rgba(171,171,171, 0.75)"
-                />
-                <span>Удалить</span>
-              </Button>
+              <>
+                <Button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    deleteUsers({ users: selectedUsers });
+                  }}
+                >
+                  <AiOutlineDelete
+                    size={30}
+                    className={styles.icon}
+                    color="rgba(171,171,171, 0.75)"
+                  />
+                  <span>Удалить</span>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.preventDefault();
+                  }}
+                >
+                  <MdOutlineMailOutline
+                    size={30}
+                    className={styles.icon}
+                    color="rgba(171,171,171, 0.75)"
+                  />
+                  <span>Рассылка</span>
+                </Button>
+              </>
             )}
             <Button
               onClick={() => {

@@ -22,10 +22,9 @@ class paymentController {
       sortType,
       search,
       amount,
-      //tariff,
-      //currency,
+      selectedCurrencies,
+      selectedTariffs,
     } = req.query;
-    let { currencies, tariffs } = req.body;
     usePagination =
       usePagination === (undefined || '') ? true : usePagination === 'true';
     limit = limit || 10;
@@ -34,8 +33,8 @@ class paymentController {
     sortType = sortType || 'ASC';
     search = search || '';
     amount = amount || '';
-    tariffs = tariffs || '';
-    currencies = currencies || '';
+    selectedTariffs = selectedTariffs || [];
+    selectedCurrencies = selectedCurrencies || [];
     const offset = page * limit - limit;
 
     const includeOptions = [
@@ -69,23 +68,15 @@ class paymentController {
       }
     }
 
-    if (currencies.length > 0) {
-      const ids = [];
-      currencies.forEach((item) => {
-        ids.push(item.id);
-      });
+    if (selectedCurrencies.length > 0) {
       searchCriteria = {
-        id_currency: ids,
+        id_currency: selectedCurrencies,
       };
     }
 
-    if (tariffs.length > 0) {
-      const ids = [];
-      tariffs.forEach((item) => {
-        ids.push(item);
-      });
+    if (selectedTariffs.length > 0) {
       includeOptions[0].where = {
-        id: ids,
+        id: selectedTariffs,
       };
     }
 
@@ -137,8 +128,6 @@ class paymentController {
     const { data } = req.body;
     const property = Object.keys(data)[0];
     const value = Object.values(data)[0];
-    console.log(id);
-    console.log(data);
 
     const searchCriteria = { id };
 

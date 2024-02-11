@@ -16,6 +16,7 @@ import {
   editPayment,
 } from '../../redux/slices/paymentsSlice';
 import { getCurrencies } from '../../redux/slices/currenciesSlice';
+import { getTariffs } from '../../redux/slices/tariffsSlice';
 import {
   addSelectedTariff,
   removeSelectedTariff,
@@ -47,6 +48,7 @@ const Payments = () => {
   const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
   const currencies = useSelector((state) => state.currencies.items);
+  const tariffs = useSelector((state) => state.tariffs.items);
   const payments = useSelector((state) => state.payments.items);
   const payment = useSelector((state) => state.payments.payment);
   const selectedItems = useSelector((state) => state.payments.selectedItems);
@@ -106,6 +108,7 @@ const Payments = () => {
       })
     );
     dispatch(getCurrencies());
+    dispatch(getTariffs({ usePagination: false }));
   }, [
     usePagination,
     page,
@@ -387,11 +390,36 @@ const Payments = () => {
                             <input
                               type="checkbox"
                               onChange={() => {
-                                !selectedCurrencies.includes(item)
-                                  ? dispatch(addSelectedCurrency(item))
-                                  : dispatch(removeSelectedCurrency(item));
+                                !selectedCurrencies.includes(item.id)
+                                  ? dispatch(addSelectedCurrency(item.id))
+                                  : dispatch(removeSelectedCurrency(item.id));
                               }}
-                              checked={selectedCurrencies.includes(item)}
+                              checked={selectedCurrencies.includes(item.id)}
+                            />
+                            {item.name}
+                          </label>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
+              {tariffs && (
+                <>
+                  <button>Тарифы</button>
+                  <ul>
+                    {tariffs.map((item) => {
+                      return (
+                        <li key={item.id}>
+                          <label>
+                            <input
+                              type="checkbox"
+                              onChange={() => {
+                                !selectedTariffs.includes(item.id)
+                                  ? dispatch(addSelectedTariff(item.id))
+                                  : dispatch(removeSelectedTariff(item.id));
+                              }}
+                              checked={selectedTariffs.includes(item.id)}
                             />
                             {item.name}
                           </label>

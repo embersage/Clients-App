@@ -8,8 +8,8 @@ export const fetchPayments = async (
   sortType,
   search,
   amount,
-  tariffs,
-  currencies
+  selectedTariffs,
+  selectedCurrencies
 ) => {
   const { data } = await $authHost.get('api/payments', {
     params: {
@@ -20,10 +20,8 @@ export const fetchPayments = async (
       sortType,
       search,
       amount,
-    },
-    data: {
-      tariffs,
-      currencies,
+      selectedTariffs,
+      selectedCurrencies,
     },
   });
   return data;
