@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  fetchSessions,
-} from '../../http/sessionsApi';
+import { fetchSessions } from '../../http/sessionsApi';
 import formatDate from '../../utils/formatDate';
 
 const initialState = {
@@ -11,7 +9,6 @@ const initialState = {
   page: 1,
   totalCount: 0,
   limit: 10,
-  notification: {},
 };
 
 export const getSessions = createAsyncThunk(
@@ -70,22 +67,19 @@ export const sessionsSlice = createSlice({
         state.items = [];
         state.selectedItems = [];
         state.totalCount = 0;
-        state.notification = {};
       })
       .addCase(getSessions.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload.rows;
         state.selectedItems = [];
         state.totalCount = action.payload.count;
-        state.notification = {};
       })
       .addCase(getSessions.rejected, (state) => {
         state.status = 'error';
         state.items = [];
         state.selectedItems = [];
         state.totalCount = 0;
-        state.notification = {};
-      })
+      });
   },
 });
 

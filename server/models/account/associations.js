@@ -182,6 +182,15 @@ const associateModels = () => {
     foreignKey: 'id_company',
     schema: 'account',
   });
+
+  Currency.hasMany(Notification, {
+    foreignKey: 'id_currency',
+    schema: 'account',
+  });
+  Notification.belongsTo(Currency, {
+    foreignKey: 'id_currency',
+    schema: 'account',
+  });
 };
 
 export default associateModels;

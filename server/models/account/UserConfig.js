@@ -11,6 +11,8 @@ const UserConfig = sequelize.define(
     count_pdf_report: { type: DataTypes.INTEGER },
     auto_payment: { type: DataTypes.BOOLEAN },
     user_token: { type: DataTypes.STRING },
+    disabled_auto_payment_at: { type: DataTypes.TIME },
+    count_ai_requests: { type: DataTypes.INTEGER },
   },
   { schema: 'account' }
 );

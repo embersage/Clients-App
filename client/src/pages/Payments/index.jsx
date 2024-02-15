@@ -344,6 +344,7 @@ const Payments = () => {
               }
               checked={selectedItems.length === payments.length}
               onSelect={handleCheckboxClick}
+              showCheckbox={true}
             >
               {payments.map((item) => (
                 <TableRow

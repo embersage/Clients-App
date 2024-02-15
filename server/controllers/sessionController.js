@@ -20,13 +20,7 @@ class sessionController {
     let searchCriteria = {};
 
     if (search) {
-      if (!isNaN(search)) {
-        searchCriteria = {
-          id: parseInt(search),
-        };
-      } else {
-        searchCriteria = { code: { [Op.iLike]: `%${search}%` } };
-      }
+      searchCriteria = { code: { [Op.iLike]: `%${search}%` } };
     }
 
     const includeOptions = [
@@ -55,33 +49,6 @@ class sessionController {
     const sessions = await Session.findAndCountAll(queryOptions);
 
     return res.json(sessions);
-  }
-
-  async getOne(req, res) {
-    const schema = 'session';
-    let { id } = req.params;
-
-    const includeOptions = [
-      {
-        model: SessionUser,
-        include: [SessionUserInfo],
-      },
-      {
-        model: Presentation,
-      },
-    ];
-
-    const searchCriteria = { id };
-
-    const queryOptions = {
-      where: searchCriteria,
-      include: includeOptions,
-      schema,
-    };
-
-    const session = await Session.findOne(queryOptions);
-
-    return res.json(session);
   }
 }
 

@@ -266,19 +266,13 @@ const User = () => {
                         user.presentations.length
                       }
                       onSelect={handleCheckboxClick}
+                      showCheckbox={false}
                     >
                       {user.presentations.map((item) => (
                         <TableRow
                           key={item.id}
                           values={values}
-                          showCheckbox={true}
-                          checked={selectedPresentations.includes(item)}
-                          onSelect={() => {
-                            dispatch(addSelectedPresentation(item));
-                          }}
-                          onUnselect={() => {
-                            dispatch(removeSelectedPresentation(item));
-                          }}
+                          showCheckbox={false}
                         >
                           {item}
                         </TableRow>

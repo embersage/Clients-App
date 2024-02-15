@@ -77,6 +77,20 @@ const Notification = () => {
           disabled: false,
           type: 'datetime-local',
         },
+        {
+          propName: 'id_currency',
+          name: 'id валюты',
+          value: notification.id_currency,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'page',
+          name: 'Страница',
+          value: notification.page,
+          disabled: false,
+          type: 'text',
+        },
       ]);
     }
   }, [status, notification.date_end, notification.date_start]);

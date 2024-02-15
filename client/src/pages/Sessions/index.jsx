@@ -49,6 +49,7 @@ const Sessions = () => {
     'code',
     'id_presentation',
     'presentation.name',
+    'session_users.length',
   ];
   const headers = [
     'id',
@@ -57,6 +58,7 @@ const Sessions = () => {
     'Код',
     'id презентации',
     'Название презентации',
+    'Количество пользователей',
   ];
 
   useEffect(() => {
@@ -137,14 +139,15 @@ const Sessions = () => {
                   ''
                 )
               }
-              checked={selectedItems.length === sessions.length}
-              onSelect={handleCheckboxClick}
+              /* checked={selectedItems.length === sessions.length}
+              onSelect={handleCheckboxClick} */
+              showCheckbox={false}
             >
               {sessions.map((item) => (
                 <TableRow
                   key={item.id}
                   values={values}
-                  showCheckbox={true}
+                  showCheckbox={false}
                   checked={selectedItems.includes(item)}
                   onSelect={() => {
                     dispatch(addSelectedItem(item));

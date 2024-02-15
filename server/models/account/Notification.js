@@ -10,6 +10,7 @@ const Notification = sequelize.define(
     priority: { type: DataTypes.STRING },
     date_start: { type: DataTypes.DATE },
     date_end: { type: DataTypes.DATE },
+    page: { type: DataTypes.STRING },
   },
   { schema: 'account' }
 );

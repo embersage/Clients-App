@@ -267,6 +267,7 @@ const Users = () => {
               }
               checked={selectedUsers.length === users.length}
               onSelect={handleCheckboxClick}
+              showCheckbox={true}
             >
               {users.map((item) => (
                 <TableRow

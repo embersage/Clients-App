@@ -159,6 +159,7 @@ const Promocodes = () => {
               }
               checked={selectedItems.length === promocodes.length}
               onSelect={handleCheckboxClick}
+              showCheckbox={true}
             >
               {promocodes.map((item) => (
                 <TableRow

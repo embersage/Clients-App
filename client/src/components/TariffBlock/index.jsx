@@ -16,9 +16,8 @@ const TariffBlock = (props) => {
   const sortedTariffs = validTariffs?.sort((a, b) => {
     const dateA = new Date(a.payment_info.date_end);
     const dateB = new Date(b.payment_info.date_end);
-    return dateA - dateB; // Sort in ascending order
+    return dateA - dateB;
   });
-  
 
   const currentTariff = sortedTariffs.length > 0 ? sortedTariffs[0] : null;
 
@@ -28,8 +27,14 @@ const TariffBlock = (props) => {
       {currentTariff ? (
         <>
           <p>Название: {currentTariff.name}</p>
-          <p>Дата начала: {currentTariff.payment_info.date_start}</p>
-          <p>Дата окончания: {currentTariff.payment_info.date_end}</p>
+          <p>
+            Дата начала:{' '}
+            {new Date(currentTariff.payment_info.date_start).toLocaleString()}
+          </p>
+          <p>
+            Дата начала:{' '}
+            {new Date(currentTariff.payment_info.date_end).toLocaleString()}
+          </p>
           <p>Сумма: {currentTariff.payment_info.amount}</p>
         </>
       ) : (

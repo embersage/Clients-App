@@ -62,6 +62,8 @@ const Notifications = () => {
     'priority',
     'date_start',
     'date_end',
+    'id_currency',
+    'page',
   ];
   const headers = [
     'id',
@@ -70,6 +72,8 @@ const Notifications = () => {
     'Приоритет',
     'Дата начала',
     'Дата окончания',
+    'id валюты',
+    'Страница',
   ];
 
   useEffect(() => {
@@ -133,6 +137,20 @@ const Notifications = () => {
           value: notification.date_end,
           disabled: false,
           type: 'datetime-local',
+        },
+        {
+          propName: 'id_currency',
+          name: 'id валюты',
+          value: notification.id_currency,
+          disabled: true,
+          type: 'text',
+        },
+        {
+          propName: 'page',
+          name: 'Страница',
+          value: notification.page,
+          disabled: false,
+          type: 'text',
         },
       ]);
     }
@@ -279,6 +297,7 @@ const Notifications = () => {
               }
               checked={selectedItems.length === notifications.length}
               onSelect={handleCheckboxClick}
+              showCheckbox={true}
             >
               {notifications.map((item) => (
                 <TableRow
