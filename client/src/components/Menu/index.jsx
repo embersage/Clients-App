@@ -66,15 +66,15 @@ const Menu = () => {
                       localStorage.clear();
                     },
                   })}
-                  onClick={() => {
-                    dispatch(setSortBy(''));
-                    dispatch(setSortType(''));
-                  }}
                 >
                   <Button
                     isActive={
                       location.pathname === `${item.link}` ? 'true' : 'false'
                     }
+                    onClick={() => {
+                      dispatch(setSortBy(''));
+                      dispatch(setSortType(''));
+                    }}
                   >
                     {item.icon}
                     {item.name}

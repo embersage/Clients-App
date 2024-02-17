@@ -80,6 +80,21 @@ class paymentController {
       };
     }
 
+    let sort;
+
+    if (!sortBy.includes('.')) {
+      sort = [sortBy, sortType];
+    } else if (sortBy.includes('tariff.')) {
+      sort = [Tariff, sortBy.split('.').pop(), sortType];
+      console.log(sort);
+    } else if (sortBy.includes('user_account.')) {
+      sort = [UserAccount, sortBy.split('.').pop(), sortType];
+      console.log(sort);
+    } else if (sortBy.includes('ckassa_payment_status.')) {
+      sort = [PaymentStatus, sortBy.split('.').pop(), sortType];
+      console.log(sort);
+    }
+
     const queryOptions = {
       where: searchCriteria,
       include: includeOptions,
@@ -91,7 +106,8 @@ class paymentController {
           'id_ckassa_payment_status',
         ],
       },
-      order: [[sortBy, sortType]],
+      /* order: [[sortBy, sortType]], */
+      order: [sort],
       raw: false,
       schema,
     };
