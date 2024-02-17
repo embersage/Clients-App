@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import {
   getSessions,
   setSelectedItems,
@@ -132,9 +132,9 @@ const Sessions = () => {
               }}
               icon={
                 sortType === 'ASC' ? (
-                  <IoIosArrowRoundUp />
+                  <FiChevronUp />
                 ) : sortType === 'DESC' ? (
-                  <IoIosArrowRoundDown />
+                  <FiChevronDown />
                 ) : (
                   ''
                 )

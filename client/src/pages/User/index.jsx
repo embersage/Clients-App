@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
 import {
   addSelectedPresentation,
@@ -254,9 +254,9 @@ const User = () => {
                       }}
                       icon={
                         sortType === 'ASC' ? (
-                          <IoIosArrowRoundUp />
+                          <FiChevronUp />
                         ) : sortType === 'DESC' ? (
-                          <IoIosArrowRoundDown />
+                          <FiChevronDown />
                         ) : (
                           ''
                         )

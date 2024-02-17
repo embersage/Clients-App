@@ -106,7 +106,6 @@ class paymentController {
           'id_ckassa_payment_status',
         ],
       },
-      /* order: [[sortBy, sortType]], */
       order: [sort],
       raw: false,
       schema,

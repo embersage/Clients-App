@@ -5,8 +5,7 @@ import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImport } from 'react-icons/ci';
 import { MdFilterAlt } from 'react-icons/md';
-import { IoIosArrowRoundDown } from 'react-icons/io';
-import { IoIosArrowRoundUp } from 'react-icons/io';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { MdOutlineMailOutline } from 'react-icons/md';
 import {
   getUsers,
@@ -258,9 +257,9 @@ const Users = () => {
               }}
               icon={
                 sortType === 'ASC' ? (
-                  <IoIosArrowRoundUp />
+                  <FiChevronUp />
                 ) : sortType === 'DESC' ? (
-                  <IoIosArrowRoundDown />
+                  <FiChevronDown />
                 ) : (
                   ''
                 )

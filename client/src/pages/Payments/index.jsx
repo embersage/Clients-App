@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { MdFilterAlt } from 'react-icons/md';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import {
   getPayments,
@@ -71,11 +71,11 @@ const Payments = () => {
     'date_start',
     'date_end',
     'amount',
+    'tariff.id',
     'tariff.name',
     'user_account.id',
     'user_account.name',
-    'company.name',
-    'currency.name',
+    'id_currency',
     'ckassa_payment_status.id',
     'ckassa_payment_status.name',
   ];
@@ -84,11 +84,11 @@ const Payments = () => {
     'Дата начала',
     'Дата окончания',
     'Сумма',
+    'id тарифа',
     'Тариф',
     'id аккаунта',
     'Имя',
-    'Компания',
-    'Валюта',
+    'Код валюты',
     'Код оплаты',
     'Статус оплаты',
   ];
@@ -152,13 +152,6 @@ const Payments = () => {
           type: 'number',
         },
         {
-          propName: 'payment_number',
-          name: 'Номер платежа',
-          value: payment.payment_number,
-          disabled: true,
-          type: 'text',
-        },
-        {
           propName: 'id_user_account',
           name: 'id пользователя',
           value: payment.id_user_account,
@@ -173,23 +166,9 @@ const Payments = () => {
           type: 'text',
         },
         {
-          propName: 'id_ckassa_payment_status',
-          name: 'id статуса платежа',
-          value: payment.id_ckassa_payment_status,
-          disabled: true,
-          type: 'text',
-        },
-        {
           propName: 'id_currency',
           name: 'id валюты',
           value: payment.id_currency,
-          disabled: true,
-          type: 'text',
-        },
-        {
-          propName: 'id_company',
-          name: 'id компании',
-          value: payment.id_company,
           disabled: true,
           type: 'text',
         },
@@ -335,9 +314,9 @@ const Payments = () => {
               }}
               icon={
                 sortType === 'ASC' ? (
-                  <IoIosArrowRoundUp />
+                  <FiChevronUp />
                 ) : sortType === 'DESC' ? (
-                  <IoIosArrowRoundDown />
+                  <FiChevronDown />
                 ) : (
                   ''
                 )

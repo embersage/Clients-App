@@ -108,6 +108,14 @@ class UserController {
       };
     }
 
+    let sort;
+
+    if (!sortBy.includes('.')) {
+      sort = [sortBy, sortType];
+    } else if (sortBy.includes('company.')) {
+      sort = [Company, sortBy.split('.').pop(), sortType];
+    }
+
     const queryOptions = {
       where: searchCriteria,
       include: includeOptions,
@@ -115,7 +123,7 @@ class UserController {
         exclude: ['id_company', 'id_access_level'],
       },
       subQuery: false,
-      order: [[sortBy, sortType]],
+      order: [sort],
       raw: false,
       distinct: true,
       schema,

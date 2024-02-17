@@ -1,4 +1,4 @@
-import { Op } from 'sequelize';
+import { Op, literal } from 'sequelize';
 import { sessionSchema, presentationSchema } from '../models/index.js';
 import ApiError from '../error/ApiError.js';
 
@@ -33,9 +33,24 @@ class sessionController {
       },
     ];
 
+    let sort;
+
+    if (!sortBy.includes('.')) {
+      sort = [sortBy, sortType];
+    } else if (sortBy.includes('presentation.')) {
+      sort = [Presentation, sortBy.split('.').pop(), sortType];
+    } else if (sortBy.includes('session_users.')) {
+      sort = [
+        literal(
+          '(SELECT COUNT(*) FROM session.session_user WHERE session.session_user.id_session = session.id)'
+        ),
+        sortType,
+      ];
+    }
+
     const queryOptions = {
       where: searchCriteria,
-      order: [[sortBy, sortType]],
+      order: [sort],
       include: includeOptions,
       distinct: true,
       schema,

@@ -1,4 +1,3 @@
-// TableRow component
 import { useEffect, useRef, useState } from 'react';
 import styles from './TableRow.module.scss';
 
@@ -47,7 +46,9 @@ const TableRow = (props) => {
         nestedProperties.forEach((prop) => {
           propertyValue = propertyValue?.[prop];
         });
-        return <td key={index}>{propertyValue}</td>;
+        return (
+          <td key={index}>{propertyValue === true ? 'Да' : propertyValue}</td>
+        );
       })}
     </tr>
   );
