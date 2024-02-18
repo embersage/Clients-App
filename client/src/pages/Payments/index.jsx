@@ -321,7 +321,11 @@ const Payments = () => {
                   ''
                 )
               }
-              checked={selectedItems.length === payments.length}
+              checked={
+                selectedItems.length > 0 &&
+                payments.length > 0 &&
+                selectedItems.length === payments.length
+              }
               onSelect={handleCheckboxClick}
               showCheckbox={true}
             >
@@ -376,6 +380,7 @@ const Payments = () => {
                               }}
                               checked={selectedCurrencies.includes(item.id)}
                             />
+                            {item.id}
                             {item.name}
                           </label>
                         </li>
@@ -401,7 +406,9 @@ const Payments = () => {
                               }}
                               checked={selectedTariffs.includes(item.id)}
                             />
+                            {item.id}
                             {item.name}
+                            {item.amount}
                           </label>
                         </li>
                       );

@@ -31,6 +31,8 @@ export const getUsers = createAsyncThunk(
     activate,
     endSoon,
     autoPayment,
+    hasFreeTariff,
+    hasSubscription,
   }) => {
     const data = await fetchUsers(
       usePagination,
@@ -41,7 +43,9 @@ export const getUsers = createAsyncThunk(
       search,
       activate,
       endSoon,
-      autoPayment
+      autoPayment,
+      hasFreeTariff,
+      hasSubscription
     );
     data.rows.forEach((item) => {
       item.date_reg = formatDate(item.date_reg);

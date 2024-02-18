@@ -232,7 +232,7 @@ const User = () => {
                 edit={edit}
               />
               <div className={styles.additionalInfo}>
-                <TariffBlock tariffs={user.tariffs} />
+                <TariffBlock payment_infos={user.payment_infos} />
                 <>
                   {user.presentations && user.presentations.length ? (
                     <Table

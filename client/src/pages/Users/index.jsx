@@ -20,6 +20,8 @@ import {
 import {
   setUsePagination,
   setAutoPayment,
+  setHasFreeTariff,
+  setHasSubscription,
   setActivate,
   setEndSoon,
   setSortBy,
@@ -59,6 +61,8 @@ const Users = () => {
   const status = useSelector((state) => state.users.status);
   const search = useSelector((state) => state.filter.search);
   const autoPayment = useSelector((state) => state.filter.autoPayment);
+  const hasFreeTariff = useSelector((state) => state.filter.hasFreeTariff);
+  const hasSubscription = useSelector((state) => state.filter.hasSubscription);
   const activate = useSelector((state) => state.filter.activate);
   const endSoon = useSelector((state) => state.filter.endSoon);
   const sortBy = useSelector((state) => state.filter.sortBy);
@@ -103,6 +107,8 @@ const Users = () => {
         activate,
         endSoon,
         autoPayment,
+        hasFreeTariff,
+        hasSubscription,
       })
     );
   }, [
@@ -114,6 +120,8 @@ const Users = () => {
     activate,
     endSoon,
     autoPayment,
+    hasFreeTariff,
+    hasSubscription,
   ]);
 
   const upload = async (file) => {
@@ -130,6 +138,8 @@ const Users = () => {
           activate,
           endSoon,
           autoPayment,
+          hasFreeTariff,
+          hasSubscription,
         })
       );
       dispatch(setIsVisible(false));
@@ -151,6 +161,8 @@ const Users = () => {
         activate,
         endSoon,
         autoPayment,
+        hasFreeTariff,
+        hasSubscription,
       })
     );
   };
@@ -264,7 +276,11 @@ const Users = () => {
                   ''
                 )
               }
-              checked={selectedUsers.length === users.length}
+              checked={
+                selectedUsers.length > 0 &&
+                users.length > 0 &&
+                selectedUsers.length === users.length
+              }
               onSelect={handleCheckboxClick}
               showCheckbox={true}
             >
@@ -374,11 +390,22 @@ const Users = () => {
                       dispatch(setActivate(''));
                     }
                   }}
+                  checked={activate}
                 />
               </label>
               <label>
                 <span>Бесплатный тариф</span>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (!hasFreeTariff) {
+                      dispatch(setHasFreeTariff(true));
+                    } else {
+                      dispatch(setHasFreeTariff(false));
+                    }
+                  }}
+                  checked={hasFreeTariff}
+                />
               </label>
               <label>
                 <span>Скоро закончится тариф</span>
@@ -391,11 +418,22 @@ const Users = () => {
                       dispatch(setEndSoon(false));
                     }
                   }}
+                  checked={endSoon}
                 />
               </label>
               <label>
                 <span>Есть подписка</span>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (!hasSubscription) {
+                      dispatch(setHasSubscription(true));
+                    } else {
+                      dispatch(setHasSubscription(false));
+                    }
+                  }}
+                  checked={hasSubscription}
+                />
               </label>
               <label>
                 <span>Включено автопродление</span>
@@ -408,6 +446,7 @@ const Users = () => {
                       dispatch(setAutoPayment(''));
                     }
                   }}
+                  checked={autoPayment}
                 />
               </label>
               <label>

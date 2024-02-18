@@ -38,6 +38,8 @@ class UserController {
       activate,
       endSoon,
       autoPayment,
+      hasFreeTariff,
+      hasSubscription,
     } = req.query;
     usePagination =
       usePagination === (undefined || '') ? true : usePagination === 'true';
@@ -49,6 +51,10 @@ class UserController {
     search = search || '';
     activate = activate || null;
     autoPayment = autoPayment || null;
+    hasFreeTariff =
+      hasFreeTariff === (undefined || '') ? true : hasFreeTariff === 'true';
+    hasSubscription =
+      hasSubscription === (undefined || '') ? true : hasSubscription === 'true';
     const offset = page * limit - limit;
 
     const includeOptions = [
@@ -65,10 +71,28 @@ class UserController {
         attributes: ['auto_payment'],
       },
       {
-        model: Tariff,
-        attributes: ['name'],
+        model: PaymentInfo,
+        include: [
+          {
+            model: Tariff,
+          },
+        ],
       },
     ];
+
+    if (endSoon) {
+      const currentDate = new Date();
+
+      includeOptions[3].where = {
+        date_end: {
+          [Op.between]: [
+            currentDate,
+            new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
+          ],
+        },
+      };
+    }
+
     let users = [];
     let searchCriteria = {};
 
@@ -95,18 +119,27 @@ class UserController {
       searchCriteria.activate = activate;
     }
 
-    if (endSoon) {
-      const currentDate = new Date();
-
+    /*  if (hasFreeTariff) {
       includeOptions[3].where = {
-        '$tariffs.payment_info.date_end$': {
-          [Op.between]: [
-            currentDate,
-            new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
-          ],
+        id_tariff: {
+          [Op.eq]: 5,
         },
       };
     }
+
+    if (hasSubscription) {
+      includeOptions[3].where = {
+        id_tariff: {
+          [Op.ne]: 5,
+        },
+        date_end: {
+          [Op.or]: {
+            [Op.gt]: new Date(),
+            [Op.eq]: null,
+          },
+        },
+      };
+    } */
 
     let sort;
 
@@ -122,7 +155,6 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_access_level'],
       },
-      subQuery: false,
       order: [sort],
       raw: false,
       distinct: true,
@@ -135,6 +167,33 @@ class UserController {
     }
 
     users = await UserAccount.findAndCountAll(queryOptions);
+
+    if (hasFreeTariff) {
+      users.rows = users.rows.filter((user) => {
+        const paymentInfos = user.payment_infos;
+
+        if (paymentInfos.length === 1) {
+          return paymentInfos[0].id_tariff === 5;
+        }
+
+        return false;
+      });
+    }
+
+    if (hasSubscription) {
+      users.rows = users.rows.filter((user) => {
+        const paymentInfos = user.payment_infos;
+
+        const activePaidTariff = paymentInfos.find((info) => {
+          return (
+            info.id_tariff !== 5 &&
+            (info.date_end === null || new Date(info.date_end) > new Date())
+          );
+        });
+
+        return activePaidTariff !== undefined;
+      });
+    }
 
     return res.json(users);
   }
@@ -166,8 +225,12 @@ class UserController {
           attributes: ['language', 'usage_format', 'auto_payment'],
         },
         {
-          model: Tariff,
-          attributes: ['name'],
+          model: PaymentInfo,
+          include: [
+            {
+              model: Tariff,
+            },
+          ],
         },
         {
           model: Presentation,
@@ -177,6 +240,7 @@ class UserController {
       attributes: {
         exclude: ['id_company', 'id_role', 'id_access_level'],
       },
+      distinct: true,
       order: [[Presentation, sortBy, sortType]],
       schema,
     });

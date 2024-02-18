@@ -33,13 +33,6 @@ const Table = (props) => {
               />
             </th>
           )}
-          {/* <th>
-            <input
-              type="checkbox"
-              onChange={handleCheckboxClick}
-              checked={checked}
-            />
-          </th> */}
           {headers.map((item, index) => (
             <th
               key={index}

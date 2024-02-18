@@ -139,8 +139,6 @@ const Sessions = () => {
                   ''
                 )
               }
-              /* checked={selectedItems.length === sessions.length}
-              onSelect={handleCheckboxClick} */
               showCheckbox={false}
             >
               {sessions.map((item) => (

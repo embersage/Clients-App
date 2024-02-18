@@ -1,4 +1,3 @@
-export const HOME_ROUTE = '/';
 export const USERS_ROUTE = '/users';
 export const USER_ROUTE = '/users/:id';
 export const MAIL_ROUTE = '/mail';

@@ -9,7 +9,9 @@ export const fetchUsers = async (
   search,
   activate,
   endSoon,
-  autoPayment
+  autoPayment,
+  hasFreeTariff,
+  hasSubscription
 ) => {
   const { data } = await $authHost.get('api/users', {
     params: {
@@ -22,6 +24,8 @@ export const fetchUsers = async (
       activate,
       endSoon,
       autoPayment,
+      hasFreeTariff,
+      hasSubscription,
     },
   });
   return data;
@@ -48,7 +52,6 @@ export const updateUser = async (id, data) => {
   const response = await $authHost.patch(`api/users/${id}`, {
     data,
   });
-  console.log(response.data);
   return response.data;
 };
 

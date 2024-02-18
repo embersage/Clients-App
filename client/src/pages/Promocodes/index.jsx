@@ -157,7 +157,11 @@ const Promocodes = () => {
                   ''
                 )
               }
-              checked={selectedItems.length === promocodes.length}
+              checked={
+                selectedItems.length > 0 &&
+                promocodes.length > 0 &&
+                selectedItems.length === promocodes.length
+              }
               onSelect={handleCheckboxClick}
               showCheckbox={true}
             >

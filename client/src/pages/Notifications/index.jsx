@@ -295,7 +295,11 @@ const Notifications = () => {
                   ''
                 )
               }
-              checked={selectedItems.length === notifications.length}
+              checked={
+                selectedItems.length > 0 &&
+                notifications.length > 0 &&
+                selectedItems.length === notifications.length
+              }
               onSelect={handleCheckboxClick}
               showCheckbox={true}
             >
