@@ -254,15 +254,29 @@ class UserController {
     const property = Object.keys(data)[0];
     const value = Object.values(data)[0];
 
-    await UserAccount.update(
-      {
-        [property]: value,
-      },
-      {
-        where: { id },
-        schema,
-      }
-    );
+    if (property === 'password') {
+      const hashPassword = await bcrypt.hash(value, 5);
+      /* await UserAccount.update({ email, role, password: hashPassword }); */
+      await UserAccount.update(
+        {
+          [property]: hashPassword,
+        },
+        {
+          where: { id },
+          schema,
+        }
+      );
+    } else {
+      await UserAccount.update(
+        {
+          [property]: value,
+        },
+        {
+          where: { id },
+          schema,
+        }
+      );
+    }
 
     const user = await UserAccount.findOne({
       where: { id },

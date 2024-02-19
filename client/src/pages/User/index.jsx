@@ -71,7 +71,7 @@ const User = () => {
         {
           propName: 'password',
           name: 'Пароль',
-          value: user.password,
+          value: '',
           disabled: false,
           type: 'text',
         },
