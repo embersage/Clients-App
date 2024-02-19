@@ -119,27 +119,17 @@ class UserController {
       searchCriteria.activate = activate;
     }
 
-    /*  if (hasFreeTariff) {
+    if (hasSubscription) {
       includeOptions[3].where = {
-        id_tariff: {
-          [Op.eq]: 5,
+        id_tariff: { [Op.ne]: 5 },
+        amount: {
+          [Op.gt]: 0,
+        },
+        date_end: {
+          [Op.gt]: new Date(),
         },
       };
     }
-
-    if (hasSubscription) {
-      includeOptions[3].where = {
-        id_tariff: {
-          [Op.ne]: 5,
-        },
-        date_end: {
-          [Op.or]: {
-            [Op.gt]: new Date(),
-            [Op.eq]: null,
-          },
-        },
-      };
-    } */
 
     let sort;
 
@@ -166,33 +156,42 @@ class UserController {
       queryOptions.offset = offset;
     }
 
-    users = await UserAccount.findAndCountAll(queryOptions);
-
-    if (hasFreeTariff) {
-      users.rows = users.rows.filter((user) => {
-        const paymentInfos = user.payment_infos;
-
-        if (paymentInfos.length === 1) {
-          return paymentInfos[0].id_tariff === 5;
-        }
-
-        return false;
-      });
+    if (!hasFreeTariff) {
+      users = await UserAccount.findAndCountAll(queryOptions);
+    } else {
+      queryOptions.limit = null;
+      queryOptions.offset = null;
+      users = await UserAccount.findAll(queryOptions);
     }
 
-    if (hasSubscription) {
-      users.rows = users.rows.filter((user) => {
-        const paymentInfos = user.payment_infos;
+    if (hasFreeTariff) {
+      const start = (page - 1) * limit;
+      const end = start + limit;
 
-        const activePaidTariff = paymentInfos.find((info) => {
-          return (
-            info.id_tariff !== 5 &&
-            (info.date_end === null || new Date(info.date_end) > new Date())
-          );
-        });
+      const filteredUsers = users.filter((user) => {
+        const hasOneTariff =
+          user.payment_infos.length === 1 &&
+          user.payment_infos[0].id_tariff === 5;
 
-        return activePaidTariff !== undefined;
+        let allOtherTariffsExpired;
+
+        if (!hasOneTariff) {
+          allOtherTariffsExpired =
+            user.payment_infos.length > 1 &&
+            user.payment_infos.some((payment) => {
+              return (
+                payment.id_tariff !== 5 &&
+                payment.date_end &&
+                new Date(payment.date_end) <= new Date()
+              );
+            });
+        }
+
+        return hasOneTariff || allOtherTariffsExpired;
       });
+
+      const paginatedUsers = filteredUsers.slice(start, end);
+      return res.json({ count: filteredUsers.length, rows: paginatedUsers });
     }
 
     return res.json(users);

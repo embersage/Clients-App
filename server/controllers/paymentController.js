@@ -6,12 +6,6 @@ const { PaymentInfo, PaymentStatus, UserAccount, Tariff, Company, Currency } =
   accountSchema;
 
 class paymentController {
-  /* 
-   TODO
-    - по сумме подписки
-    - по тарифу
-    - по валюте
-*/
   async getAll(req, res) {
     const schema = 'account';
     let {
