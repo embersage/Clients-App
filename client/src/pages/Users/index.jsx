@@ -288,6 +288,8 @@ const Users = () => {
                 <TableRow
                   key={item.id}
                   onClick={() => {
+                    dispatch(setSortBy(''));
+                    dispatch(setSortType(''));
                     dispatch(setUser(item));
                     navigate(`/users/${item.id}`);
                   }}
