@@ -122,9 +122,6 @@ class UserController {
     if (hasSubscription) {
       includeOptions[3].where = {
         id_tariff: { [Op.ne]: 5 },
-        amount: {
-          [Op.gt]: 0,
-        },
         date_end: {
           [Op.gt]: new Date(),
         },
@@ -158,15 +155,11 @@ class UserController {
 
     if (!hasFreeTariff) {
       users = await UserAccount.findAndCountAll(queryOptions);
+      return res.json(users);
     } else {
       queryOptions.limit = null;
       queryOptions.offset = null;
       users = await UserAccount.findAll(queryOptions);
-    }
-
-    if (hasFreeTariff) {
-      const start = (page - 1) * limit;
-      const end = start + limit;
 
       const filteredUsers = users.filter((user) => {
         const hasOneTariff =
@@ -181,7 +174,6 @@ class UserController {
             user.payment_infos.some((payment) => {
               return (
                 payment.id_tariff !== 5 &&
-                payment.date_end &&
                 new Date(payment.date_end) <= new Date()
               );
             });
@@ -190,11 +182,16 @@ class UserController {
         return hasOneTariff || allOtherTariffsExpired;
       });
 
-      const paginatedUsers = filteredUsers.slice(start, end);
-      return res.json({ count: filteredUsers.length, rows: paginatedUsers });
-    }
+      if (usePagination) {
+        const start = (page - 1) * limit;
+        const end = start + limit;
 
-    return res.json(users);
+        const paginatedUsers = filteredUsers.slice(start, end);
+        return res.json({ count: filteredUsers.length, rows: paginatedUsers });
+      } else {
+        return res.json({ count: filteredUsers.length, rows: filteredUsers });
+      }
+    }
   }
 
   async getOne(req, res) {
@@ -256,7 +253,6 @@ class UserController {
 
     if (property === 'password') {
       const hashPassword = await bcrypt.hash(value, 5);
-      /* await UserAccount.update({ email, role, password: hashPassword }); */
       await UserAccount.update(
         {
           [property]: hashPassword,
@@ -338,24 +334,58 @@ class UserController {
       await workbook.xlsx.load(buffer);
 
       const worksheet = workbook.worksheets[0];
-      const users = [];
 
-      worksheet.eachRow((row, rowNumber) => {
+      worksheet.eachRow(async (row, rowNumber) => {
         if (rowNumber !== 1) {
-          const nameCell = row.getCell(1);
-          const name = nameCell.value;
+          const name = row.getCell(1).value;
+          const email = row.getCell(2).value.text;
+          const password = `${row.getCell(3).value}`;
+          const id_tariff = row.getCell(4).value;
+          const date_start = row.getCell(5).value || new Date().toISOString();
+          const date_end = row.getCell(6).value;
+          const auto_payment = row.getCell(7).value || false;
+          const language = row.getCell(8).value || 'ru-Ru';
+          const amount =
+            row.getCell(9).value !== undefined ? row.getCell(9).value : 0;
 
-          if (name !== undefined) {
-            users.push({ name });
-          } else {
-            console.log(
-              `Ошибка: Значение name не определено в строке ${rowNumber}.`
-            );
+          const hashPassword = await bcrypt.hash(password, 5);
+
+          const userAccount = await UserAccount.create({
+            name,
+            email,
+            password: hashPassword,
+          });
+
+          await UserConfig.create({
+            id_user_account: userAccount.id,
+            auto_payment,
+            language,
+          });
+
+          await PaymentInfo.create({
+            id_user_account: userAccount.id,
+            id_tariff: 5,
+            date_start,
+            date_end: new Date(date_start).setFullYear(
+              new Date(date_start).getFullYear() + 100
+            ),
+            amount: 0,
+          });
+
+          if (id_tariff) {
+            await PaymentInfo.create({
+              id_user_account: userAccount.id,
+              id_tariff,
+              date_start: new Date(date_start).setSeconds(
+                new Date(date_start).getSeconds() + 1
+              ),
+              date_end,
+              auto_payment,
+              amount,
+            });
           }
         }
       });
-
-      await UserAccount.bulkCreate(users, { schema: 'account' });
 
       return res.json({ message: 'Клиенты успешно импортированы.' });
     } catch (error) {
