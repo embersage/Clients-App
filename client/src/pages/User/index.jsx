@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BsArrowClockwise } from 'react-icons/bs';
+import { PiArrowsClockwise } from 'react-icons/pi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
@@ -232,7 +232,13 @@ const User = () => {
                 edit={edit}
               />
               <div className={styles.additionalInfo}>
-                <TariffBlock payment_infos={user.payment_infos} />
+                {user.payment_infos && user.payment_infos.length > 0 ? (
+                  <TariffBlock payment_infos={user.payment_infos} />
+                ) : (
+                  <div className={styles.loadingBanner}>
+                    <span>Нет действующего тарифа ☹️</span>
+                  </div>
+                )}
                 <>
                   {user.presentations && user.presentations.length ? (
                     <Table
@@ -279,22 +285,24 @@ const User = () => {
                       ))}
                     </Table>
                   ) : (
-                    <span>Нет презентаций ☹️</span>
+                    <div className={styles.loadingBanner}>
+                      <span>Нет презентаций ☹️</span>
+                    </div>
                   )}
                 </>
               </div>
             </>
           ) : (
             <>
-              <div className={styles.informationBlockLoading}>
-                <BsArrowClockwise className={styles.loadingIcon} size={75} />
+              <div className={styles.loadingBanner}>
+                <PiArrowsClockwise className={styles.loadingIcon} size={75} />
               </div>
               <div className={styles.additionalInfo}>
-                <div className={styles.tariffBlockLoading}>
-                  <BsArrowClockwise className={styles.loadingIcon} size={75} />
+                <div className={styles.loadingBanner}>
+                  <PiArrowsClockwise className={styles.loadingIcon} size={75} />
                 </div>
-                <div className={styles.presentationBlockLoading}>
-                  <BsArrowClockwise className={styles.loadingIcon} size={75} />
+                <div className={styles.loadingBanner}>
+                  <PiArrowsClockwise className={styles.loadingIcon} size={75} />
                 </div>
               </div>
             </>

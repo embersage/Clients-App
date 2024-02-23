@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { BsArrowClockwise } from 'react-icons/bs';
-import { MdFilterAlt } from 'react-icons/md';
+import { PiArrowsClockwise } from 'react-icons/pi';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import {
@@ -174,7 +173,7 @@ const Promocodes = () => {
           </>
         ) : (
           <div className={styles.loadingBanner}>
-            <BsArrowClockwise className={styles.loadingIcon} size={75} />
+            <PiArrowsClockwise className={styles.loadingIcon} size={75} />
           </div>
         )}
       </div>

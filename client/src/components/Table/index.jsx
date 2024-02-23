@@ -18,14 +18,14 @@ const Table = (props) => {
   return (
     <table className={styles.table} cellSpacing={0} cellPadding={0}>
       <thead>
-        {props.name && (
+        {/* {props.name && (
           <tr className={styles.tableName}>
             <th colSpan={headers.length}>{props.name}</th>
           </tr>
-        )}
+        )} */}
         <tr className={styles.tableHeader}>
           {showCheckbox && (
-            <th>
+            <th className={styles.checkbox}>
               <input
                 type="checkbox"
                 onChange={handleCheckboxClick}
@@ -40,8 +40,10 @@ const Table = (props) => {
                 onHeaderClick(values[index]);
               }}
             >
-              {item}
-              {clickedHeader === values[index] && <span>{icon}</span>}
+              <div className={styles.headers}>
+                {item}
+                {clickedHeader === values[index] && <span>{icon}</span>}
+              </div>
             </th>
           ))}
         </tr>

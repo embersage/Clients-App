@@ -174,6 +174,7 @@ class UserController {
             user.payment_infos.some((payment) => {
               return (
                 payment.id_tariff !== 5 &&
+                payment.date_end &&
                 new Date(payment.date_end) <= new Date()
               );
             });

@@ -51,24 +51,22 @@ const Search = () => {
           onChangeInput(event.target.value);
         }}
       />
+      <LuSettings2
+        size={30}
+        className={styles.filters}
+        onClick={() => {
+          dispatch(setIsVisible(true));
+          dispatch(setPressedButton('filters'));
+        }}
+      />
       {string && (
-        <>
-          <LuSettings2
-            size={30}
-            className={styles.filters}
-            onClick={() => {
-              dispatch(setIsVisible(true));
-              dispatch(setPressedButton('filters'));
-            }}
-          />
-          <RxCross2
-            className={styles.cross}
-            size={30}
-            onClick={() => {
-              clearSearch();
-            }}
-          />
-        </>
+        <RxCross2
+          className={styles.cross}
+          size={30}
+          onClick={() => {
+            clearSearch();
+          }}
+        />
       )}
     </label>
   );

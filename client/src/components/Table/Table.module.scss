@@ -8,6 +8,7 @@
   border-spacing: 0;
   border-collapse: separate;
   background-color: #fff;
+  table-layout: fixed;
 
   td {
     padding: 5px;
@@ -16,8 +17,31 @@
   .tableHeader {
     height: 40px;
 
+    /* tr {
+      th[className] {
+        width: 30px;
+      }
+    } */
+
+    .checkbox {
+      width: 30px;
+      height: 30px;
+
+      input {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
     th {
-      padding: 20px 0;
+      padding: 10px 0;
+
+      .headers {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 1px;
+      }
 
       &:hover {
         color: rgba(0, 60, 255, 0.5);
@@ -26,8 +50,9 @@
     }
   }
 
-  .tableName {
-  }
+  /* tr th:nth-child(1) {
+    width: 30px;
+  } */
 
   &:last-child td:last-child {
     border-top-right-radius: 10px;

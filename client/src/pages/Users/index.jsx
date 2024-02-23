@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { BsArrowClockwise } from 'react-icons/bs';
+import { PiArrowsClockwise } from 'react-icons/pi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImport } from 'react-icons/ci';
-import { MdFilterAlt } from 'react-icons/md';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { MdOutlineMailOutline } from 'react-icons/md';
 import {
@@ -238,7 +237,7 @@ const Users = () => {
         {status === 'succeeded' ? (
           <>
             <Table
-              name={'Клиенты'}
+              name={'Пользователи'}
               headers={headers}
               values={values}
               clickedHeader={clickedHeader}
@@ -297,7 +296,7 @@ const Users = () => {
           </>
         ) : (
           <div className={styles.loadingBanner}>
-            <BsArrowClockwise className={styles.loadingIcon} size={75} />
+            <PiArrowsClockwise className={styles.loadingIcon} size={75} />
           </div>
         )}
       </div>

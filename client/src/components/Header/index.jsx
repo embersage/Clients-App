@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { HiOutlineMenu } from 'react-icons/hi';
+import { RxHamburgerMenu } from 'react-icons/rx';
 import { setIsOpened } from '../../redux/slices/menuSlice';
 import styles from './Header.module.scss';
 
@@ -9,7 +9,7 @@ const Header = (props) => {
 
   return (
     <header className={styles.header}>
-      <HiOutlineMenu
+      <RxHamburgerMenu
         size={50}
         className={styles.menuButton}
         onClick={() => {

@@ -10,18 +10,8 @@
   }
 }
 
-@keyframes moveLeft {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-225px);
-  }
-}
-
 .darkBackground {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +22,6 @@
 }
 
 .menu {
-  padding: 10px 0;
   width: 225px;
   height: 100%;
   color: #ababab;
@@ -40,7 +29,7 @@
   font-weight: 400;
   position: absolute;
   top: 0;
-  left: 15px;
+  left: 0;
   animation: moveRight 0.5s ease-in-out 1;
   z-index: 1;
 
@@ -55,41 +44,7 @@
     justify-content: center;
     align-items: center;
     row-gap: 40px;
-    border-radius: 25px;
-    box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
     background-color: #fff;
-
-    .page {
-      padding: 10px;
-      width: 150px;
-      height: 52px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      justify-items: center;
-      align-items: center;
-      column-gap: 10px;
-      transition: border 0.3s ease-in-out, color 0.3s ease-in-out,
-        fill 10s ease-in-out;
-      border: 1px solid transparent;
-      border-radius: 12px;
-      cursor: pointer;
-
-      .icon {
-        padding: 4px;
-        margin: 0 auto 0 0;
-        transition: fill 0.3s ease-in-out;
-      }
-
-      &:hover {
-        &:not(._active) {
-          border-color: #e1e8ff;
-          color: rgba(0, 60, 255, 0.5);
-          svg {
-            fill: rgba(225, 232, 255, 0.5);
-          }
-        }
-      }
-    }
 
     span {
       width: 85px;

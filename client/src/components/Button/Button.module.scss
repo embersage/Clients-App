@@ -2,11 +2,11 @@
 
 .button {
   padding: 10px;
-  width: 150px;
+  width: 170px;
   height: 52px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
+  justify-items: flex-end;
   align-items: center;
   column-gap: 10px;
   transition: border 0.3s ease-in-out, color 0.3s ease-in-out,
