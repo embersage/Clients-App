@@ -1,23 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import debounce from 'lodash.debounce';
 import { RxCross2 } from 'react-icons/rx';
 import { IoSearchOutline } from 'react-icons/io5';
+import { LuSettings2 } from 'react-icons/lu';
 import { setSearch } from '../../redux/slices/filterSlice';
+import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import styles from './Search.module.scss';
-import debounce from 'lodash.debounce';
 
 const Search = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const [string, setString] = useState('');
-  let searchValue;
-  if (location.pathname.includes('/users')) {
-    searchValue = 'Найти клиента...';
-  } else if (location.pathname.includes('/payments')) {
-    searchValue = 'Найти операцию...';
-  }
 
   useEffect(() => {
     return () => {
@@ -44,11 +39,11 @@ const Search = () => {
   };
 
   return (
-    <label>
+    <label className={styles.searchWrapper}>
       <IoSearchOutline className={styles.searchIcon} size={30} />
       <input
         ref={inputRef}
-        placeholder={searchValue}
+        placeholder="Поиск..."
         type="text"
         value={string}
         className={styles.search}
@@ -57,13 +52,23 @@ const Search = () => {
         }}
       />
       {string && (
-        <RxCross2
-          className={styles.cross}
-          size={30}
-          onClick={() => {
-            clearSearch();
-          }}
-        />
+        <>
+          <LuSettings2
+            size={30}
+            className={styles.filters}
+            onClick={() => {
+              dispatch(setIsVisible(true));
+              dispatch(setPressedButton('filters'));
+            }}
+          />
+          <RxCross2
+            className={styles.cross}
+            size={30}
+            onClick={() => {
+              clearSearch();
+            }}
+          />
+        </>
       )}
     </label>
   );

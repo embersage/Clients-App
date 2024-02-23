@@ -1,12 +1,12 @@
 import AuthorizationBlock from '../../components/LoginBlock';
-import styles from './Authorization.module.scss';
+import styles from './Login.module.scss';
 
-const Authorization = () => {
+const Login = () => {
   return (
-    <div className={styles.authorization}>
-      <AuthorizationBlock className={styles.form} />
+    <div className={styles.login}>
+      <AuthorizationBlock />
     </div>
   );
 };
 
-export default Authorization;
+export default Login;

@@ -29,102 +29,104 @@ const AuthorizationBlock = () => {
 
   return (
     <div className={styles.authorizationBlock}>
-      <h1>Вход в систему</h1>
-      {!valid && <h2>Неверный логин или пароль</h2>}
-      <form>
-        <label>
-          <span>Email</span>
-          {valid ? (
-            <input
-              ref={emailRef}
-              placeholder="Введите email"
-              type="text"
-              value={email}
-              className={styles.input}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-            />
-          ) : (
-            <input
-              ref={emailRef}
-              placeholder="Введите email"
-              type="text"
-              value={email}
-              className={styles.redInput}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-            />
-          )}
-          {email && (
-            <RxCross2
-              className={styles.cross}
-              size={30}
-              onClick={() => {
-                emailRef.current.focus();
-                setEmail('');
-              }}
-            />
-          )}
-        </label>
-        <label>
-          <span>Пароль</span>
-          {valid ? (
-            <input
-              ref={passwordRef}
-              placeholder="Введите пароль"
-              type={isVisible ? 'text' : 'password'}
-              value={password}
-              className={styles.input}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-          ) : (
-            <input
-              ref={passwordRef}
-              placeholder="Введите пароль"
-              type={isVisible ? 'text' : 'password'}
-              value={password}
-              className={styles.redInput}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-          )}
-
-          {isVisible
-            ? password && (
-                <FaRegEye
-                  className={styles.eye}
-                  size={30}
-                  onClick={() => {
-                    setIsVisible(!isVisible);
-                  }}
-                />
-              )
-            : password && (
-                <FaRegEyeSlash
-                  className={styles.eye}
-                  size={30}
-                  onClick={() => {
-                    setIsVisible(!isVisible);
-                  }}
-                />
-              )}
-          {password && (
-            <RxCross2
-              className={styles.cross}
-              size={30}
-              onClick={() => {
-                emailRef.current.focus();
-                setPassword('');
-              }}
-            />
-          )}
-        </label>
+      <h1 className={styles.title}>Вход в систему</h1>
+      <form className={styles.form}>
+        {!valid && (
+          <h2 className={styles.warning}>Неверный логин или пароль</h2>
+        )}
+        <div className={styles.inputs}>
+          <label className={styles.inputWrapper}>
+            {valid ? (
+              <input
+                ref={emailRef}
+                placeholder="Email"
+                type="text"
+                value={email}
+                className={styles.input}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            ) : (
+              <input
+                ref={emailRef}
+                placeholder="Email"
+                type="text"
+                value={email}
+                className={styles.redInput}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            )}
+            {email && (
+              <RxCross2
+                className={styles.cross}
+                size={30}
+                onClick={() => {
+                  emailRef.current.focus();
+                  setEmail('');
+                }}
+              />
+            )}
+          </label>
+          <label className={styles.inputWrapper}>
+            {valid ? (
+              <input
+                ref={passwordRef}
+                placeholder="Пароль"
+                type={isVisible ? 'text' : 'password'}
+                value={password}
+                className={styles.input}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+            ) : (
+              <input
+                ref={passwordRef}
+                placeholder="Пароль"
+                type={isVisible ? 'text' : 'password'}
+                value={password}
+                className={styles.redInput}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+            )}
+            {isVisible
+              ? password && (
+                  <FaRegEye
+                    className={styles.eye}
+                    size={30}
+                    onClick={() => {
+                      setIsVisible(!isVisible);
+                    }}
+                  />
+                )
+              : password && (
+                  <FaRegEyeSlash
+                    className={styles.eye}
+                    size={30}
+                    onClick={() => {
+                      setIsVisible(!isVisible);
+                    }}
+                  />
+                )}
+            {password && (
+              <RxCross2
+                className={styles.cross}
+                size={30}
+                onClick={() => {
+                  emailRef.current.focus();
+                  setPassword('');
+                }}
+              />
+            )}
+          </label>
+        </div>
         <button
+          className={styles.button}
           type="submit"
           onClick={(event) => {
             event.preventDefault();

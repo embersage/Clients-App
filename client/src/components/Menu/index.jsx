@@ -1,13 +1,13 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { BiStats } from 'react-icons/bi';
 import { CiLogout } from 'react-icons/ci';
 import { GoPeople } from 'react-icons/go';
 import { PiNotificationLight } from 'react-icons/pi';
 import { LiaRubleSignSolid } from 'react-icons/lia';
 import { BsTextParagraph } from 'react-icons/bs';
 import { RiComputerLine } from 'react-icons/ri';
-import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
+import { setIsOpened } from '../../redux/slices/menuSlice';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
 import Button from '../Button';
 import styles from './Menu.module.scss';
@@ -52,39 +52,47 @@ const Menu = () => {
 
   if (isOpened) {
     return (
-      <nav className={styles.menu}>
-        <ul className={styles.pages}>
-          {pages.map((item, index) => {
-            return (
-              <li key={index}>
-                <Link
-                  to={item.link}
-                  {...(item.link === '/login' && {
-                    onClick: () => {
-                      dispatch(setUser({}));
-                      dispatch(setIsAuth(false));
-                      localStorage.clear();
-                    },
-                  })}
-                >
-                  <Button
-                    isActive={
-                      location.pathname === `${item.link}` ? 'true' : 'false'
-                    }
-                    onClick={() => {
-                      dispatch(setSortBy(''));
-                      dispatch(setSortType(''));
-                    }}
+      <>
+        <div
+          className={styles.darkBackground}
+          onClick={() => {
+            dispatch(setIsOpened(!isOpened));
+          }}
+        />
+        <nav className={styles.menu}>
+          <ul className={styles.pages}>
+            {pages.map((item, index) => {
+              return (
+                <li key={index}>
+                  <Link
+                    to={item.link}
+                    {...(item.link === '/login' && {
+                      onClick: () => {
+                        dispatch(setUser({}));
+                        dispatch(setIsAuth(false));
+                        localStorage.clear();
+                      },
+                    })}
                   >
-                    {item.icon}
-                    {item.name}
-                  </Button>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+                    <Button
+                      isActive={
+                        location.pathname === `${item.link}` ? 'true' : 'false'
+                      }
+                      onClick={() => {
+                        dispatch(setSortBy(''));
+                        dispatch(setSortType(''));
+                      }}
+                    >
+                      {item.icon}
+                      {item.name}
+                    </Button>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </>
     );
   }
 };

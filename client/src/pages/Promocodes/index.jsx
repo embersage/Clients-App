@@ -91,36 +91,21 @@ const Promocodes = () => {
       <div className={styles.wrapper}>
         <Header>
           <Search />
-          <div className={headerStyles.buttons}>
+          {selectedItems.length > 0 && (
             <Button
-              onClick={() => {
-                dispatch(setIsVisible(true));
-                dispatch(setPressedButton('filters'));
+              onClick={(event) => {
+                event.preventDefault();
+                deletePromocodes({ promocodes: selectedItems });
               }}
             >
-              <MdFilterAlt
+              <AiOutlineDelete
                 size={30}
                 className={styles.icon}
                 color="rgba(171,171,171, 0.75)"
               />
-              <span>Фильтры</span>
+              <span>Удалить</span>
             </Button>
-            {selectedItems.length > 0 && (
-              <Button
-                onClick={(event) => {
-                  event.preventDefault();
-                  deletePromocodes({ promocodes: selectedItems });
-                }}
-              >
-                <AiOutlineDelete
-                  size={30}
-                  className={styles.icon}
-                  color="rgba(171,171,171, 0.75)"
-                />
-                <span>Удалить</span>
-              </Button>
-            )}
-          </div>
+          )}
           {usePagination && (
             <Pagination
               totalCount={totalCount}

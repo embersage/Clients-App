@@ -182,19 +182,6 @@ const Users = () => {
         <Header>
           <Search />
           <div className={headerStyles.buttons}>
-            <Button
-              onClick={() => {
-                dispatch(setIsVisible(true));
-                dispatch(setPressedButton('filters'));
-              }}
-            >
-              <MdFilterAlt
-                size={30}
-                className={styles.icon}
-                color="rgba(171,171,171, 0.75)"
-              />
-              <span>Фильтры</span>
-            </Button>
             {selectedUsers.length > 0 && (
               <>
                 <Button

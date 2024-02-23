@@ -1,4 +1,5 @@
-@import '../../scss/reset.scss', '../../scss/variables.scss';
+@import '../../scss/reset.scss', '../../scss/variables.scss',
+  '../../scss/templates.scss';
 
 @keyframes spin {
   0% {
@@ -9,106 +10,86 @@
   }
 }
 
-%icon {
-  padding: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-
-  &:hover {
-    background-color: rgba(222, 239, 255, 0.575);
-  }
-}
-
-%input {
-  padding: 17px 90px 18px 40px;
-  width: 600px;
-  height: 65px;
-  border-radius: 20px;
-  border: none;
-  background: rgba(222, 239, 255, 0.4);
-  opacity: 0.5;
-  font-size: 20px;
-  font-weight: 400;
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .authorizationBlock {
-  padding: 60px;
-  max-width: 800px;
-  height: 600px;
+  padding: 20px;
+  width: 420px;
+  /* height: 400px; */
   text-align: center;
   background-color: #fff;
-
   font-weight: 400;
-  border-radius: 40px;
-  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  align-items: center;
+  justify-content: center;
 
-  h1 {
-    font-size: 32px;
-    font-weight: 700;
-  }
-
-  h2 {
-    color: #ff2828;
-    font-size: 24px;
+  .title {
+    margin: 0;
+    font-size: 28px;
     font-weight: 500;
   }
 
-  form {
+  .warning {
+    margin: 0;
+    color: $warning-color;
+    font-size: 22px;
+    font-weight: 400;
+  }
+
+  .form {
     display: flex;
     flex-direction: column;
-    row-gap: 70px;
+    row-gap: 40px;
     align-items: center;
 
-    label {
-      position: relative;
+    .inputs {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      row-gap: 10px;
+      row-gap: 40px;
+      align-items: center;
 
-      span {
-        font-size: 20px;
-        font-weight: 500;
-      }
+      .inputWrapper {
+        position: relative;
+        width: 100%;
 
-      .input {
-        @extend %input;
-      }
+        .input {
+          @extend %input;
+        }
 
-      .eye {
-        @extend %icon;
-        position: absolute;
-        top: 51px;
-        right: 52px;
-      }
+        .eye {
+          @extend %icon;
+          position: absolute;
+          top: 13px;
+          right: 52px;
+        }
 
-      .cross {
-        @extend %icon;
-        position: absolute;
-        top: 51px;
-        right: 26px;
-        animation: spin 0.5s ease-in-out 1;
+        .cross {
+          @extend %icon;
+          position: absolute;
+          top: 13px;
+          right: 26px;
+          animation: spin 0.5s ease-in-out 1;
+        }
       }
     }
 
-    button {
-      width: 300px;
-      height: 60px;
-      border: none;
+    .button {
+      width: 200px;
+      height: 55px;
+      border: 2px solid transparent;
       border-radius: 10px;
-      background-color: #c9d2ff;
-      font-size: 26px;
-      font-weight: 700;
+      background-color: $button-bg-color;
+      font-size: 20px;
+      font-weight: 400;
       cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
+      color: #fff;
+      transition: all 0.3s ease-in-out;
 
       &:hover {
-        background-color: #b3c0ff;
+        background-color: $button-hover-color;
+        border: 2px solid $button-bg-color;
+        color: #000;
       }
 
       &:active {
@@ -121,5 +102,35 @@
 
 .redInput {
   @extend %input;
-  border: 2px solid #ff2828;
+  border: 2px solid $warning-color;
+}
+
+@media (max-width: 450px) {
+  .authorizationBlock {
+    .form {
+      .inputs {
+        .inputWrapper {
+          .eye {
+            top: 11px;
+            right: 54px;
+          }
+
+          .cross {
+            top: 11px;
+            right: 26px;
+            animation: unset;
+          }
+
+          svg {
+            width: 35px;
+            height: 35px;
+          }
+        }
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  }
 }

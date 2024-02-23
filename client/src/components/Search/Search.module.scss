@@ -1,4 +1,5 @@
-@import '../../scss/reset.scss', '../../scss/variables.scss';
+@import '../../scss/reset.scss', '../../scss/variables.scss',
+  '../../scss/templates.scss';
 
 @keyframes spin {
   0% {
@@ -9,18 +10,7 @@
   }
 }
 
-%icon {
-  padding: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-
-  &:hover {
-    background-color: rgba(222, 239, 255, 0.575);
-  }
-}
-
-label {
+.searchWrapper {
   position: relative;
 
   .search {
@@ -36,9 +26,9 @@ label {
     position: relative;
     border: 2px solid transparent;
     transition: border 0.2s ease-in-out;
+    outline: none;
 
     &:focus {
-      outline: none;
       border: 2px solid rgba(0, 60, 255, 1);
     }
   }
@@ -48,6 +38,13 @@ label {
     position: absolute;
     top: 12px;
     left: 15px;
+  }
+
+  .filters {
+    @extend %icon;
+    position: absolute;
+    top: 12px;
+    right: 52px;
   }
 
   .cross {

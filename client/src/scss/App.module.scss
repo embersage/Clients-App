@@ -1,12 +1,12 @@
 @keyframes gradient {
   0% {
-    background-position: 80% 0%;
+    background-position: 60% 20%;
   }
   50% {
-    background-position: 20% 100%;
+    background-position: 40% 80%;
   }
   100% {
-    background-position: 80% 0%;
+    background-position: 60% 20%;
   }
 }
 
@@ -28,4 +28,10 @@
   );
   animation: gradient 15s infinite linear;
   background-size: 400%;
+}
+
+@media (max-width: 450px) {
+  .app {
+    background: unset;
+  }
 }
