@@ -11,13 +11,28 @@
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     column-gap: 20px;
+    overflow: hidden;
 
     .additionalInfo {
+      height: 100%;
       display: grid;
       grid-template-columns: repeat(1, 1fr);
       grid-template-rows: repeat(2, 1fr);
       row-gap: 20px;
-      height: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .wrapper {
+    .content {
+      grid-template-columns: repeat(1, 1fr);
+      overflow: unset;
+      row-gap: 20px;
+      .additionalInfo {
+        overflow: unset;
+      }
     }
   }
 }

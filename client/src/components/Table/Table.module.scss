@@ -9,7 +9,7 @@
   border-collapse: separate;
   background-color: #fff;
   display: block;
-  overflow: auto;
+  overflow-y: auto;
 
   thead {
     width: 100%;
@@ -53,14 +53,29 @@
     display: table;
     table-layout: fixed;
   }
+}
 
-  /* &:last-child td:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+@media (max-width: 950px) {
+  .table {
+    height: 340px;
+    thead {
+      .tableHeader {
+        .checkboxWrapper {
+          input {
+          }
+        }
+
+        th {
+          .headers {
+          }
+
+          &:hover {
+          }
+        }
+      }
+    }
+
+    tbody {
+    }
   }
-
-  &:last-child td:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  } */
 }

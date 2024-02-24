@@ -35,20 +35,35 @@ const InformationBlock = (props) => {
       <form className={styles.data}>
         {data.map((item, index) => {
           return (
-            <label key={index}>
+            <label className={styles.inputWrapper} key={index}>
               <span>{item.name}</span>
               {isEditing && editingIndex === index ? (
-                <input
-                  ref={inputRef}
-                  type={item.type}
-                  value={inputValue}
-                  placeholder={!item.value ? 'Нет данных' : ''}
-                  disabled={item.disabled}
-                  onChange={(event) => {
-                    setInputValue(event.target.value);
-                    onChangeHandle(event, item);
-                  }}
-                />
+                <div className={styles.editing}>
+                  <input
+                    className={styles.input}
+                    ref={inputRef}
+                    type={item.type}
+                    value={inputValue}
+                    placeholder={!item.value ? 'Нет данных' : ''}
+                    disabled={item.disabled}
+                    onChange={(event) => {
+                      setInputValue(event.target.value);
+                      onChangeHandle(event, item);
+                    }}
+                  />
+                  <button
+                    className={styles.saveButton}
+                    type="submit"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setIsEditing(false);
+                      setEditingIndex(null);
+                      edit(editingIndex);
+                    }}
+                  >
+                    Сохранить
+                  </button>
+                </div>
               ) : (
                 <span
                   onClick={() => {
@@ -82,6 +97,7 @@ const InformationBlock = (props) => {
         })}
         {isEditing && (
           <button
+            className={styles.saveButtonBottom}
             type="submit"
             onClick={(event) => {
               event.preventDefault();

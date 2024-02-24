@@ -3,6 +3,7 @@ import styles from './Table.module.scss';
 const Table = (props) => {
   const {
     checked,
+    name,
     headers,
     values,
     onHeaderClick,
@@ -18,6 +19,11 @@ const Table = (props) => {
   return (
     <table className={styles.table} cellSpacing={0} cellPadding={0}>
       <thead>
+        {/* {name && (
+          <tr className={styles.tableName}>
+            <th colSpan={headers.length}>{name}</th>
+          </tr>
+        )} */}
         <tr className={styles.tableHeader}>
           {showCheckbox && (
             <th className={styles.checkboxWrapper}>

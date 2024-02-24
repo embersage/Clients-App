@@ -239,57 +239,54 @@ const User = () => {
                     <span>Нет действующего тарифа ☹️</span>
                   </div>
                 )}
-                <>
-                  {user.presentations && user.presentations.length ? (
-                    <Table
-                      name={'Презентации'}
-                      headers={headers}
-                      values={values}
-                      clickedHeader={clickedHeader}
-                      onHeaderClick={(item) => {
-                        dispatch(setSortBy(item));
-                        setClickedHeader(item);
-                        if (sortType === 'DESC' || !sortType) {
-                          dispatch(setSortType('ASC'));
-                        }
-                        if (sortType === 'ASC') {
-                          dispatch(setSortType('DESC'));
-                        } else if (sortType) {
-                          dispatch(setSortType(''));
-                        }
-                      }}
-                      icon={
-                        sortType === 'ASC' ? (
-                          <FiChevronUp />
-                        ) : sortType === 'DESC' ? (
-                          <FiChevronDown />
-                        ) : (
-                          ''
-                        )
+                {user.presentations && user.presentations.length ? (
+                  <Table
+                    name={'Презентации'}
+                    headers={headers}
+                    values={values}
+                    clickedHeader={clickedHeader}
+                    onHeaderClick={(item) => {
+                      dispatch(setSortBy(item));
+                      setClickedHeader(item);
+                      if (sortType === 'DESC' || !sortType) {
+                        dispatch(setSortType('ASC'));
                       }
-                      checked={
-                        selectedPresentations.length ===
-                        user.presentations.length
+                      if (sortType === 'ASC') {
+                        dispatch(setSortType('DESC'));
+                      } else if (sortType) {
+                        dispatch(setSortType(''));
                       }
-                      onSelect={handleCheckboxClick}
-                      showCheckbox={false}
-                    >
-                      {user.presentations.map((item) => (
-                        <TableRow
-                          key={item.id}
-                          values={values}
-                          showCheckbox={false}
-                        >
-                          {item}
-                        </TableRow>
-                      ))}
-                    </Table>
-                  ) : (
-                    <div className={styles.loadingBanner}>
-                      <span>Нет презентаций ☹️</span>
-                    </div>
-                  )}
-                </>
+                    }}
+                    icon={
+                      sortType === 'ASC' ? (
+                        <FiChevronUp />
+                      ) : sortType === 'DESC' ? (
+                        <FiChevronDown />
+                      ) : (
+                        ''
+                      )
+                    }
+                    checked={
+                      selectedPresentations.length === user.presentations.length
+                    }
+                    onSelect={handleCheckboxClick}
+                    showCheckbox={false}
+                  >
+                    {user.presentations.map((item) => (
+                      <TableRow
+                        key={item.id}
+                        values={values}
+                        showCheckbox={false}
+                      >
+                        {item}
+                      </TableRow>
+                    ))}
+                  </Table>
+                ) : (
+                  <div className={styles.loadingBanner}>
+                    <span>Нет презентаций ☹️</span>
+                  </div>
+                )}
               </div>
             </>
           ) : (

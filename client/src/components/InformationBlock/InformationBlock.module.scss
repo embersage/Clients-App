@@ -1,15 +1,18 @@
-@import '../../scss/reset.scss', '../../scss/variables.scss';
+@import '../../scss/reset.scss', '../../scss/variables.scss',
+  '../../scss/templates.scss';
 
 .informationBlock {
   padding: 20px;
   width: 100%;
   height: 100%;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #fff;
   border-radius: 20px;
+  overflow-y: hidden;
 
   h2 {
     margin: 0;
@@ -17,32 +20,113 @@
   }
 
   .data {
-    border-radius: 25px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     row-gap: 20px;
+    overflow-y: auto;
 
-    li {
-      position: relative;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: 20px;
+    .inputWrapper {
+      width: 500px;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      column-gap: 10px;
 
-      .heading {
-        font-weight: 700;
+      span {
+        font-size: 20px;
       }
 
-      .value {
-        .icon {
-          border-radius: 50%;
-          cursor: pointer;
-          transition: background-color 0.3s ease-in-out;
-          &:hover {
-            background-color: rgba(222, 239, 255, 0.575);
+      .editing {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 10px;
+
+        .input {
+          padding: 10px;
+          width: 200px;
+          height: 40px;
+          outline: none;
+          border: 2px solid $accent-color;
+          border-radius: 10px;
+
+          &:focus {
           }
         }
+
+        .saveButton {
+          width: 150px;
+          height: 40px;
+          border: 2px solid transparent;
+          border-radius: 10px;
+          background-color: $button-bg-color;
+          font-size: 20px;
+          font-weight: 400;
+          cursor: pointer;
+          color: #fff;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            background-color: $button-hover-color;
+            border: 2px solid $button-bg-color;
+            color: #000;
+          }
+
+          &:active {
+            position: relative;
+            top: 1px;
+          }
+        }
+      }
+    }
+
+    .saveButtonBottom {
+      display: none;
+      width: 150px;
+      height: 40px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      background-color: $button-bg-color;
+      font-size: 20px;
+      font-weight: 400;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: $button-hover-color;
+        border: 2px solid $button-bg-color;
+        color: #000;
+      }
+
+      &:active {
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .informationBlock {
+    .data {
+      .inputWrapper {
+        width: 300px;
+
+        .editing {
+          .input {
+          }
+
+          .saveButton {
+            display: none;
+          }
+        }
+      }
+      .saveButtonBottom {
+        display: block;
       }
     }
   }

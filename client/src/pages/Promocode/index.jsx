@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { IoSync } from 'react-icons/io5';
 import {
   getPromocode,
@@ -188,27 +189,22 @@ const Promocode = () => {
                       }}
                       icon={
                         sortType === 'ASC' ? (
-                          <IoIosArrowRoundUp />
+                          <FiChevronUp />
                         ) : sortType === 'DESC' ? (
-                          <IoIosArrowRoundDown />
+                          <FiChevronDown />
                         ) : (
                           ''
                         )
                       }
                       checked={selectedItems?.length === tariffs?.length}
                       onSelect={handleCheckboxClick}
+                      showCheckbox={true}
                     >
                       {tariffs.map((item) => (
                         <TableRow
                           key={item.id}
                           values={values}
                           showCheckbox={true}
-                          /* checked={promocode.tariffs?.some((element) => {
-                            if (element.id === item.id) {
-                              return true;
-                            }
-                            return false;
-                          })} */
                           checked={selectedItems?.some((element) => {
                             if (element.id === item.id) {
                               return true;
