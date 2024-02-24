@@ -237,6 +237,7 @@ const Users = () => {
         {status === 'succeeded' ? (
           <>
             <Table
+              page="users"
               name={'Пользователи'}
               headers={headers}
               values={values}

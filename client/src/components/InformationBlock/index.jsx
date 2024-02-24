@@ -33,68 +33,83 @@ const InformationBlock = (props) => {
     <div className={styles.informationBlock}>
       <h2>Данные</h2>
       <form className={styles.data}>
-        {data.map((item, index) => {
-          return (
-            <label className={styles.inputWrapper} key={index}>
-              <span>{item.name}</span>
-              {isEditing && editingIndex === index ? (
-                <div className={styles.editing}>
-                  <input
-                    className={styles.input}
-                    ref={inputRef}
-                    type={item.type}
-                    value={inputValue}
-                    placeholder={!item.value ? 'Нет данных' : ''}
-                    disabled={item.disabled}
-                    onChange={(event) => {
-                      setInputValue(event.target.value);
-                      onChangeHandle(event, item);
-                    }}
-                  />
-                  <button
-                    className={styles.saveButton}
-                    type="submit"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setIsEditing(false);
-                      setEditingIndex(null);
-                      edit(editingIndex);
+        <div className={styles.rows}>
+          {data.map((item, index) => {
+            return (
+              <label className={styles.inputWrapper} key={index}>
+                <span
+                  className={
+                    !item.disabled
+                      ? `${styles.property} ${styles.editable}`
+                      : `${styles.property}`
+                  }
+                >
+                  {item.name}:
+                </span>
+                {isEditing && editingIndex === index ? (
+                  <div className={styles.editing}>
+                    <input
+                      className={styles.input}
+                      ref={inputRef}
+                      type={item.type}
+                      value={inputValue}
+                      placeholder={!item.value ? 'Нет данных' : ''}
+                      disabled={item.disabled}
+                      onChange={(event) => {
+                        setInputValue(event.target.value);
+                        onChangeHandle(event, item);
+                      }}
+                    />
+                    <button
+                      className={styles.saveButton}
+                      type="submit"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setIsEditing(false);
+                        setEditingIndex(null);
+                        edit(editingIndex);
+                      }}
+                    >
+                      Сохранить
+                    </button>
+                  </div>
+                ) : (
+                  <span
+                    className={
+                      !item.disabled
+                        ? `${styles.value} ${styles.editable}`
+                        : `${styles.property}`
+                    }
+                    onClick={() => {
+                      if (!item.disabled) {
+                        onClickHandle(index);
+                        setInputValue(
+                          item.value
+                            ? item.type === 'datetime-local'
+                              ? new Date(
+                                  new Date(item.value).getTime() -
+                                    new Date(item.value).getTimezoneOffset() *
+                                      60000
+                                )
+                                  .toISOString()
+                                  .slice(0, -1)
+                              : item.value
+                            : ''
+                        );
+                      }
                     }}
                   >
-                    Сохранить
-                  </button>
-                </div>
-              ) : (
-                <span
-                  onClick={() => {
-                    if (!item.disabled) {
-                      onClickHandle(index);
-                      setInputValue(
-                        item.value
-                          ? item.type === 'datetime-local'
-                            ? new Date(
-                                new Date(item.value).getTime() -
-                                  new Date(item.value).getTimezoneOffset() *
-                                    60000
-                              )
-                                .toISOString()
-                                .slice(0, -1)
-                            : item.value
-                          : ''
-                      );
-                    }
-                  }}
-                >
-                  {item.value
-                    ? item.type === 'datetime-local'
-                      ? new Date(item.value).toLocaleString()
-                      : `${item.value}`
-                    : 'Нет данных'}
-                </span>
-              )}
-            </label>
-          );
-        })}
+                    {item.value
+                      ? item.type === 'datetime-local'
+                        ? new Date(item.value).toLocaleString()
+                        : `${item.value}`
+                      : 'Нет данных'}
+                  </span>
+                )}
+              </label>
+            );
+          })}
+        </div>
         {isEditing && (
           <button
             className={styles.saveButtonBottom}

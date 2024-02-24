@@ -56,8 +56,8 @@
 }
 
 @media (max-width: 950px) {
-  .table {
-    height: 340px;
+  .table[page='user'] {
+    height: 275px;
     thead {
       .tableHeader {
         .checkboxWrapper {

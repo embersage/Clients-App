@@ -116,6 +116,7 @@ const Promocodes = () => {
         {status === 'succeeded' ? (
           <>
             <Table
+              page="promocodes"
               name={'Промокоды'}
               headers={headers}
               values={values}

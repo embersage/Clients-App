@@ -280,6 +280,7 @@ const Payments = () => {
         {status === 'succeeded' ? (
           <>
             <Table
+              page="payments"
               name={'Операции'}
               headers={headers}
               values={values}

@@ -254,6 +254,7 @@ const Notifications = () => {
         {status === 'succeeded' ? (
           <>
             <Table
+              page="notifications"
               name={'Уведомления'}
               headers={headers}
               values={values}

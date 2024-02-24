@@ -181,16 +181,8 @@ const User = () => {
     await dispatch(removeUsers(users));
   };
 
-  const handleCheckboxClick = () => {
-    if (selectedPresentations.length !== user.presentations.length) {
-      dispatch(setSelectedPresentations(user.presentations));
-    } else {
-      dispatch(setSelectedPresentations([]));
-    }
-  };
-
-  const edit = (editingIndex) => {
-    dispatch(
+  const edit = async (editingIndex) => {
+    await dispatch(
       editUser({
         id: data[0].value,
         data: {
@@ -198,6 +190,7 @@ const User = () => {
         },
       })
     );
+    await dispatch(getUser({ id, sortBy, sortType }));
   };
 
   return (
@@ -241,6 +234,7 @@ const User = () => {
                 )}
                 {user.presentations && user.presentations.length ? (
                   <Table
+                    page="user"
                     name={'Презентации'}
                     headers={headers}
                     values={values}
@@ -266,10 +260,6 @@ const User = () => {
                         ''
                       )
                     }
-                    checked={
-                      selectedPresentations.length === user.presentations.length
-                    }
-                    onSelect={handleCheckboxClick}
                     showCheckbox={false}
                   >
                     {user.presentations.map((item) => (

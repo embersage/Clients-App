@@ -56,7 +56,7 @@ const Menu = () => {
         <div
           className={styles.darkBackground}
           onClick={() => {
-            dispatch(setIsOpened(!isOpened));
+            dispatch(setIsOpened(false));
           }}
         />
         <nav className={styles.menu}>
@@ -81,6 +81,7 @@ const Menu = () => {
                       onClick={() => {
                         dispatch(setSortBy(''));
                         dispatch(setSortType(''));
+                        dispatch(setIsOpened(false));
                       }}
                     >
                       {item.icon}

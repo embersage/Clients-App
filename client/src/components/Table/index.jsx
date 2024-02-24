@@ -2,6 +2,7 @@ import styles from './Table.module.scss';
 
 const Table = (props) => {
   const {
+    page,
     checked,
     name,
     headers,
@@ -17,7 +18,7 @@ const Table = (props) => {
   };
 
   return (
-    <table className={styles.table} cellSpacing={0} cellPadding={0}>
+    <table className={styles.table} cellSpacing={0} cellPadding={0} page={page}>
       <thead>
         {/* {name && (
           <tr className={styles.tableName}>

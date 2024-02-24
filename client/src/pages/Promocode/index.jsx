@@ -171,6 +171,7 @@ const Promocode = () => {
                 <>
                   {tariffs.length ? (
                     <Table
+                      page="promocode"
                       name={'Тарифы'}
                       headers={headers}
                       values={values}

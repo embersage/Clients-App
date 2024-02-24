@@ -98,6 +98,7 @@ const Sessions = () => {
         {status === 'succeeded' ? (
           <>
             <Table
+              page="sessions"
               name={'Сессии'}
               headers={headers}
               values={values}
