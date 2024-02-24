@@ -18,14 +18,9 @@ const Table = (props) => {
   return (
     <table className={styles.table} cellSpacing={0} cellPadding={0}>
       <thead>
-        {/* {props.name && (
-          <tr className={styles.tableName}>
-            <th colSpan={headers.length}>{props.name}</th>
-          </tr>
-        )} */}
         <tr className={styles.tableHeader}>
           {showCheckbox && (
-            <th className={styles.checkbox}>
+            <th className={styles.checkboxWrapper}>
               <input
                 type="checkbox"
                 onChange={handleCheckboxClick}

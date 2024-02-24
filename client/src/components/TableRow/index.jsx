@@ -31,7 +31,7 @@ const TableRow = (props) => {
   return (
     <tr className={styles.tableRow} onClick={handleRowClick}>
       {props.showCheckbox && (
-        <td>
+        <td className={styles.checkbox}>
           <input
             ref={checkboxRef}
             type="checkbox"

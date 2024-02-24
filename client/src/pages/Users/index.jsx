@@ -367,6 +367,7 @@ const Users = () => {
           )}
           {pressedButton === 'filters' && (
             <>
+              <h2>Фильтры</h2>
               <label>
                 <span>Активированный аккаунт</span>
                 <input
@@ -437,6 +438,7 @@ const Users = () => {
                   checked={autoPayment}
                 />
               </label>
+              <h2>Пагинация</h2>
               <label>
                 <span>Включить пагинацию</span>
                 <input

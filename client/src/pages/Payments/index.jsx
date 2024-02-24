@@ -349,12 +349,17 @@ const Payments = () => {
             <>
               {currencies && (
                 <>
-                  <button>Валюты</button>
+                  <h2>Фильтры</h2>
+                  <h3>Валюты:</h3>
                   <ul>
                     {currencies.map((item) => {
                       return (
                         <li key={item.id}>
                           <label>
+                            <div className={modalStyles.info}>
+                              <span>{item.id}</span>
+                              <span>{item.name}</span>
+                            </div>
                             <input
                               type="checkbox"
                               onChange={() => {
@@ -364,8 +369,6 @@ const Payments = () => {
                               }}
                               checked={selectedCurrencies.includes(item.id)}
                             />
-                            {item.id}
-                            {item.name}
                           </label>
                         </li>
                       );
@@ -375,12 +378,19 @@ const Payments = () => {
               )}
               {tariffs && (
                 <>
-                  <button>Тарифы</button>
+                  <h3>Тарифы:</h3>
                   <ul>
                     {tariffs.map((item) => {
                       return (
                         <li key={item.id}>
                           <label>
+                            <div className={modalStyles.info}>
+                              <span>{item.id}</span>
+                              <div>
+                                <span> {item.name}</span>
+                                <span> {item.amount}</span>
+                              </div>
+                            </div>
                             <input
                               type="checkbox"
                               onChange={() => {
@@ -390,9 +400,6 @@ const Payments = () => {
                               }}
                               checked={selectedTariffs.includes(item.id)}
                             />
-                            {item.id}
-                            {item.name}
-                            {item.amount}
                           </label>
                         </li>
                       );
@@ -400,6 +407,7 @@ const Payments = () => {
                   </ul>
                 </>
               )}
+              <h2>Пагинация</h2>
               <label>
                 <span>Включить пагинацию</span>
                 <input

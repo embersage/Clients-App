@@ -321,6 +321,7 @@ const Notifications = () => {
         <form className={modalStyles.content}>
           {pressedButton === 'filters' && (
             <>
+              <h2>Пагинация</h2>
               <label>
                 <span>Включить пагинацию</span>
                 <input
