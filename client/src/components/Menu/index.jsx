@@ -75,6 +75,7 @@ const Menu = () => {
                     })}
                   >
                     <Button
+                      location="menu"
                       isActive={
                         location.pathname === `${item.link}` ? 'true' : 'false'
                       }

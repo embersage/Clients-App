@@ -29,7 +29,6 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import Search from '../../components/Search';
 import styles from './Notifications.module.scss';
-import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Notifications = () => {
@@ -89,11 +88,7 @@ const Notifications = () => {
   }, [usePagination, page, sortBy, sortType, search]);
 
   useEffect(() => {
-    if (
-      status === 'succeeded' &&
-      notification.date_start &&
-      notification.date_end
-    ) {
+    if (status === 'succeeded' && notification) {
       setData([
         {
           propName: 'id',
@@ -323,7 +318,7 @@ const Notifications = () => {
           {pressedButton === 'filters' && (
             <>
               <h2>Пагинация</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включить пагинацию</span>
                 <input
                   type="radio"
@@ -336,7 +331,7 @@ const Notifications = () => {
                   checked={usePagination}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Выключить пагинацию</span>
                 <input
                   type="radio"
@@ -355,22 +350,50 @@ const Notifications = () => {
             <>
               {data.map((item, index) => {
                 return (
-                  <label key={index}>
-                    <span>{item.name}</span>
+                  <label className={modalStyles.inputWrapper} key={index}>
+                    <span
+                      className={
+                        !item.disabled
+                          ? `${modalStyles.property} ${modalStyles.editable}`
+                          : `${modalStyles.property}`
+                      }
+                    >
+                      {item.name}
+                    </span>
                     {isEditing && editingIndex === index ? (
-                      <input
-                        ref={inputRef}
-                        type={item.type}
-                        value={inputValue}
-                        placeholder={!item.value ? 'Нет данных' : ''}
-                        disabled={item.disabled}
-                        onChange={(event) => {
-                          setInputValue(event.target.value);
-                          onChangeHandle(event, item);
-                        }}
-                      />
+                      <div className={modalStyles.editing}>
+                        <input
+                          className={modalStyles.input}
+                          ref={inputRef}
+                          type={item.type}
+                          value={inputValue}
+                          placeholder={!item.value ? 'Нет данных' : ''}
+                          disabled={item.disabled}
+                          onChange={(event) => {
+                            setInputValue(event.target.value);
+                            onChangeHandle(event, item);
+                          }}
+                        />
+                        <button
+                          className={modalStyles.saveButton}
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            edit(editingIndex);
+                            setIsEditing(false);
+                            setEditingIndex(null);
+                          }}
+                        >
+                          Сохранить
+                        </button>
+                      </div>
                     ) : (
                       <span
+                        className={
+                          !item.disabled
+                            ? `${modalStyles.value} ${modalStyles.editable}`
+                            : `${modalStyles.property}`
+                        }
                         onClick={() => {
                           if (!item.disabled) {
                             onClickHandle(index);
@@ -402,19 +425,6 @@ const Notifications = () => {
                   </label>
                 );
               })}
-              {isEditing && (
-                <button
-                  type="submit"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    edit(editingIndex);
-                    setIsEditing(false);
-                    setEditingIndex(null);
-                  }}
-                >
-                  Сохранить
-                </button>
-              )}
             </>
           )}
         </form>

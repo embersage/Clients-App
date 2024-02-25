@@ -35,7 +35,6 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import Search from '../../components/Search';
 import styles from './Payments.module.scss';
-import headerStyles from '../../components/Header/Header.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Payments = () => {
@@ -93,21 +92,24 @@ const Payments = () => {
   ];
 
   useEffect(() => {
-    dispatch(
-      getPayments({
-        usePagination,
-        limit: 10,
-        page,
-        sortBy,
-        sortType,
-        search,
-        amount,
-        selectedTariffs,
-        selectedCurrencies,
-      })
-    );
-    dispatch(getCurrencies());
-    dispatch(getTariffs({ usePagination: false }));
+    const fetchData = async () => {
+      await dispatch(
+        getPayments({
+          usePagination,
+          limit: 10,
+          page,
+          sortBy,
+          sortType,
+          search,
+          amount,
+          selectedTariffs,
+          selectedCurrencies,
+        })
+      );
+      await dispatch(getCurrencies());
+      await dispatch(getTariffs({ usePagination: false }));
+    };
+    fetchData();
   }, [
     usePagination,
     page,
@@ -120,7 +122,7 @@ const Payments = () => {
   ]);
 
   useEffect(() => {
-    if (status === 'succeeded' && payment.date_start && payment.date_end) {
+    if (status === 'succeeded' && payment) {
       setData([
         {
           propName: 'id',
@@ -213,11 +215,11 @@ const Payments = () => {
     );
   };
 
-  const handleCheckboxClick = () => {
+  const handleCheckboxClick = async () => {
     if (selectedItems.length !== payments.length) {
-      dispatch(setSelectedItems(payments));
+      await dispatch(setSelectedItems(payments));
     } else {
-      dispatch(setSelectedItems([]));
+      await dispatch(setSelectedItems([]));
     }
   };
 
@@ -225,7 +227,7 @@ const Payments = () => {
     const id = payment.id;
     await dispatch(
       editPayment({
-        id,
+        id: payment.id,
         data: {
           [data[editingIndex].propName]: data[editingIndex].value,
         },
@@ -356,7 +358,7 @@ const Payments = () => {
                     {currencies.map((item) => {
                       return (
                         <li key={item.id}>
-                          <label>
+                          <label className={modalStyles.inputWrapper}>
                             <div className={modalStyles.info}>
                               <span>{item.id}</span>
                               <span>{item.name}</span>
@@ -384,7 +386,7 @@ const Payments = () => {
                     {tariffs.map((item) => {
                       return (
                         <li key={item.id}>
-                          <label>
+                          <label className={modalStyles.inputWrapper}>
                             <div className={modalStyles.info}>
                               <span>{item.id}</span>
                               <div>
@@ -409,7 +411,7 @@ const Payments = () => {
                 </>
               )}
               <h2>Пагинация</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включить пагинацию</span>
                 <input
                   type="radio"
@@ -422,7 +424,7 @@ const Payments = () => {
                   checked={usePagination}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Выключить пагинацию</span>
                 <input
                   type="radio"
@@ -441,22 +443,50 @@ const Payments = () => {
             <>
               {data.map((item, index) => {
                 return (
-                  <label key={index}>
-                    <span>{item.name}</span>
+                  <label className={modalStyles.inputWrapper} key={index}>
+                    <span
+                      className={
+                        !item.disabled
+                          ? `${modalStyles.property} ${modalStyles.editable}`
+                          : `${modalStyles.property}`
+                      }
+                    >
+                      {item.name}
+                    </span>
                     {isEditing && editingIndex === index ? (
-                      <input
-                        ref={inputRef}
-                        type={item.type}
-                        value={inputValue}
-                        placeholder={!item.value ? 'Нет данных' : ''}
-                        disabled={item.disabled}
-                        onChange={(event) => {
-                          setInputValue(event.target.value);
-                          onChangeHandle(event, item);
-                        }}
-                      />
+                      <div className={modalStyles.editing}>
+                        <input
+                          className={modalStyles.input}
+                          ref={inputRef}
+                          type={item.type}
+                          value={inputValue}
+                          placeholder={!item.value ? 'Нет данных' : ''}
+                          disabled={item.disabled}
+                          onChange={(event) => {
+                            setInputValue(event.target.value);
+                            onChangeHandle(event, item);
+                          }}
+                        />
+                        <button
+                          className={modalStyles.saveButton}
+                          type="submit"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            edit(editingIndex);
+                            setIsEditing(false);
+                            setEditingIndex(null);
+                          }}
+                        >
+                          Сохранить
+                        </button>
+                      </div>
                     ) : (
                       <span
+                        className={
+                          !item.disabled
+                            ? `${modalStyles.value} ${modalStyles.editable}`
+                            : `${modalStyles.property}`
+                        }
                         onClick={() => {
                           if (!item.disabled) {
                             onClickHandle(index);
@@ -488,19 +518,6 @@ const Payments = () => {
                   </label>
                 );
               })}
-              {isEditing && (
-                <button
-                  type="submit"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    edit(editingIndex);
-                    setIsEditing(false);
-                    setEditingIndex(null);
-                  }}
-                >
-                  Сохранить
-                </button>
-              )}
             </>
           )}
         </form>

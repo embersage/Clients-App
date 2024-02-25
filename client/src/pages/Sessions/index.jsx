@@ -155,7 +155,7 @@ const Sessions = () => {
           {pressedButton === 'filters' && (
             <>
               <h2>Пагинация</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включить пагинацию</span>
                 <input
                   type="radio"
@@ -168,7 +168,7 @@ const Sessions = () => {
                   checked={usePagination}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Выключить пагинацию</span>
                 <input
                   type="radio"

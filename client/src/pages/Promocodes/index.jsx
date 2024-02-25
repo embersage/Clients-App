@@ -183,7 +183,7 @@ const Promocodes = () => {
           {pressedButton === 'filters' && (
             <>
               <h2>Пагинация</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включить пагинацию</span>
                 <input
                   type="radio"
@@ -196,7 +196,7 @@ const Promocodes = () => {
                   checked={usePagination}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Выключить пагинацию</span>
                 <input
                   type="radio"

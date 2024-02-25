@@ -2,7 +2,7 @@
 
 .button {
   padding: 10px;
-  width: 170px;
+  width: 150px;
   height: 52px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -36,6 +36,10 @@
 
   span {
     width: 85px;
+  }
+
+  &[location='menu'] {
+    width: 170px;
   }
 }
 

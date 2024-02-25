@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { RxCross2 } from 'react-icons/rx';

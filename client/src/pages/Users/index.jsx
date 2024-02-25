@@ -305,19 +305,29 @@ const Users = () => {
         <form className={modalStyles.content}>
           {pressedButton === 'import' && (
             <>
-              <label>
-                <span>Файл</span>
-                <input ref={inputRef} type="file" />
+              <label className={modalStyles.uploadWrapper}>
+                <input
+                  ref={inputRef}
+                  type="file"
+                  onChange={() => {
+                    console.log(inputRef.current.files.length);
+                  }}
+                />
+                {/* {inputRef.current?.files.length > 0 && ( */}
+                <button
+                  className={modalStyles.upload}
+                  type="submit"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (inputRef.current.files.length > 0) {
+                      upload({ file: inputRef.current.files[0] });
+                    }
+                  }}
+                >
+                  Импорт
+                </button>
+                {/* )} */}
               </label>
-              <button
-                type="submit"
-                onClick={(event) => {
-                  event.preventDefault();
-                  upload({ file: inputRef.current.files[0] });
-                }}
-              >
-                Импорт
-              </button>
             </>
           )}
           {pressedButton === 'email' && (
@@ -369,7 +379,7 @@ const Users = () => {
           {pressedButton === 'filters' && (
             <>
               <h2>Фильтры</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Активированный аккаунт</span>
                 <input
                   type="checkbox"
@@ -383,7 +393,7 @@ const Users = () => {
                   checked={activate}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Бесплатный тариф</span>
                 <input
                   type="checkbox"
@@ -397,7 +407,7 @@ const Users = () => {
                   checked={hasFreeTariff}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Скоро закончится тариф</span>
                 <input
                   type="checkbox"
@@ -411,7 +421,7 @@ const Users = () => {
                   checked={endSoon}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Есть подписка</span>
                 <input
                   type="checkbox"
@@ -425,7 +435,7 @@ const Users = () => {
                   checked={hasSubscription}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включено автопродление</span>
                 <input
                   type="checkbox"
@@ -440,7 +450,7 @@ const Users = () => {
                 />
               </label>
               <h2>Пагинация</h2>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Включить пагинацию</span>
                 <input
                   type="radio"
@@ -453,7 +463,7 @@ const Users = () => {
                   checked={usePagination}
                 />
               </label>
-              <label>
+              <label className={modalStyles.inputWrapper}>
                 <span>Выключить пагинацию</span>
                 <input
                   type="radio"
