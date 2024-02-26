@@ -25,7 +25,12 @@ import {
   setSortType,
   setUsePagination,
 } from '../../redux/slices/filterSlice';
-import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
+import {
+  setEditingIndex,
+  setIsEditing,
+  setIsVisible,
+  setPressedButton,
+} from '../../redux/slices/modalSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
 import Table from '../../components/Table';
@@ -41,8 +46,8 @@ const Payments = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  /* const [isEditing, setIsEditing] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null); */
   const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
   const currencies = useSelector((state) => state.currencies.items);
@@ -64,6 +69,8 @@ const Payments = () => {
   const selectedCurrencies = useSelector(
     (state) => state.filter.selectedCurrencies
   );
+  const isEditing = useSelector((state) => state.modal.isEditing);
+  const editingIndex = useSelector((state) => state.modal.editingIndex);
   const values = [
     'id',
     'date_start',
@@ -184,8 +191,8 @@ const Payments = () => {
   }, [isEditing]);
 
   const onClickHandle = (index) => {
-    setIsEditing(true);
-    setEditingIndex(index);
+    dispatch(setIsEditing(true));
+    dispatch(setEditingIndex(index));
   };
 
   const onChangeHandle = (event, item) => {
@@ -390,8 +397,8 @@ const Payments = () => {
                             <div className={modalStyles.info}>
                               <span>{item.id}</span>
                               <div>
-                                <span> {item.name}</span>
-                                <span> {item.amount}</span>
+                                <span>{item.name}</span>
+                                <span>{item.amount}</span>
                               </div>
                             </div>
                             <input
@@ -473,8 +480,8 @@ const Payments = () => {
                           onClick={(event) => {
                             event.preventDefault();
                             edit(editingIndex);
-                            setIsEditing(false);
-                            setEditingIndex(null);
+                            dispatch(setIsEditing(false));
+                            dispatch(setEditingIndex(null));
                           }}
                         >
                           Сохранить

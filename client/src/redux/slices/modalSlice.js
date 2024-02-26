@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { isVisible: false, pressedButton: '' };
+const initialState = {
+  isVisible: false,
+  pressedButton: '',
+  isEditing: false,
+  editingIndex: null,
+};
 
 export const modalSlice = createSlice({
   name: 'modal',
@@ -12,9 +17,16 @@ export const modalSlice = createSlice({
     setPressedButton: (state, action) => {
       state.pressedButton = action.payload;
     },
+    setIsEditing: (state, action) => {
+      state.isEditing = action.payload;
+    },
+    setEditingIndex: (state, action) => {
+      state.editingIndex = action.payload;
+    },
   },
 });
 
-export const { setIsVisible, setPressedButton } = modalSlice.actions;
+export const { setIsVisible, setPressedButton, setIsEditing, setEditingIndex } =
+  modalSlice.actions;
 
 export default modalSlice.reducer;

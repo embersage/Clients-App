@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
+import {
+  setEditingIndex,
+  setIsEditing,
+  setIsVisible,
+  setPressedButton,
+} from '../../redux/slices/modalSlice';
 import styles from './ModalWindow.module.scss';
 
 const ModalWindow = (props) => {
@@ -14,6 +19,8 @@ const ModalWindow = (props) => {
           onClick={() => {
             dispatch(setIsVisible(false));
             dispatch(setPressedButton(''));
+            dispatch(setIsEditing(false));
+            dispatch(setEditingIndex(null));
           }}
         />
         <div className={styles.modalWindow}>{props.children}</div>

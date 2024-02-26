@@ -313,7 +313,6 @@ const Users = () => {
                     console.log(inputRef.current.files.length);
                   }}
                 />
-                {/* {inputRef.current?.files.length > 0 && ( */}
                 <button
                   className={modalStyles.upload}
                   type="submit"
@@ -339,6 +338,7 @@ const Users = () => {
                     setEmailName(event.target.value);
                   }}
                   value={emailName}
+                  type="text"
                 />
               </label>
               <label>
@@ -348,13 +348,25 @@ const Users = () => {
                     setTemplateId(event.target.value);
                   }}
                   value={templateId}
+                  type="text"
                 />
               </label>
-              {variables.map((item, index) => {
+              {variables.map((_, index) => {
                 return (
                   <div className={modalStyles.variables} key={index}>
-                    <input placeholder="Code" />
-                    <input placeholder="Value" />
+                    <label>
+                      <input placeholder="Code" type="text" />
+                    </label>
+                    <label>
+                      <input placeholder="Value" type="text" />
+                    </label>
+                    <button
+                      onClick={(event) => {
+                        event.preventDefault();
+                      }}
+                    >
+                      <AiOutlineDelete />
+                    </button>
                   </div>
                 );
               })}
