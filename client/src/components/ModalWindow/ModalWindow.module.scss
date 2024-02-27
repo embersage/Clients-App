@@ -31,7 +31,7 @@
     input[type='datetime-local'] {
       @extend %input;
       padding: 10px;
-      width: 150px;
+      width: 220px;
       height: 40px;
     }
   }
@@ -93,14 +93,6 @@
       }
 
       input[type='file'] {
-        /* width: 350px;
-        max-width: 100%;
-        color: #444;
-        padding: 5px;
-        background: #fff;
-        border-radius: 10px;
-        border: 1px solid #555; */
-
         &::file-selector-button {
           width: 200px;
           height: 40px;
@@ -237,11 +229,17 @@
       }
     }
 
-    .variables {
+    .params {
       display: flex;
       justify-content: center;
       align-items: center;
       column-gap: 10px;
+
+      label {
+        input[type='text'] {
+          width: 150px;
+        }
+      }
     }
   }
 

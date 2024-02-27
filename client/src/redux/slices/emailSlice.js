@@ -1,13 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { sendMail } from '../../http/emailApi';
 
 const initialState = {
+  to: '',
   name: '',
   template: '',
-  variables: [],
+  params: [],
 };
 
+export const sendLetter = createAsyncThunk(
+  'sendMail',
+  async ({ to, templateId, params }) => {
+    const response = await sendMail(to, templateId, params);
+    return response;
+  }
+);
+
 const findInd = (state, newItem) => {
-  return state.variables.findIndex((item) => item === newItem);
+  return state.params.findIndex((item) => item === newItem);
 };
 
 export const emailSlice = createSlice({
@@ -20,16 +30,16 @@ export const emailSlice = createSlice({
     setTemplate: (state, action) => {
       state.template = action.payload;
     },
-    addVariable: (state, action) => {
-      state.variables = [...state.variables, action.payload];
+    addParam: (state, action) => {
+      state.params = [...state.params, action.payload];
     },
-    removeVariable: (state, action) => {
-      state.variables.splice(findInd(state, action.payload), 1);
+    removeParam: (state, action) => {
+      state.params.splice(findInd(state, action.payload), 1);
     },
   },
 });
 
-export const { setName, setTemplate, addVariable, removeVariable } =
+export const { setName, setTemplate, addParam, removeParam } =
   emailSlice.actions;
 
 export default emailSlice.reducer;

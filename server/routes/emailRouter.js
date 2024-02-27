@@ -11,9 +11,14 @@ router.post('/send-email', checkRoleMiddleware([2, 3]), async (req, res) => {
     const { to, templateId, params } = req.body;
     /* const { from_email, to, subject, text } = req.body; */
 
+    const paramsObject = {};
+    params.forEach((item) => {
+      paramsObject[item.code] = item.value;
+    });
+
     const requestData = {
       to,
-      params,
+      paramsObject,
     };
 
     /* const requestData = {

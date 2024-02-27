@@ -30,8 +30,9 @@ import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import {
   setName,
   setTemplate,
-  addVariable,
-  removeVariable,
+  addParam,
+  removeParam,
+  sendLetter,
 } from '../../redux/slices/emailSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -70,7 +71,7 @@ const Users = () => {
   const pressedButton = useSelector((state) => state.modal.pressedButton);
   const name = useSelector((state) => state.email.name);
   const template = useSelector((state) => state.email.template);
-  const variables = useSelector((state) => state.email.variables);
+  const params = useSelector((state) => state.email.params);
   const values = [
     'id',
     'name',
@@ -349,9 +350,9 @@ const Users = () => {
                   type="text"
                 />
               </label>
-              {variables.map((_, index) => {
+              {params.map((item, index) => {
                 return (
-                  <div className={modalStyles.variables} key={index}>
+                  <div className={modalStyles.params} key={index}>
                     <label>
                       <input placeholder="Code" type="text" />
                     </label>
@@ -361,6 +362,8 @@ const Users = () => {
                     <button
                       onClick={(event) => {
                         event.preventDefault();
+                        console.log(item);
+                        dispatch(removeParam(item));
                       }}
                     >
                       <AiOutlineDelete />
@@ -371,7 +374,7 @@ const Users = () => {
               <button
                 onClick={(event) => {
                   event.preventDefault();
-                  dispatch(addVariable());
+                  dispatch(addParam({ code: '', value: '' }));
                 }}
               >
                 Добавить переменную
@@ -379,6 +382,13 @@ const Users = () => {
               <button
                 onClick={(event) => {
                   event.preventDefault();
+                  dispatch(
+                    sendLetter({
+                      to: selectedUsers,
+                      templateId: template,
+                      params,
+                    })
+                  );
                 }}
                 type="submit"
               >
