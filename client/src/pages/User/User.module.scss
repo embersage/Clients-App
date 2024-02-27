@@ -22,6 +22,10 @@
       overflow: hidden;
     }
   }
+
+  .loadingBanner {
+    @extend %loadingBanner;
+  }
 }
 
 @media (max-width: 950px) {

@@ -1,4 +1,5 @@
-@import '../../scss/reset.scss', '../../scss/variables.scss';
+@import '../../scss/reset.scss', '../../scss/variables.scss',
+  '../../scss/templates.scss';
 
 @keyframes spin {
   0% {
@@ -32,46 +33,10 @@
       grid-template-columns: repeat(1, 1fr);
       row-gap: 20px;
       height: 100%;
-
-      .tariffBlockLoading {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        row-gap: 20px;
-        background-color: #fff;
-        border-radius: 25px;
-        box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
-      }
-
-      .presentationBlockLoading {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        row-gap: 20px;
-        background-color: #fff;
-        border-radius: 25px;
-        box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
-      }
     }
 
-    .informationBlockLoading {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #fff;
-      border-radius: 25px;
-      box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
-      height: 100%;
-    }
-
-    .loadingIcon {
-      animation: spin 1s linear infinite;
+    .loadingBanner {
+      @extend %loadingBanner;
     }
   }
 }

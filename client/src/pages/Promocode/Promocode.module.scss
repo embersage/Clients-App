@@ -18,5 +18,9 @@
       row-gap: 20px;
       height: 100%;
     }
+
+    .loadingBanner {
+      @extend %loadingBanner;
+    }
   }
 }

@@ -277,7 +277,6 @@ const Users = () => {
                   onClick={() => {
                     dispatch(setSortBy(''));
                     dispatch(setSortType(''));
-                    dispatch(setUser(item));
                     navigate(`/users/${item.id}`);
                   }}
                   values={values}
@@ -325,7 +324,6 @@ const Users = () => {
                 >
                   Импорт
                 </button>
-                {/* )} */}
               </label>
             </>
           )}

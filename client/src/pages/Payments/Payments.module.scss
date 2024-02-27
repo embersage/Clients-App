@@ -3,4 +3,8 @@
 
 .wrapper {
   @extend %wrapper;
+
+  .loadingBanner {
+    @extend %loadingBanner;
+  }
 }

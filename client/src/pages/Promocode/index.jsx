@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BsArrowClockwise } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { IoIosArrowRoundDown, IoIosArrowRoundUp } from 'react-icons/io';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
+import { PiArrowsClockwise } from 'react-icons/pi';
 import { IoSync } from 'react-icons/io5';
 import {
   getPromocode,
@@ -231,12 +230,12 @@ const Promocode = () => {
             </>
           ) : (
             <>
-              <div className={styles.informationBlockLoading}>
-                <BsArrowClockwise className={styles.loadingIcon} size={75} />
+              <div className={styles.loadingBanner}>
+                <PiArrowsClockwise className={styles.loadingIcon} size={75} />
               </div>
               <div className={styles.additionalInfo}>
-                <div className={styles.tariffBlockLoading}>
-                  <BsArrowClockwise className={styles.loadingIcon} size={75} />
+                <div className={styles.loadingBanner}>
+                  <PiArrowsClockwise className={styles.loadingIcon} size={75} />
                 </div>
               </div>
             </>

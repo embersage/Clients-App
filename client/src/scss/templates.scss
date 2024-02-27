@@ -47,19 +47,19 @@
   height: 100%;
   width: 100%;
   row-gap: 20px;
+}
 
-  .loadingBanner {
-    height: 100%;
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 25px;
-    color: $button-bg-color;
+%loadingBanner {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  color: $button-bg-color;
 
-    .loadingIcon {
-      animation: spin 1s linear infinite;
-    }
+  .loadingIcon {
+    animation: spin 1s linear infinite;
   }
 }

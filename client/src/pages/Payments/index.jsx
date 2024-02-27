@@ -357,9 +357,9 @@ const Payments = () => {
         <form className={modalStyles.content}>
           {pressedButton === 'filters' && (
             <>
+              <h2>Фильтры</h2>
               {currencies && (
                 <>
-                  <h2>Фильтры</h2>
                   <h3>Валюты:</h3>
                   <ul>
                     {currencies.map((item) => {
@@ -463,7 +463,7 @@ const Payments = () => {
                     {isEditing && editingIndex === index ? (
                       <div className={modalStyles.editing}>
                         <input
-                          className={modalStyles.input}
+                          /* className={modalStyles.input} */
                           ref={inputRef}
                           type={item.type}
                           value={inputValue}

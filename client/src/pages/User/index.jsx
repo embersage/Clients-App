@@ -5,14 +5,7 @@ import { PiArrowsClockwise } from 'react-icons/pi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
-import {
-  addSelectedPresentation,
-  getUser,
-  editUser,
-  removeSelectedPresentation,
-  removeUsers,
-  setSelectedPresentations,
-} from '../../redux/slices/usersSlice';
+import { getUser, editUser, removeUsers } from '../../redux/slices/usersSlice';
 import { USERS_ROUTE } from '../../utils/consts';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -28,9 +21,6 @@ const User = () => {
   const { id } = useParams();
   const user = useSelector((state) => state.users.user);
   const status = useSelector((state) => state.users.status);
-  const selectedPresentations = useSelector(
-    (state) => state.users.selectedPresentations
-  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sortBy = useSelector((state) => state.filter.sortBy);
@@ -73,7 +63,7 @@ const User = () => {
           name: 'Пароль',
           value: '',
           disabled: false,
-          type: 'text',
+          type: 'password',
         },
         {
           propName: 'activate',
@@ -216,7 +206,7 @@ const User = () => {
           </div>
         </Header>
         <div className={styles.content}>
-          {data.length > 0 ? (
+          {status === 'succeeded' && data.length > 0 ? (
             <>
               <InformationBlock
                 data={data}
@@ -232,7 +222,7 @@ const User = () => {
                     <span>Нет действующего тарифа ☹️</span>
                   </div>
                 )}
-                {user.presentations && user.presentations.length ? (
+                {user.presentations && user.presentations.length > 0 ? (
                   <Table
                     page="user"
                     name={'Презентации'}
