@@ -355,6 +355,7 @@ const Users = () => {
                   <div className={modalStyles.params} key={index}>
                     <label>
                       <input
+                        value={item.code}
                         placeholder="Code"
                         type="text"
                         onChange={(event) => {
@@ -366,6 +367,7 @@ const Users = () => {
                     </label>
                     <label>
                       <input
+                        value={item.value}
                         placeholder="Value"
                         type="text"
                         onChange={(event) => {
