@@ -33,6 +33,8 @@ import {
   addParam,
   removeParam,
   sendLetter,
+  setCode,
+  setValue,
 } from '../../redux/slices/emailSlice';
 import Menu from '../../components/Menu';
 import Header from '../../components/Header';
@@ -51,8 +53,6 @@ const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [clickedHeader, setClickedHeader] = useState();
-  const [emailName, setEmailName] = useState();
-  const [templateId, setTemplateId] = useState();
   const users = useSelector((state) => state.users.users);
   const selectedUsers = useSelector((state) => state.users.selectedUsers);
   const page = useSelector((state) => state.users.page);
@@ -334,9 +334,9 @@ const Users = () => {
                 <input
                   placeholder="Название рассылки"
                   onChange={(event) => {
-                    setEmailName(event.target.value);
+                    dispatch(setName(event.target.value));
                   }}
-                  value={emailName}
+                  value={name}
                   type="text"
                 />
               </label>
@@ -344,9 +344,9 @@ const Users = () => {
                 <input
                   placeholder="ID шаблона"
                   onChange={(event) => {
-                    setTemplateId(event.target.value);
+                    dispatch(setTemplate(event.target.value));
                   }}
-                  value={templateId}
+                  value={template}
                   type="text"
                 />
               </label>
@@ -354,15 +354,30 @@ const Users = () => {
                 return (
                   <div className={modalStyles.params} key={index}>
                     <label>
-                      <input placeholder="Code" type="text" />
+                      <input
+                        placeholder="Code"
+                        type="text"
+                        onChange={(event) => {
+                          dispatch(
+                            setCode({ index, code: event.target.value })
+                          );
+                        }}
+                      />
                     </label>
                     <label>
-                      <input placeholder="Value" type="text" />
+                      <input
+                        placeholder="Value"
+                        type="text"
+                        onChange={(event) => {
+                          dispatch(
+                            setValue({ index, value: event.target.value })
+                          );
+                        }}
+                      />
                     </label>
                     <button
                       onClick={(event) => {
                         event.preventDefault();
-                        console.log(item);
                         dispatch(removeParam(item));
                       }}
                     >

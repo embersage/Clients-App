@@ -21,6 +21,8 @@ router.post('/send-email', checkRoleMiddleware([2, 3]), async (req, res) => {
       paramsObject,
     };
 
+    console.log(requestData);
+
     /* const requestData = {
       from_email,
       to,

@@ -17,7 +17,9 @@ export const sendLetter = createAsyncThunk(
 );
 
 const findInd = (state, newItem) => {
-  return state.params.findIndex((item) => item === newItem);
+  return state.params.findIndex(
+    (item) => item.code === newItem.code && item.value === newItem.value
+  );
 };
 
 export const emailSlice = createSlice({
@@ -30,6 +32,18 @@ export const emailSlice = createSlice({
     setTemplate: (state, action) => {
       state.template = action.payload;
     },
+    setCode: (state, action) => {
+      state.params[action.payload.index] = {
+        code: action.payload.code,
+        value: state.params[action.payload.index].value,
+      };
+    },
+    setValue: (state, action) => {
+      state.params[action.payload.index] = {
+        code: state.params[action.payload.index].code,
+        value: action.payload.value,
+      };
+    },
     addParam: (state, action) => {
       state.params = [...state.params, action.payload];
     },
@@ -39,7 +53,13 @@ export const emailSlice = createSlice({
   },
 });
 
-export const { setName, setTemplate, addParam, removeParam } =
-  emailSlice.actions;
+export const {
+  setName,
+  setTemplate,
+  setCode,
+  setValue,
+  addParam,
+  removeParam,
+} = emailSlice.actions;
 
 export default emailSlice.reducer;
