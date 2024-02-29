@@ -42,6 +42,7 @@ import Table from '../../components/Table';
 import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
 import Search from '../../components/Search';
+import Input from '../../components/Input';
 import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
 import styles from './Users.module.scss';
@@ -330,53 +331,41 @@ const Users = () => {
           )}
           {pressedButton === 'email' && (
             <>
-              <label>
-                <input
-                  placeholder="Название рассылки"
-                  onChange={(event) => {
-                    dispatch(setName(event.target.value));
-                  }}
-                  value={name}
-                  type="text"
-                />
-              </label>
-              <label>
-                <input
-                  placeholder="ID шаблона"
-                  onChange={(event) => {
-                    dispatch(setTemplate(event.target.value));
-                  }}
-                  value={template}
-                  type="text"
-                />
-              </label>
+              <Input
+                value={name}
+                onChangeHandler={(value) => {
+                  dispatch(setName(value));
+                }}
+                placeholder="Название рассылки"
+                type="text"
+              />
+              <Input
+                value={template}
+                onChangeHandler={(value) => {
+                  dispatch(setTemplate(value));
+                }}
+                placeholder="ID шаблона"
+                type="text"
+              />
               {params.map((item, index) => {
                 return (
                   <div className={modalStyles.params} key={index}>
-                    <label>
-                      <input
-                        value={item.code}
-                        placeholder="Code"
-                        type="text"
-                        onChange={(event) => {
-                          dispatch(
-                            setCode({ index, code: event.target.value })
-                          );
-                        }}
-                      />
-                    </label>
-                    <label>
-                      <input
-                        value={item.value}
-                        placeholder="Value"
-                        type="text"
-                        onChange={(event) => {
-                          dispatch(
-                            setValue({ index, value: event.target.value })
-                          );
-                        }}
-                      />
-                    </label>
+                    <Input
+                      value={item.code}
+                      onChangeHandler={(value) => {
+                        dispatch(setCode({ index, code: value }));
+                      }}
+                      placeholder="Code"
+                      type="text"
+                    />
+                    <Input
+                      value={item.value}
+                      onChangeHandler={(value) => {
+                        dispatch(setValue({ index, value }));
+                      }}
+                      placeholder="Value"
+                      type="text"
+                    />
                     <button
                       onClick={(event) => {
                         event.preventDefault();

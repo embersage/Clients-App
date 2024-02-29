@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import styles from './Button.module.scss';
 
-const Button = (props) => {
+const Button = memo((props) => {
   return (
     <button
       location={props.location}
@@ -14,6 +15,6 @@ const Button = (props) => {
       {props.children}
     </button>
   );
-};
+});
 
 export default Button;

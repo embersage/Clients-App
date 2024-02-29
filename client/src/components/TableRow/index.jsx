@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import styles from './TableRow.module.scss';
 
-const TableRow = (props) => {
+const TableRow = memo((props) => {
   const checkboxRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
   const { checked, values } = props;
@@ -52,6 +52,6 @@ const TableRow = (props) => {
       })}
     </tr>
   );
-};
+});
 
 export default TableRow;

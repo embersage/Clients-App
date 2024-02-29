@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { RxCross2 } from 'react-icons/rx';
@@ -8,7 +8,7 @@ import { setSearch } from '../../redux/slices/filterSlice';
 import { setIsVisible, setPressedButton } from '../../redux/slices/modalSlice';
 import styles from './Search.module.scss';
 
-const Search = () => {
+const Search = memo(() => {
   const dispatch = useDispatch();
   const inputRef = useRef();
   const [string, setString] = useState('');
@@ -69,6 +69,6 @@ const Search = () => {
       )}
     </label>
   );
-};
+});
 
 export default Search;

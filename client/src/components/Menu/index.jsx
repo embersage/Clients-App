@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
@@ -12,7 +13,7 @@ import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
 import Button from '../Button';
 import styles from './Menu.module.scss';
 
-const Menu = () => {
+const Menu = memo(() => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.menu.isOpened);
@@ -97,6 +98,6 @@ const Menu = () => {
       </>
     );
   }
-};
+});
 
 export default Menu;

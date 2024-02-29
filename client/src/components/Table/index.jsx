@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import styles from './Table.module.scss';
 
-const Table = (props) => {
+const Table = memo((props) => {
   const {
     page,
     checked,
@@ -53,5 +54,6 @@ const Table = (props) => {
       <tbody>{props.children}</tbody>
     </table>
   );
-};
+});
+
 export default Table;

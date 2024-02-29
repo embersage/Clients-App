@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setEditingIndex,
@@ -7,7 +8,7 @@ import {
 } from '../../redux/slices/modalSlice';
 import styles from './ModalWindow.module.scss';
 
-const ModalWindow = (props) => {
+const ModalWindow = memo((props) => {
   const dispatch = useDispatch();
   const isVisible = useSelector((state) => state.modal.isVisible);
 
@@ -27,6 +28,6 @@ const ModalWindow = (props) => {
       </>
     );
   }
-};
+});
 
 export default ModalWindow;

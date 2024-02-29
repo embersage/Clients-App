@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import styles from './Pagination.module.scss';
 
-const Pagination = (props) => {
+const Pagination = memo((props) => {
   const { totalCount, limit, setPage } = props;
   const pageCount = Math.ceil(totalCount / limit);
 
@@ -26,6 +26,6 @@ const Pagination = (props) => {
       }}
     />
   );
-};
+});
 
 export default Pagination;
