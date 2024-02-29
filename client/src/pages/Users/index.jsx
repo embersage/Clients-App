@@ -332,6 +332,7 @@ const Users = () => {
           {pressedButton === 'email' && (
             <>
               <Input
+                delay={250}
                 value={name}
                 onChangeHandler={(value) => {
                   dispatch(setName(value));
@@ -340,6 +341,7 @@ const Users = () => {
                 type="text"
               />
               <Input
+                delay={250}
                 value={template}
                 onChangeHandler={(value) => {
                   dispatch(setTemplate(value));
@@ -349,8 +351,12 @@ const Users = () => {
               />
               {params.map((item, index) => {
                 return (
-                  <div className={modalStyles.params} key={index}>
+                  <div
+                    className={modalStyles.params}
+                    key={(Math.random() * params.length).toString()}
+                  >
                     <Input
+                      delay={250}
                       value={item.code}
                       onChangeHandler={(value) => {
                         dispatch(setCode({ index, code: value }));
@@ -359,6 +365,7 @@ const Users = () => {
                       type="text"
                     />
                     <Input
+                      delay={250}
                       value={item.value}
                       onChangeHandler={(value) => {
                         dispatch(setValue({ index, value }));
