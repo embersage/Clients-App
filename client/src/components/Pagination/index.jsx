@@ -4,7 +4,7 @@ import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import styles from './Pagination.module.scss';
 
 const Pagination = memo((props) => {
-  const { totalCount, limit, setPage } = props;
+  const { totalCount, limit, setPage, page } = props;
   const pageCount = Math.ceil(totalCount / limit);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ const Pagination = memo((props) => {
       onPageChange={(event) => {
         setPage(event.selected + 1);
       }}
+      forcePage={page - 1}
     />
   );
 });

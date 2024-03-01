@@ -127,6 +127,10 @@ const Users = () => {
     hasSubscription,
   ]);
 
+  useEffect(() => {
+    dispatch(setUsersPage(1));
+  }, [search]);
+
   const upload = async (file) => {
     const response = await dispatch(importUsers(file));
     if (response.payload) {
@@ -235,6 +239,7 @@ const Users = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setUsersPage(item))}
+              page={page}
             />
           )}
         </Header>
