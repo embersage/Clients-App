@@ -6,6 +6,8 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { CiImport } from 'react-icons/ci';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { MdOutlineMailOutline } from 'react-icons/md';
+import { MdOutlinePlaylistAdd } from 'react-icons/md';
+import { RiSendPlaneFill } from 'react-icons/ri';
 import {
   getUsers,
   setSelectedUsers,
@@ -186,7 +188,7 @@ const Users = () => {
             {selectedUsers.length > 0 && (
               <>
                 <Button
-                  onClick={(event) => {
+                  onClickHandler={(event) => {
                     event.preventDefault();
                     deleteUsers({ users: selectedUsers });
                   }}
@@ -199,7 +201,7 @@ const Users = () => {
                   <span>Удалить</span>
                 </Button>
                 <Button
-                  onClick={(event) => {
+                  onClickHandler={(event) => {
                     event.preventDefault();
                     dispatch(setIsVisible(true));
                     dispatch(setPressedButton('email'));
@@ -215,7 +217,7 @@ const Users = () => {
               </>
             )}
             <Button
-              onClick={() => {
+              onClickHandler={() => {
                 dispatch(setIsVisible(true));
                 dispatch(setPressedButton('import'));
               }}
@@ -307,25 +309,22 @@ const Users = () => {
           {pressedButton === 'import' && (
             <>
               <label className={modalStyles.uploadWrapper}>
-                <input
-                  ref={inputRef}
-                  type="file"
-                  onChange={() => {
-                    console.log(inputRef.current.files.length);
-                  }}
-                />
-                <button
-                  className={modalStyles.upload}
-                  type="submit"
-                  onClick={(event) => {
+                <input ref={inputRef} type="file" />
+                <Button
+                  onClickHandler={(event) => {
                     event.preventDefault();
                     if (inputRef.current.files.length > 0) {
                       upload({ file: inputRef.current.files[0] });
                     }
                   }}
                 >
-                  Импорт
-                </button>
+                  <CiImport
+                    size={30}
+                    className={styles.icon}
+                    color="rgba(171,171,171, 0.75)"
+                  />
+                  <span>Импорт</span>
+                </Button>
               </label>
             </>
           )}
@@ -384,16 +383,21 @@ const Users = () => {
                   </div>
                 );
               })}
-              <button
-                onClick={(event) => {
+              <Button
+                onClickHandler={(event) => {
                   event.preventDefault();
                   dispatch(addParam({ code: '', value: '' }));
                 }}
               >
-                Добавить переменную
-              </button>
-              <button
-                onClick={(event) => {
+                <MdOutlinePlaylistAdd
+                  size={30}
+                  className={styles.icon}
+                  color="rgba(171,171,171, 0.75)"
+                />
+                <span>Добавить</span>
+              </Button>
+              <Button
+                onClickHandler={(event) => {
                   event.preventDefault();
                   dispatch(
                     sendLetter({
@@ -403,10 +407,14 @@ const Users = () => {
                     })
                   );
                 }}
-                type="submit"
               >
-                Отправить
-              </button>
+                <RiSendPlaneFill
+                  size={30}
+                  className={styles.icon}
+                  color="rgba(171,171,171, 0.75)"
+                />
+                <span>Отправить</span>
+              </Button>
             </>
           )}
           {pressedButton === 'filters' && (

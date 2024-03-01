@@ -66,66 +66,29 @@
           justify-content: center;
           align-items: center;
           column-gap: 10px;
+          height: 55px;
 
-          .input {
-            padding: 10px;
+          label {
             width: 200px;
-            height: 40px;
-            outline: none;
-            border: 2px solid $accent-color;
-            border-radius: 10px;
+
+            input {
+              padding-right: 45px;
+              width: 100%;
+            }
+            svg {
+              right: 20px;
+            }
           }
 
-          .saveButton {
-            width: 150px;
-            height: 40px;
-            border: 2px solid transparent;
-            border-radius: 10px;
-            background-color: $button-bg-color;
-            font-size: 20px;
-            font-weight: 400;
-            cursor: pointer;
-            color: #fff;
-            transition: all 0.3s ease-in-out;
-
-            &:hover {
-              background-color: $button-hover-color;
-              border: 2px solid $button-bg-color;
-              color: #000;
-            }
-
-            &:active {
-              position: relative;
-              top: 1px;
-            }
+          button {
+            display: grid;
           }
         }
       }
     }
 
-    .saveButtonBottom {
+    button {
       display: none;
-      width: 150px;
-      height: 40px;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      background-color: $button-bg-color;
-      font-size: 20px;
-      font-weight: 400;
-      cursor: pointer;
-      color: #fff;
-      transition: all 0.3s ease-in-out;
-
-      &:hover {
-        background-color: $button-hover-color;
-        border: 2px solid $button-bg-color;
-        color: #000;
-      }
-
-      &:active {
-        position: relative;
-        top: 1px;
-      }
     }
   }
 }
@@ -143,15 +106,15 @@
               width: 150px;
             }
 
-            .saveButton {
+            button {
               display: none;
             }
           }
         }
       }
 
-      .saveButtonBottom {
-        display: block;
+      button {
+        display: grid;
       }
     }
   }

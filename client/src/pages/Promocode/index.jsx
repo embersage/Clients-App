@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { PiArrowsClockwise } from 'react-icons/pi';
-import { IoSync } from 'react-icons/io5';
+import { MdSaveAlt } from 'react-icons/md';
 import {
   getPromocode,
   editPromocode,
@@ -123,7 +123,7 @@ const Promocode = () => {
         <Header>
           <div className={headerStyles.buttons}>
             <Button
-              onClick={async (event) => {
+              onClickHandler={async (event) => {
                 await dispatch(
                   editPromocode({
                     id,
@@ -134,7 +134,7 @@ const Promocode = () => {
                 );
               }}
             >
-              <IoSync
+              <MdSaveAlt
                 size={30}
                 className={styles.icon}
                 color="rgba(171,171,171, 0.75)"
@@ -142,7 +142,7 @@ const Promocode = () => {
               <span>Сохранить</span>
             </Button>
             <Button
-              onClick={(event) => {
+              onClickHandler={(event) => {
                 event.preventDefault();
                 deletePromocodes({ promocodes: [promocode] });
                 navigate(PROMOCODES_ROUTE);

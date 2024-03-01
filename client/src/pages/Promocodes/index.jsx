@@ -92,7 +92,7 @@ const Promocodes = () => {
           <Search />
           {selectedItems.length > 0 && (
             <Button
-              onClick={(event) => {
+              onClickHandler={(event) => {
                 event.preventDefault();
                 deletePromocodes({ promocodes: selectedItems });
               }}

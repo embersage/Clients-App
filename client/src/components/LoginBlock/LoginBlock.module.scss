@@ -1,15 +1,6 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss',
   '../../scss/templates.scss';
 
-@keyframes spin {
-  0% {
-    transform: rotate(-45deg);
-  }
-  100% {
-    transform: rotate(0);
-  }
-}
-
 .loginBlock {
   padding: 20px;
   width: 420px;
@@ -47,30 +38,6 @@
       flex-direction: column;
       row-gap: 40px;
       align-items: center;
-
-      .inputWrapper {
-        position: relative;
-        width: 100%;
-
-        .input {
-          @extend %input;
-        }
-
-        .eye {
-          @extend %icon;
-          position: absolute;
-          top: 13px;
-          right: 52px;
-        }
-
-        .cross {
-          @extend %icon;
-          position: absolute;
-          top: 13px;
-          right: 26px;
-          animation: spin 0.5s ease-in-out 1;
-        }
-      }
     }
 
     .button {
@@ -99,34 +66,9 @@
   }
 }
 
-.redInput {
-  @extend %input;
-  border: 2px solid $warning-color;
-}
-
 @media (max-width: 450px) {
   .authorizationBlock {
     .form {
-      .inputs {
-        .inputWrapper {
-          .eye {
-            top: 11px;
-            right: 54px;
-          }
-
-          .cross {
-            top: 11px;
-            right: 26px;
-            animation: unset;
-          }
-
-          svg {
-            width: 35px;
-            height: 35px;
-          }
-        }
-      }
-
       button {
         width: 100%;
       }

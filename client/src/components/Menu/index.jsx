@@ -80,7 +80,7 @@ const Menu = memo(() => {
                       isActive={
                         location.pathname === `${item.link}` ? 'true' : 'false'
                       }
-                      onClick={() => {
+                      onClickHandler={() => {
                         dispatch(setSortBy(''));
                         dispatch(setSortType(''));
                         dispatch(setIsOpened(false));

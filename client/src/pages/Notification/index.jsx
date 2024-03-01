@@ -117,7 +117,7 @@ const Notification = () => {
         <Header>
           <div className={headerStyles.buttons}>
             <Button
-              onClick={(event) => {
+              onClickHandler={(event) => {
                 event.preventDefault();
                 deleteNotifications({ notifications: [notification] });
                 navigate(NOTIFICATIONS_ROUTE);

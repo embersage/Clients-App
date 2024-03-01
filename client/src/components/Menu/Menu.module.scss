@@ -22,6 +22,7 @@
 }
 
 .menu {
+  padding: 10px 0;
   width: 225px;
   height: 100%;
   color: #ababab;
@@ -45,6 +46,7 @@
     align-items: center;
     row-gap: 40px;
     background-color: #fff;
+    border-radius: 0 25px 25px 0;
 
     span {
       width: 85px;

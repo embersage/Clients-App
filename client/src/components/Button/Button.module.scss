@@ -8,7 +8,6 @@
   grid-template-columns: repeat(2, 1fr);
   justify-items: flex-end;
   align-items: center;
-  column-gap: 10px;
   transition: border 0.3s ease-in-out, color 0.3s ease-in-out,
     fill 10s ease-in-out;
   border: 1px solid transparent;
@@ -28,6 +27,7 @@
     &:not(._active) {
       border-color: #e1e8ff;
       color: rgba(0, 60, 255, 0.5);
+
       svg {
         fill: rgba(225, 232, 255, 0.5);
       }
@@ -36,6 +36,10 @@
 
   span {
     width: 85px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &[location='menu'] {

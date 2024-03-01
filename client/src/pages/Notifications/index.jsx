@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PiArrowsClockwise } from 'react-icons/pi';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { MdSaveAlt } from 'react-icons/md';
 import {
   getNotifications,
   setSelectedItems,
@@ -32,16 +33,14 @@ import TableRow from '../../components/TableRow';
 import ModalWindow from '../../components/ModalWindow';
 import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
+import Input from '../../components/Input';
 import Search from '../../components/Search';
 import styles from './Notifications.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
 const Notifications = () => {
-  const inputRef = useRef();
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  /* const [isEditing, setIsEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null); */
   const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
   const notifications = useSelector((state) => state.notifications.items);
@@ -157,23 +156,15 @@ const Notifications = () => {
     }
   }, [status]);
 
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
-
   const onClickHandle = (index) => {
     dispatch(setIsEditing(true));
     dispatch(setEditingIndex(index));
   };
 
-  const onChangeHandle = (event, item) => {
+  const onChangeHandle = (item, value) => {
     setData(
       data.map((object) => {
-        return item.name === object.name
-          ? { ...object, value: event.target.value }
-          : object;
+        return item.name === object.name ? { ...object, value } : object;
       })
     );
   };
@@ -232,7 +223,7 @@ const Notifications = () => {
           <Search />
           {selectedItems.length > 0 && (
             <Button
-              onClick={(event) => {
+              onClickHandler={(event) => {
                 event.preventDefault();
                 deleteNotifications({ notifications: selectedItems });
               }}
@@ -369,19 +360,16 @@ const Notifications = () => {
                     </span>
                     {isEditing && editingIndex === index ? (
                       <div className={modalStyles.editing}>
-                        <input
-                          className={modalStyles.input}
-                          ref={inputRef}
-                          type={item.type}
+                        <Input
+                          delay={0}
                           value={inputValue}
-                          placeholder={!item.value ? 'Нет данных' : ''}
-                          disabled={item.disabled}
-                          onChange={(event) => {
-                            setInputValue(event.target.value);
-                            onChangeHandle(event, item);
+                          onChangeHandler={(value) => {
+                            onChangeHandle(item, value);
                           }}
+                          placeholder={!item.value ? 'Нет данных' : ''}
+                          type={item.type}
                         />
-                        <button
+                        {/* <button
                           className={modalStyles.saveButton}
                           type="submit"
                           onClick={(event) => {
@@ -392,7 +380,22 @@ const Notifications = () => {
                           }}
                         >
                           Сохранить
-                        </button>
+                        </button> */}
+                        <Button
+                          onClickHandler={(event) => {
+                            event.preventDefault();
+                            edit(editingIndex);
+                            dispatch(setIsEditing(false));
+                            dispatch(setEditingIndex(null));
+                          }}
+                        >
+                          <MdSaveAlt
+                            size={30}
+                            className={styles.icon}
+                            color="rgba(171,171,171, 0.75)"
+                          />
+                          <span>Сохранить</span>
+                        </Button>
                       </div>
                     ) : (
                       <span

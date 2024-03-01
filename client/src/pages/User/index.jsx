@@ -190,7 +190,7 @@ const User = () => {
         <Header>
           <div className={headerStyles.buttons}>
             <Button
-              onClick={(event) => {
+              onClickHandler={(event) => {
                 event.preventDefault();
                 deleteUsers({ users: [user] });
                 navigate(USERS_ROUTE);

@@ -1,30 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { MdSaveAlt } from 'react-icons/md';
+import Input from '../Input';
+import Button from '../Button';
 import styles from './InformationBlock.module.scss';
 
 const InformationBlock = (props) => {
-  const inputRef = useRef();
   const { data, setData, edit } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [inputValue, setInputValue] = useState('');
-
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
 
   const onClickHandle = (index) => {
     setIsEditing(true);
     setEditingIndex(index);
   };
 
-  const onChangeHandle = (event, item) => {
+  const onChangeHandle = (item, value) => {
     setData(
       data.map((object) => {
-        return item.name === object.name
-          ? { ...object, value: event.target.value }
-          : object;
+        return item.name === object.name ? { ...object, value } : object;
       })
     );
   };
@@ -48,30 +42,30 @@ const InformationBlock = (props) => {
                 </span>
                 {isEditing && editingIndex === index ? (
                   <div className={styles.editing}>
-                    <input
-                      className={styles.input}
-                      ref={inputRef}
-                      type={item.type}
+                    <Input
+                      delay={0}
                       value={inputValue}
-                      placeholder={!item.value ? 'Нет данных' : ''}
-                      disabled={item.disabled}
-                      onChange={(event) => {
-                        setInputValue(event.target.value);
-                        onChangeHandle(event, item);
+                      onChangeHandler={(value) => {
+                        onChangeHandle(item, value);
                       }}
+                      placeholder={!item.value ? 'Нет данных' : ''}
+                      type={item.type}
                     />
-                    <button
-                      className={styles.saveButton}
-                      type="submit"
-                      onClick={(event) => {
+                    <Button
+                      onClickHandler={(event) => {
                         event.preventDefault();
                         setIsEditing(false);
                         setEditingIndex(null);
                         edit(editingIndex);
                       }}
                     >
-                      Сохранить
-                    </button>
+                      <MdSaveAlt
+                        size={30}
+                        className={styles.icon}
+                        color="rgba(171,171,171, 0.75)"
+                      />
+                      <span>Сохранить</span>
+                    </Button>
                   </div>
                 ) : (
                   <span
@@ -111,18 +105,21 @@ const InformationBlock = (props) => {
           })}
         </div>
         {isEditing && (
-          <button
-            className={styles.saveButtonBottom}
-            type="submit"
-            onClick={(event) => {
+          <Button
+            onClickHandler={(event) => {
               event.preventDefault();
               setIsEditing(false);
               setEditingIndex(null);
               edit(editingIndex);
             }}
           >
-            Сохранить
-          </button>
+            <MdSaveAlt
+              size={30}
+              className={styles.icon}
+              color="rgba(171,171,171, 0.75)"
+            />
+            <span>Сохранить</span>
+          </Button>
         )}
       </form>
     </div>

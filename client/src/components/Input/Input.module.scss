@@ -1,57 +1,30 @@
 @import '../../scss/reset.scss', '../../scss/variables.scss',
   '../../scss/templates.scss';
 
-@keyframes spin {
-  0% {
-    transform: rotate(-45deg);
-  }
-  100% {
-    transform: rotate(0);
-  }
-}
-
 .inputWrapper {
   position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 
   .input {
-    padding: 15px 88px 16px 53px;
-    width: 450px;
-    height: 52px;
-    border-radius: 15px;
-    border: none;
-    background: rgba(225, 232, 255, 1);
-    opacity: 0.5;
-    font-size: 20px;
-    font-weight: 400;
-    position: relative;
-    border: 2px solid transparent;
-    transition: border 0.2s ease-in-out;
-    outline: none;
+    @extend %input;
+  }
 
-    &:focus {
-      border: 2px solid rgba(0, 60, 255, 1);
+  .redInput {
+    @extend %redInput;
+  }
+
+  .icons {
+    position: absolute;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+      @extend %icon;
     }
-  }
-
-  .inputIcon {
-    @extend %icon;
-    position: absolute;
-    top: 12px;
-    left: 15px;
-  }
-
-  .filters {
-    @extend %icon;
-    position: absolute;
-    top: 12px;
-    right: 52px;
-  }
-
-  .cross {
-    @extend %icon;
-    position: absolute;
-    top: 12px;
-    right: 26px;
-    animation: spin 0.5s ease-in-out 1;
   }
 }

@@ -20,21 +20,8 @@
   justify-content: center;
   min-width: 400px;
   border-radius: 25px;
-  box-shadow: 0px 4px 35px 0px rgba(0, 0, 0, 0.08);
   background-color: #fff;
   z-index: 1;
-
-  label {
-    input[type='text'],
-    input[type='number'],
-    input[type='password'],
-    input[type='datetime-local'] {
-      @extend %input;
-      padding: 10px;
-      width: 220px;
-      height: 40px;
-    }
-  }
 
   .content {
     display: flex;
@@ -71,7 +58,7 @@
       transition: background 0.2s ease-in-out, border 0.2s ease-in-out;
 
       &:hover {
-        background: #eee;
+        background: #fafafa;
         border-color: #111;
       }
 
@@ -202,10 +189,23 @@
         justify-content: center;
         align-items: center;
         column-gap: 10px;
+        height: 55px;
+
+        label {
+          width: 330px;
+
+          input {
+            padding-right: 45px;
+            width: 100%;
+          }
+          svg {
+            right: 20px;
+          }
+        }
 
         .saveButton {
           width: 150px;
-          height: 40px;
+          height: 100%;
           border: 2px solid transparent;
           border-radius: 10px;
           background-color: $button-bg-color;
@@ -235,10 +235,8 @@
       align-items: center;
       column-gap: 10px;
 
-      label {
-        input[type='text'] {
-          width: 150px;
-        }
+      input {
+        width: 150px;
       }
     }
   }

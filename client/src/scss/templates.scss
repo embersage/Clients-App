@@ -1,10 +1,21 @@
 @import './variables.scss';
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 %icon {
   padding: 5px;
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
+  color: $accent-color;
 
   &:hover {
     background-color: $icon-bg-color;
@@ -24,18 +35,28 @@
   outline: none;
   transition: border 0.3s ease-in-out;
 
+  &[placeholder='Логин'] {
+    padding-right: 60px;
+  }
+
+  &[placeholder='Code'],
+  &[placeholder='Value'],
+  &[placeholder='Название рассылки'],
+  &[placeholder='ID шаблона'] {
+    padding-right: 45px;
+  }
+
   &:focus {
     border: 2px solid $accent-color;
   }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+%redInput {
+  @extend %input;
+  border: 2px solid #ff2828;
 
-  100% {
-    transform: rotate(360deg);
+  &[placeholder='Логин'] {
+    padding-right: 60px;
   }
 }
 
