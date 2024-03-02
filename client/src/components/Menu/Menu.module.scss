@@ -3,10 +3,48 @@
 @keyframes moveRight {
   0% {
     transform: translateX(-225px);
+    display: none;
   }
 
   100% {
     transform: translateX(0);
+    display: block;
+  }
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(0);
+    display: block;
+  }
+
+  100% {
+    transform: translateX(-225px);
+    display: none;
+  }
+}
+
+@keyframes addDarkness {
+  0% {
+    background-color: unset;
+    display: flex;
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+}
+
+@keyframes removeDarkness {
+  0% {
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+  }
+
+  100% {
+    background-color: unset;
+    display: none;
   }
 }
 
@@ -31,7 +69,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  animation: moveRight 0.5s ease-in-out 1;
   z-index: 1;
 
   .pages {
@@ -63,4 +100,24 @@
       }
     }
   }
+}
+
+.opened {
+  animation: moveRight 0.5s ease-in-out 1;
+  display: block;
+}
+
+.closed {
+  animation: moveLeft 0.5s ease-in-out 1;
+  display: none;
+}
+
+.show {
+  animation: addDarkness 0.5s ease-in-out 1;
+  display: flex;
+}
+
+.hide {
+  animation: removeDarkness 0.5s ease-in-out 1;
+  display: none;
 }

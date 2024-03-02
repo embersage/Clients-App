@@ -239,7 +239,6 @@ const Users = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setUsersPage(item))}
-              page={page}
             />
           )}
         </Header>

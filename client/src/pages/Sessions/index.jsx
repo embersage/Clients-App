@@ -92,7 +92,6 @@ const Sessions = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setSessionsPage(item))}
-              page={page}
             />
           )}
         </Header>

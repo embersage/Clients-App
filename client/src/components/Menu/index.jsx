@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
@@ -57,53 +57,61 @@ const Menu = memo(() => {
     },
   ];
 
-  if (isOpened) {
-    return (
-      <>
-        <div
-          className={styles.darkBackground}
-          onClick={() => {
-            dispatch(setIsOpened(false));
-          }}
-        />
-        <nav className={styles.menu}>
-          <ul className={styles.pages}>
-            {pages.map((item, index) => {
-              return (
-                <li key={index}>
-                  <Link
-                    to={item.link}
-                    {...(item.link === '/login' && {
-                      onClick: () => {
-                        dispatch(setUser({}));
-                        dispatch(setIsAuth(false));
-                        localStorage.clear();
-                      },
-                    })}
+  return (
+    <>
+      <div
+        className={
+          isOpened
+            ? `${styles.darkBackground} ${styles.show}`
+            : `${styles.darkBackground} ${styles.hide}`
+        }
+        onClick={() => {
+          dispatch(setIsOpened(false));
+        }}
+      />
+      <nav
+        className={
+          isOpened
+            ? `${styles.menu} ${styles.opened}`
+            : `${styles.menu} ${styles.closed}`
+        }
+      >
+        <ul className={styles.pages}>
+          {pages.map((item, index) => {
+            return (
+              <li key={index}>
+                <Link
+                  to={item.link}
+                  {...(item.link === '/login' && {
+                    onClick: () => {
+                      dispatch(setUser({}));
+                      dispatch(setIsAuth(false));
+                      localStorage.clear();
+                    },
+                  })}
+                >
+                  <Button
+                    location="menu"
+                    isActive={
+                      location.pathname === `${item.link}` ? 'true' : 'false'
+                    }
+                    onClickHandler={() => {
+                      dispatch(setSortBy(''));
+                      dispatch(setSortType(''));
+                      dispatch(setIsOpened(false));
+                    }}
                   >
-                    <Button
-                      location="menu"
-                      isActive={
-                        location.pathname === `${item.link}` ? 'true' : 'false'
-                      }
-                      onClickHandler={() => {
-                        dispatch(setSortBy(''));
-                        dispatch(setSortType(''));
-                        dispatch(setIsOpened(false));
-                      }}
-                    >
-                      {item.icon}
-                      {item.name}
-                    </Button>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </>
-    );
-  }
+                    {item.icon}
+                    {item.name}
+                  </Button>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </>
+  );
 });
 
 export default Menu;

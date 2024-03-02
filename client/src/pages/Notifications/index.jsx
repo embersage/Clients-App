@@ -241,7 +241,6 @@ const Notifications = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setNotificationsPage(item))}
-              page={page}
             />
           )}
         </Header>

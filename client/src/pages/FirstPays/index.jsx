@@ -200,7 +200,6 @@ const FirstPays = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setFirstPaysPage(item))}
-              page={page}
             />
           )}
         </Header>

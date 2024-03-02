@@ -110,7 +110,6 @@ const Promocodes = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setPromocodesPage(item))}
-              page={page}
             />
           )}
         </Header>
