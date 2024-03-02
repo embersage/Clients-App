@@ -1,0 +1,10 @@
+@import '../../scss/reset.scss', '../../scss/variables.scss',
+  '../../scss/templates.scss';
+
+.wrapper {
+  @extend %wrapper;
+
+  .loadingBanner {
+    @extend %loadingBanner;
+  }
+}

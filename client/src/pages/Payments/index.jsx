@@ -274,6 +274,7 @@ const Payments = () => {
               totalCount={totalCount}
               limit={limit}
               setPage={(item) => dispatch(setPaymentsPage(item))}
+              page={page}
             />
           )}
         </Header>

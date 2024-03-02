@@ -5,6 +5,7 @@ import promocodesRouter from './promocodesRouter.js';
 import tariffsRouter from './tariffsRouter.js';
 import paymentsRouter from './paymentsRouter.js';
 import notificationsRouter from './notificationsRouter.js';
+import firstPaysRouter from './firstPaysRouter.js';
 import currenciesRouter from './currenciesRouter.js';
 import emailRouter from './emailRouter.js';
 
@@ -15,6 +16,7 @@ router.use('/sessions', sessionsRouter);
 router.use('/promocodes', promocodesRouter);
 router.use('/tariffs', tariffsRouter);
 router.use('/payments', paymentsRouter);
+router.use('/first_pays', firstPaysRouter);
 router.use('/notifications', notificationsRouter);
 router.use('/currencies', currenciesRouter);
 router.use('/email', emailRouter);

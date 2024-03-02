@@ -24,8 +24,13 @@
     text-align: center;
   }
 
+  &[activate='false'],
+  &[activate='null'] {
+    background-color: $icon-bg-color;
+  }
+
   &:hover {
-    background: rgba(225, 232, 255, 1);
+    background-color: rgba(225, 232, 255, 1);
     cursor: pointer;
   }
 }

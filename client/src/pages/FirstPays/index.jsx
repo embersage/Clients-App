@@ -5,16 +5,16 @@ import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { MdSaveAlt } from 'react-icons/md';
 import {
-  getNotifications,
+  getFirstPays,
   setSelectedItems,
-  setNotification,
+  setFirstPay,
   addSelectedItem,
   removeSelectedItem,
-  removeNotifications,
-  setNotificationsPage,
-  getNotification,
-  editNotification,
-} from '../../redux/slices/notificationsSlice';
+  removeFirstPays,
+  setFirstPaysPage,
+  getFirstPay,
+  editFirstPay,
+} from '../../redux/slices/firstPaysSlice';
 import {
   setSortBy,
   setSortType,
@@ -35,23 +35,21 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Search from '../../components/Search';
-import styles from './Notifications.module.scss';
+import styles from './FirstPays.module.scss';
 import modalStyles from '../../components/ModalWindow/ModalWindow.module.scss';
 
-const Notifications = () => {
+const FirstPays = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [clickedHeader, setClickedHeader] = useState();
-  const notifications = useSelector((state) => state.notifications.items);
-  const notification = useSelector((state) => state.notifications.notification);
-  const selectedItems = useSelector(
-    (state) => state.notifications.selectedItems
-  );
-  const page = useSelector((state) => state.notifications.page);
-  const limit = useSelector((state) => state.notifications.limit);
-  const totalCount = useSelector((state) => state.notifications.totalCount);
-  const status = useSelector((state) => state.notifications.status);
+  const firstPays = useSelector((state) => state.firstPays.items);
+  const firstPay = useSelector((state) => state.firstPays.firstPay);
+  const selectedItems = useSelector((state) => state.firstPays.selectedItems);
+  const page = useSelector((state) => state.firstPays.page);
+  const limit = useSelector((state) => state.firstPays.limit);
+  const totalCount = useSelector((state) => state.firstPays.totalCount);
+  const status = useSelector((state) => state.firstPays.status);
   const search = useSelector((state) => state.filter.search);
   const usePagination = useSelector((state) => state.filter.usePagination);
   const sortBy = useSelector((state) => state.filter.sortBy);
@@ -59,30 +57,12 @@ const Notifications = () => {
   const pressedButton = useSelector((state) => state.modal.pressedButton);
   const isEditing = useSelector((state) => state.modal.isEditing);
   const editingIndex = useSelector((state) => state.modal.editingIndex);
-  const values = [
-    'id',
-    'name',
-    'description',
-    'priority',
-    'date_start',
-    'date_end',
-    'id_currency',
-    'page',
-  ];
-  const headers = [
-    'id',
-    'Название',
-    'Описание',
-    'Приоритет',
-    'Дата начала',
-    'Дата окончания',
-    'id валюты',
-    'Страница',
-  ];
+  const values = ['id', 'date_start', 'date_end', 'amount', 'id_tariff'];
+  const headers = ['id', 'Дата начала', 'Дата окончания', 'Сумма', 'id тарифа'];
 
   useEffect(() => {
     dispatch(
-      getNotifications({
+      getFirstPays({
         usePagination,
         limit: 10,
         page,
@@ -94,62 +74,41 @@ const Notifications = () => {
   }, [usePagination, page, sortBy, sortType, search]);
 
   useEffect(() => {
-    if (status === 'succeeded' && notification) {
+    if (status === 'succeeded' && firstPay) {
       setData([
         {
           propName: 'id',
           name: 'id',
-          value: notification.id,
+          value: firstPay.id,
           disabled: true,
-          type: 'text',
-        },
-        {
-          propName: 'name',
-          name: 'Название',
-          value: notification.name,
-          disabled: false,
-          type: 'text',
-        },
-        {
-          propName: 'description',
-          name: 'Описание',
-          value: notification.description,
-          disabled: false,
-          type: 'text',
-        },
-        {
-          propName: 'priority',
-          name: 'Приоритет',
-          value: notification.priority,
-          disabled: false,
           type: 'text',
         },
         {
           propName: 'date_start',
           name: 'Дата начала',
-          value: notification.date_start,
+          value: firstPay.date_start,
           disabled: false,
           type: 'datetime-local',
         },
         {
           propName: 'date_end',
           name: 'Дата окончания',
-          value: notification.date_end,
+          value: firstPay.date_end,
           disabled: false,
           type: 'datetime-local',
         },
         {
-          propName: 'id_currency',
-          name: 'id валюты',
-          value: notification.id_currency,
-          disabled: true,
+          propName: 'amount',
+          name: 'Сумма',
+          value: firstPay.amount,
+          disabled: false,
           type: 'text',
         },
         {
-          propName: 'page',
-          name: 'Страница',
-          value: notification.page,
-          disabled: false,
+          propName: 'id_tariff',
+          name: 'id тарифа',
+          value: firstPay.id_tariff,
+          disabled: true,
           type: 'text',
         },
       ]);
@@ -169,10 +128,10 @@ const Notifications = () => {
     );
   };
 
-  const deleteNotifications = async (notifications) => {
-    await dispatch(removeNotifications(notifications));
+  const deleteFirstPays = async (firstPays) => {
+    await dispatch(removeFirstPays(firstPays));
     await dispatch(
-      getNotifications({
+      getFirstPays({
         usePagination,
         limit: 10,
         page,
@@ -184,17 +143,17 @@ const Notifications = () => {
   };
 
   const handleCheckboxClick = () => {
-    if (selectedItems.length !== notifications.length) {
-      dispatch(setSelectedItems(notifications));
+    if (selectedItems.length !== firstPays.length) {
+      dispatch(setSelectedItems(firstPays));
     } else {
       dispatch(setSelectedItems([]));
     }
   };
 
   const edit = async (editingIndex) => {
-    const id = notification.id;
+    const id = firstPay.id;
     await dispatch(
-      editNotification({
+      editFirstPay({
         id,
         data: {
           [data[editingIndex].propName]: data[editingIndex].value,
@@ -202,7 +161,7 @@ const Notifications = () => {
       })
     );
     await dispatch(
-      getNotifications({
+      getFirstPays({
         usePagination,
         limit: 10,
         page,
@@ -211,8 +170,8 @@ const Notifications = () => {
         search,
       })
     );
-    const updatedNotification = await dispatch(getNotification({ id }));
-    await dispatch(setNotification(updatedNotification.payload));
+    const updatedFirstPay = await dispatch(getFirstPay({ id }));
+    await dispatch(setFirstPay(updatedFirstPay.payload));
   };
 
   return (
@@ -225,7 +184,7 @@ const Notifications = () => {
             <Button
               onClickHandler={(event) => {
                 event.preventDefault();
-                deleteNotifications({ notifications: selectedItems });
+                deleteFirstPays({ firstPays: selectedItems });
               }}
             >
               <AiOutlineDelete
@@ -240,7 +199,7 @@ const Notifications = () => {
             <Pagination
               totalCount={totalCount}
               limit={limit}
-              setPage={(item) => dispatch(setNotificationsPage(item))}
+              setPage={(item) => dispatch(setFirstPaysPage(item))}
               page={page}
             />
           )}
@@ -248,7 +207,7 @@ const Notifications = () => {
         {status === 'succeeded' ? (
           <>
             <Table
-              page="notifications"
+              page="firstPays"
               name={'Уведомления'}
               headers={headers}
               values={values}
@@ -276,19 +235,19 @@ const Notifications = () => {
               }
               checked={
                 selectedItems.length > 0 &&
-                notifications.length > 0 &&
-                selectedItems.length === notifications.length
+                firstPays.length > 0 &&
+                selectedItems.length === firstPays.length
               }
               onSelect={handleCheckboxClick}
               showCheckbox={true}
             >
-              {notifications.map((item) => (
+              {firstPays.map((item) => (
                 <TableRow
                   key={item.id}
                   onClick={async () => {
-                    await dispatch(getNotification({ id: item.id }));
-                    await dispatch(setNotification(item));
-                    await dispatch(setPressedButton('notification'));
+                    await dispatch(getFirstPay({ id: item.id }));
+                    await dispatch(setFirstPay(item));
+                    await dispatch(setPressedButton('firstPay'));
                     await dispatch(setIsVisible(true));
                   }}
                   values={values}
@@ -345,7 +304,7 @@ const Notifications = () => {
               </label>
             </>
           )}
-          {pressedButton === 'notification' && (
+          {pressedButton === 'firstPay' && (
             <>
               {data.map((item, index) => {
                 return (
@@ -432,4 +391,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default FirstPays;

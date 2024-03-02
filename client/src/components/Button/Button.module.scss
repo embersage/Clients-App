@@ -3,7 +3,6 @@
 .button {
   padding: 10px;
   width: 150px;
-  height: 52px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: flex-end;
@@ -16,7 +15,7 @@
   background-color: #fff;
   color: #ababab;
   font-family: 'Nunito', sans-serif;
-
+  text-align: right;
   svg {
     padding: 4px;
     margin: 0 auto 0 0;

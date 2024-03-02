@@ -2,9 +2,9 @@ import { memo, useEffect, useRef, useState } from 'react';
 import styles from './TableRow.module.scss';
 
 const TableRow = memo((props) => {
+  const { checked, values, activate } = props;
   const checkboxRef = useRef();
   const [isSelected, setIsSelected] = useState(false);
-  const { checked, values } = props;
 
   const handleRowClick = (event) => {
     if (checkboxRef.current && checkboxRef.current.contains(event.target)) {
@@ -29,7 +29,11 @@ const TableRow = memo((props) => {
   }, [checked]);
 
   return (
-    <tr className={styles.tableRow} onClick={handleRowClick}>
+    <tr
+      className={styles.tableRow}
+      activate={activate}
+      onClick={handleRowClick}
+    >
       {props.showCheckbox && (
         <td className={styles.checkbox}>
           <input
@@ -47,7 +51,11 @@ const TableRow = memo((props) => {
           propertyValue = propertyValue?.[prop];
         });
         return (
-          <td key={index}>{propertyValue === true ? 'Да' : propertyValue}</td>
+          <td key={index}>{`${
+            propertyValue !== null && propertyValue !== undefined
+              ? propertyValue
+              : ''
+          }`}</td>
         );
       })}
     </tr>

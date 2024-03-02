@@ -7,6 +7,7 @@ import { PiNotificationLight } from 'react-icons/pi';
 import { LiaRubleSignSolid } from 'react-icons/lia';
 import { BsTextParagraph } from 'react-icons/bs';
 import { RiComputerLine } from 'react-icons/ri';
+import { MdOutlinePayment } from 'react-icons/md';
 import { setIsAuth, setUser } from '../../redux/slices/userSlice';
 import { setIsOpened } from '../../redux/slices/menuSlice';
 import { setSortBy, setSortType } from '../../redux/slices/filterSlice';
@@ -33,6 +34,11 @@ const Menu = memo(() => {
       link: '/promocodes',
       icon: <BsTextParagraph size={30} color="rgba(171,171,171, 0.75)" />,
       name: 'Промокоды',
+    },
+    {
+      link: '/first_pays',
+      icon: <MdOutlinePayment size={30} color="rgba(171,171,171, 0.75)" />,
+      name: 'Первые платежи',
     },
     {
       link: '/sessions',

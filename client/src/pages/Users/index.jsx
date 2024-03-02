@@ -283,6 +283,7 @@ const Users = () => {
               {users.map((item) => (
                 <TableRow
                   key={item.id}
+                  activate={`${item.activate}`}
                   onClick={() => {
                     dispatch(setSortBy(''));
                     dispatch(setSortType(''));

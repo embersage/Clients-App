@@ -1,21 +1,21 @@
 import Users from './pages/Users';
 import User from './pages/User';
 import Payments from './pages/Payments';
+import FirstPays from './pages/FirstPays';
 import Promocodes from './pages/Promocodes';
 import Promocode from './pages/Promocode';
 import Sessions from './pages/Sessions';
 import Notifications from './pages/Notifications';
-import Notification from './pages/Notification';
 import Login from './pages/Login';
 import {
   USERS_ROUTE,
   USER_ROUTE,
   PAYMENTS_ROUTE,
+  FIRST_PAYS_ROUTE,
   PROMOCODES_ROUTE,
   PROMOCODE_ROUTE,
   SESSIONS_ROUTE,
   NOTIFICATIONS_ROUTE,
-  NOTIFICATION_ROUTE,
   LOGIN_ROUTE,
 } from './utils/consts';
 
@@ -33,6 +33,10 @@ export const authRoutes = [
     element: <Payments />,
   },
   {
+    path: FIRST_PAYS_ROUTE,
+    element: <FirstPays />,
+  },
+  {
     path: PROMOCODES_ROUTE,
     element: <Promocodes />,
   },
@@ -47,10 +51,6 @@ export const authRoutes = [
   {
     path: NOTIFICATIONS_ROUTE,
     element: <Notifications />,
-  },
-  {
-    path: NOTIFICATION_ROUTE,
-    element: <Notification />,
   },
 ];
 
