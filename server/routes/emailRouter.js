@@ -9,40 +9,28 @@ config();
 router.post('/send-email', checkRoleMiddleware([2, 3]), async (req, res) => {
   try {
     const { to, templateId, params } = req.body;
-    /* const { from_email, to, subject, text } = req.body; */
 
     const paramsObject = {};
     params.forEach((item) => {
       paramsObject[item.code] = item.value;
     });
 
-    const requestData = {
-      to,
-      paramsObject,
-    };
-
-    console.log(requestData);
-
-    /* const requestData = {
-      from_email,
-      to,
-      subject,
-      text,
-    }; */
-
-    const response = await axios.post(
-      `https://api.notisend.ru/v1/email/templates/${templateId}/messages`,
-      /* 'https://api.notisend.ru/v1/email/messages ', */
-      requestData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.NOTISEND_APIKEY}`,
-        },
+    to.forEach(async (item) => {
+      try {
+        await axios.post(
+          `https://api.notisend.ru/v1/email/templates/${templateId}/messages`,
+          { to: item.email, params: paramsObject },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.NOTISEND_APIKEY}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error.message);
       }
-    );
-
-    res.json(response.data);
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
