@@ -26,189 +26,41 @@ class UserController {
     return res.json({ token });
   }
 
-  async getAll(req, res) {
-    const schema = 'account';
-    let {
-      usePagination,
-      limit,
-      page,
-      sortBy,
-      sortType,
-      search,
-      activate,
-      endSoon,
-      autoPayment,
-      hasFreeTariff,
-      hasSubscription,
-    } = req.query;
-    usePagination =
-      usePagination === (undefined || '') ? true : usePagination === 'true';
-    endSoon = endSoon === (undefined || '') ? true : endSoon === 'true';
-    limit = limit || 10;
-    page = page || 1;
-    sortBy = sortBy || 'id';
-    sortType = sortType || 'ASC';
-    search = search || '';
-    activate = activate || null;
-    autoPayment = autoPayment || null;
-    hasFreeTariff =
-      hasFreeTariff === (undefined || '') ? true : hasFreeTariff === 'true';
-    hasSubscription =
-      hasSubscription === (undefined || '') ? true : hasSubscription === 'true';
-    const offset = page * limit - limit;
+  async getAll(req, res, next) {
+    try {
+      const schema = 'account';
+      let {
+        usePagination,
+        limit,
+        page,
+        sortBy,
+        sortType,
+        search,
+        activate,
+        endSoon,
+        autoPayment,
+        hasFreeTariff,
+        hasSubscription,
+      } = req.query;
+      usePagination =
+        usePagination === (undefined || '') ? true : usePagination === 'true';
+      endSoon = endSoon === (undefined || '') ? true : endSoon === 'true';
+      limit = limit || 10;
+      page = page || 1;
+      sortBy = sortBy || 'id';
+      sortType = sortType || 'ASC';
+      search = search || '';
+      activate = activate || null;
+      autoPayment = autoPayment || null;
+      hasFreeTariff =
+        hasFreeTariff === (undefined || '') ? true : hasFreeTariff === 'true';
+      hasSubscription =
+        hasSubscription === (undefined || '')
+          ? true
+          : hasSubscription === 'true';
+      const offset = page * limit - limit;
 
-    const includeOptions = [
-      {
-        model: Company,
-        attributes: ['name'],
-      },
-      {
-        model: AccessLevel,
-        attributes: ['name'],
-      },
-      {
-        model: UserConfig,
-        attributes: ['auto_payment'],
-      },
-      {
-        model: PaymentInfo,
-        include: [
-          {
-            model: Tariff,
-          },
-        ],
-      },
-    ];
-
-    if (endSoon) {
-      const currentDate = new Date();
-
-      includeOptions[3].where = {
-        date_end: {
-          [Op.between]: [
-            currentDate,
-            new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
-          ],
-        },
-      };
-    }
-
-    let users = [];
-    let searchCriteria = {};
-
-    if (autoPayment) {
-      includeOptions[2].where = { auto_payment: autoPayment };
-    }
-
-    if (search) {
-      if (!isNaN(search)) {
-        searchCriteria = {
-          id: parseInt(search),
-        };
-      } else {
-        searchCriteria = {
-          [Op.or]: [
-            { name: { [Op.iLike]: `%${search}%` } },
-            { email: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
-      }
-    }
-
-    if (activate) {
-      searchCriteria.activate = activate;
-    }
-
-    if (hasSubscription) {
-      includeOptions[3].where = {
-        id_tariff: { [Op.ne]: 5 },
-        date_end: {
-          [Op.gt]: new Date(),
-        },
-      };
-    }
-
-    let sort;
-
-    if (!sortBy.includes('.')) {
-      sort = [sortBy, sortType];
-    } else if (sortBy.includes('company.')) {
-      sort = [Company, sortBy.split('.').pop(), sortType];
-    }
-
-    const queryOptions = {
-      where: searchCriteria,
-      include: includeOptions,
-      attributes: {
-        exclude: ['id_company', 'id_access_level'],
-      },
-      order: [sort],
-      raw: false,
-      distinct: true,
-      schema,
-    };
-
-    if (usePagination) {
-      queryOptions.limit = limit;
-      queryOptions.offset = offset;
-    }
-
-    if (!hasFreeTariff) {
-      users = await UserAccount.findAndCountAll(queryOptions);
-      return res.json(users);
-    } else {
-      queryOptions.limit = null;
-      queryOptions.offset = null;
-      users = await UserAccount.findAll(queryOptions);
-
-      const filteredUsers = users.filter((user) => {
-        const hasOneTariff =
-          user.payment_infos.length === 1 &&
-          user.payment_infos[0].id_tariff === 5;
-
-        let allOtherTariffsExpired;
-
-        if (!hasOneTariff) {
-          allOtherTariffsExpired =
-            user.payment_infos.length > 1 &&
-            user.payment_infos.some((payment) => {
-              return (
-                payment.id_tariff !== 5 &&
-                payment.date_end &&
-                new Date(payment.date_end) <= new Date()
-              );
-            });
-        }
-
-        return hasOneTariff || allOtherTariffsExpired;
-      });
-
-      if (usePagination) {
-        const start = (page - 1) * limit;
-        const end = start + limit;
-
-        const paginatedUsers = filteredUsers.slice(start, end);
-        return res.json({ count: filteredUsers.length, rows: paginatedUsers });
-      } else {
-        return res.json({ count: filteredUsers.length, rows: filteredUsers });
-      }
-    }
-  }
-
-  async getOne(req, res) {
-    const schema = 'account';
-    const { id } = req.params;
-    let { sortBy, sortType } = req.query;
-    sortBy = sortBy || 'id';
-    sortType = sortType || 'ASC';
-
-    const user = await UserAccount.findOne({
-      where: { id },
-      include: [
-        {
-          model: Role,
-          attributes: ['name'],
-        },
+      const includeOptions = [
         {
           model: Company,
           attributes: ['name'],
@@ -219,7 +71,7 @@ class UserController {
         },
         {
           model: UserConfig,
-          attributes: ['language', 'usage_format', 'auto_payment'],
+          attributes: ['auto_payment'],
         },
         {
           model: PaymentInfo,
@@ -229,99 +81,268 @@ class UserController {
             },
           ],
         },
-        {
-          model: Presentation,
-          attributes: ['id', 'name', 'description'],
-        },
-      ],
-      attributes: {
-        exclude: ['id_company', 'id_role', 'id_access_level'],
-      },
-      distinct: true,
-      order: [[Presentation, sortBy, sortType]],
-      schema,
-    });
+      ];
 
-    return res.json(user);
-  }
+      if (endSoon) {
+        const currentDate = new Date();
 
-  async update(req, res) {
-    const schema = 'account';
-    const { id } = req.params;
-    const { data } = req.body;
-    const property = Object.keys(data)[0];
-    const value = Object.values(data)[0];
+        includeOptions[3].where = {
+          date_end: {
+            [Op.between]: [
+              currentDate,
+              new Date(currentDate.getTime() + 5 * 24 * 60 * 60 * 1000),
+            ],
+          },
+        };
+      }
 
-    if (property === 'password') {
-      const hashPassword = await bcrypt.hash(value, 5);
-      await UserAccount.update(
-        {
-          [property]: hashPassword,
-        },
-        {
-          where: { id },
-          schema,
+      let users = [];
+      let searchCriteria = {};
+
+      if (autoPayment) {
+        includeOptions[2].where = { auto_payment: autoPayment };
+      }
+
+      if (search) {
+        if (!isNaN(search)) {
+          searchCriteria = {
+            id: parseInt(search),
+          };
+        } else {
+          searchCriteria = {
+            [Op.or]: [
+              { name: { [Op.iLike]: `%${search}%` } },
+              { email: { [Op.iLike]: `%${search}%` } },
+            ],
+          };
         }
-      );
-    } else {
-      await UserAccount.update(
-        {
-          [property]: value,
+      }
+
+      if (activate) {
+        searchCriteria.activate = activate;
+      }
+
+      if (hasSubscription) {
+        includeOptions[3].where = {
+          id_tariff: { [Op.ne]: 5 },
+          date_end: {
+            [Op.gt]: new Date(),
+          },
+        };
+      }
+
+      let sort;
+
+      if (!sortBy.includes('.')) {
+        sort = [sortBy, sortType];
+      } else if (sortBy.includes('company.')) {
+        sort = [Company, sortBy.split('.').pop(), sortType];
+      }
+
+      const queryOptions = {
+        where: searchCriteria,
+        include: includeOptions,
+        attributes: {
+          exclude: ['id_company', 'id_access_level'],
         },
-        {
-          where: { id },
-          schema,
+        order: [sort],
+        raw: false,
+        distinct: true,
+        schema,
+      };
+
+      if (usePagination) {
+        queryOptions.limit = limit;
+        queryOptions.offset = offset;
+      }
+
+      if (!hasFreeTariff) {
+        users = await UserAccount.findAndCountAll(queryOptions);
+        return res.json(users);
+      } else {
+        queryOptions.limit = null;
+        queryOptions.offset = null;
+        users = await UserAccount.findAll(queryOptions);
+
+        const filteredUsers = users.filter((user) => {
+          const hasOneTariff =
+            user.payment_infos.length === 1 &&
+            user.payment_infos[0].id_tariff === 5;
+
+          let allOtherTariffsExpired;
+
+          if (!hasOneTariff) {
+            allOtherTariffsExpired =
+              user.payment_infos.length > 1 &&
+              user.payment_infos.some((payment) => {
+                return (
+                  payment.id_tariff !== 5 &&
+                  payment.date_end &&
+                  new Date(payment.date_end) <= new Date()
+                );
+              });
+          }
+
+          return hasOneTariff || allOtherTariffsExpired;
+        });
+
+        if (usePagination) {
+          const start = (page - 1) * limit;
+          const end = start + limit;
+
+          const paginatedUsers = filteredUsers.slice(start, end);
+          return res.json({
+            count: filteredUsers.length,
+            rows: paginatedUsers,
+          });
+        } else {
+          return res.json({ count: filteredUsers.length, rows: filteredUsers });
         }
-      );
+      }
+    } catch (error) {
+      return next(ApiError.internal('Ошибка при получении пользователей.'));
     }
-
-    const user = await UserAccount.findOne({
-      where: { id },
-      include: [
-        {
-          model: Role,
-          attributes: ['name'],
-        },
-        {
-          model: Company,
-          attributes: ['name'],
-        },
-        {
-          model: AccessLevel,
-          attributes: ['name'],
-        },
-        {
-          model: UserConfig,
-          attributes: ['language', 'usage_format', 'auto_payment'],
-        },
-        {
-          model: Tariff,
-          attributes: ['name'],
-        },
-        {
-          model: Presentation,
-          attributes: ['id', 'name', 'description'],
-        },
-      ],
-      attributes: {
-        exclude: ['id_company', 'id_role', 'id_access_level'],
-      },
-      schema,
-    });
-
-    return res.json(user);
   }
 
-  async delete(req, res) {
-    const schema = 'account';
-    const { users } = req.body;
-    let ids = [];
-    users.forEach((item) => {
-      ids.push(item.id);
-    });
-    await UserAccount.destroy({ where: { id: ids }, schema });
+  async getOne(req, res, next) {
+    try {
+      const schema = 'account';
+      const { id } = req.params;
+      let { sortBy, sortType } = req.query;
+      sortBy = sortBy || 'id';
+      sortType = sortType || 'ASC';
 
-    return res.json({ message: 'Удаление произведено успешно.' });
+      const user = await UserAccount.findOne({
+        where: { id },
+        include: [
+          {
+            model: Role,
+            attributes: ['name'],
+          },
+          {
+            model: Company,
+            attributes: ['name'],
+          },
+          {
+            model: AccessLevel,
+            attributes: ['name'],
+          },
+          {
+            model: UserConfig,
+            attributes: ['language', 'usage_format', 'auto_payment'],
+          },
+          {
+            model: PaymentInfo,
+            include: [
+              {
+                model: Tariff,
+              },
+            ],
+          },
+          {
+            model: Presentation,
+            attributes: ['id', 'name', 'description'],
+          },
+        ],
+        attributes: {
+          exclude: ['id_company', 'id_role', 'id_access_level'],
+        },
+        distinct: true,
+        order: [[Presentation, sortBy, sortType]],
+        schema,
+      });
+
+      return res.json(user);
+    } catch (error) {
+      return next(ApiError.internal('Ошибка при получении пользователя.'));
+    }
+  }
+
+  async update(req, res, next) {
+    try {
+      const schema = 'account';
+      const { id } = req.params;
+      const { data } = req.body;
+      const property = Object.keys(data)[0];
+      const value = Object.values(data)[0];
+
+      if (property === 'password') {
+        const hashPassword = await bcrypt.hash(value, 5);
+        await UserAccount.update(
+          {
+            [property]: hashPassword,
+          },
+          {
+            where: { id },
+            schema,
+          }
+        );
+      } else {
+        await UserAccount.update(
+          {
+            [property]: value,
+          },
+          {
+            where: { id },
+            schema,
+          }
+        );
+      }
+
+      const user = await UserAccount.findOne({
+        where: { id },
+        include: [
+          {
+            model: Role,
+            attributes: ['name'],
+          },
+          {
+            model: Company,
+            attributes: ['name'],
+          },
+          {
+            model: AccessLevel,
+            attributes: ['name'],
+          },
+          {
+            model: UserConfig,
+            attributes: ['language', 'usage_format', 'auto_payment'],
+          },
+          {
+            model: Tariff,
+            attributes: ['name'],
+          },
+          {
+            model: Presentation,
+            attributes: ['id', 'name', 'description'],
+          },
+        ],
+        attributes: {
+          exclude: ['id_company', 'id_role', 'id_access_level'],
+        },
+        schema,
+      });
+
+      return res.json(user);
+    } catch (error) {
+      return next(ApiError.internal('Ошибка при обновлении пользователя.'));
+    }
+  }
+
+  async delete(req, res, next) {
+    try {
+      const schema = 'account';
+      const { users } = req.body;
+      let ids = [];
+      users.forEach((item) => {
+        ids.push(item.id);
+      });
+      await UserAccount.destroy({ where: { id: ids }, schema });
+
+      return res.json({ message: 'Удаление произведено успешно.' });
+    } catch (error) {
+      return next(ApiError.internal('Ошибка при удалении пользователей.'));
+    }
   }
 
   async import(req, res, next) {

@@ -8,7 +8,7 @@ const Presentation = sequelize.define(
     name: { type: DataTypes.STRING },
     visible: { type: DataTypes.BOOLEAN },
     date_creation: { type: DataTypes.DATE },
-    image: { type: DataTypes.STRING },
+    template: { type: DataTypes.BOOLEAN },
     description: { type: DataTypes.TEXT },
     emoji: { type: DataTypes.BOOLEAN },
     timer: { type: DataTypes.BOOLEAN },
@@ -23,6 +23,7 @@ const Presentation = sequelize.define(
     show_rating: { type: DataTypes.BOOLEAN },
     raise_hand: { type: DataTypes.BOOLEAN },
     single_ip: { type: DataTypes.BOOLEAN },
+    last_modified: { type: DataTypes.DATE },
   },
   { schema: 'presentation' }
 );
